@@ -1,4 +1,5 @@
 import { EmbeddedFileKind } from '@volar/language-core'
+import { DEFINE_MODEL, DEFINE_MODEL_DOLLAR } from '@vue-macros/common'
 import { getVueLibraryName } from './common'
 import type { Segment, SegmentWithData } from 'muggle-string'
 import type { PositionCapabilities } from '@volar/language-core'
@@ -9,12 +10,19 @@ import type {
   VueLanguagePlugin,
 } from '@volar/vue-language-core'
 
-function transformDefineModel(
-  codes: SegmentWithData<PositionCapabilities>[],
-  sfc: Sfc,
-  typeArg: ts.TypeNode,
+function transformDefineModel({
+  codes,
+  sfc,
+  typeArg,
+  vueLibName,
+  unified,
+}: {
+  codes: SegmentWithData<PositionCapabilities>[]
+  sfc: Sfc
+  typeArg: ts.TypeNode
   vueLibName: string
-) {
+  unified: boolean
+}) {
   const source = sfc.scriptSetup!.content.slice(typeArg.pos, typeArg.end)
   const seg: Segment<PositionCapabilities> = [
     source,
@@ -25,11 +33,24 @@ function transformDefineModel(
   mergeProps() || addProps()
   mergeEmits() || addEmits()
 
+  codes.push(
+    `type __VLS_GetPropKey<K> = K extends 'modelValue'${
+      unified ? '' : ' & never'
+    } ? 'value' : K
+    type __VLS_ModelToProps<T> = {
+      [K in keyof T as __VLS_GetPropKey<K>]: T[K]
+    }
+    type __VLS_GetEventKey<K extends string | number> = K extends 'modelValue'${
+      unified ? '' : ' & never'
+    } ? 'input' : \`update:\${K}\`
+    type __VLS_ModelToEmits<T> = T extends Record<string | number, any> ? { [K in keyof T & (string | number) as __VLS_GetEventKey<K>]: (value: T[K]) => void } : T`
+  )
+
   function mergeProps() {
     const idx = codes.indexOf('__VLS_TypePropsToRuntimeProps<')
     if (idx === -1) return false
 
-    codes.splice(idx + 2, 0, ' & ', seg)
+    codes.splice(idx + 2, 0, ' & __VLS_ModelToProps<', seg, '>')
     return true
   }
 
@@ -37,12 +58,9 @@ function transformDefineModel(
     const idx = codes.indexOf('setup() {\n')
     if (idx === -1) return false
     const segs: Segment<PositionCapabilities>[] = [
-      'props: (',
-      '{} as ',
-      '__VLS_TypePropsToRuntimeProps<',
+      'props: ({} as __VLS_TypePropsToRuntimeProps<__VLS_ModelToProps<',
       seg,
-      '>',
-      '),\n',
+      '>>),\n',
     ]
     codes.splice(idx, 0, ...segs)
 
@@ -60,9 +78,6 @@ function transformDefineModel(
     if (idx === -1) return false
 
     codes.splice(idx + 2, 1, '>> & __VLS_ModelToEmits<', seg, '>),\n')
-    codes.push(
-      `type __VLS_ModelToEmits<T> = T extends Record<string | number, any> ? { [K in keyof T & (string | number) as \`update:\${K}\`]: (value: T[K]) => void } : T`
-    )
     return true
   }
 
@@ -76,9 +91,6 @@ function transformDefineModel(
       '>),\n',
     ]
     codes.splice(idx, 0, ...segs)
-    codes.push(
-      `type __VLS_ModelToEmits<T> = T extends Record<string | number, any> ? { [K in keyof T & (string | number) as \`update:\${K}\`]: (value: T[K]) => void } : T`
-    )
     return true
   }
 }
@@ -92,7 +104,7 @@ function getTypeArg(
       !(
         ts.isCallExpression(node) &&
         ts.isIdentifier(node.expression) &&
-        node.expression.text === 'defineModel' &&
+        [DEFINE_MODEL, DEFINE_MODEL_DOLLAR].includes(node.expression.text) &&
         node.typeArguments?.length === 1
       )
     )
@@ -134,8 +146,19 @@ function resolve({
   const typeArg = getTypeArg(ts, sfc)
   if (!typeArg) return
 
-  const vueLibName = getVueLibraryName(vueCompilerOptions.target ?? 3)
-  transformDefineModel(embeddedFile.content, sfc, typeArg, vueLibName)
+  const vueVersion = vueCompilerOptions.target ?? 3
+  const vueLibName = getVueLibraryName(vueVersion)
+  const unified =
+    (vueVersion < 3 && (vueCompilerOptions as any)?.defineModel?.unified) ??
+    true
+
+  transformDefineModel({
+    codes: embeddedFile.content,
+    sfc,
+    typeArg,
+    vueLibName,
+    unified,
+  })
 }
 
 const plugin: VueLanguagePlugin = ({

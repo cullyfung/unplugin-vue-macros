@@ -1,16 +1,18 @@
 {
   "name": "monorepo-unplugin-vue-macros",
-  "version": "0.12.0-beta.1",
+  "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@7.13.3",
+  "packageManager": "pnpm@7.13.5",
   "description": "Monorepo for Vue macros.",
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "scripts": {
     "build": "turbo run build --filter=\"./packages/*\"",
     "dev": "turbo run dev --filter=\"./packages/*\"",
-    "play": "pnpm run -C ./playground dev",
     "docs:dev": "pnpm run -C ./docs dev",
     "docs:build": "turbo run build --filter docs",
+    "play": "pnpm run play:vue3",
+    "play:vue2": "pnpm run -C ./playground/vue2 dev",
+    "play:vue3": "pnpm run -C ./playground/vue3 dev",
     "test": "vitest",
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx,.md,.json --max-warnings 0",
     "publish": "pnpm build && changeset publish",
@@ -18,29 +20,26 @@
     "typecheck:lib": "tsc --noEmit -p tsconfig.lib.json",
     "typecheck:test": "tsc --noEmit -p tsconfig.test.json"
   },
-  "peerDependencies": {
-    "vue": "^2.7.0 || ^3.2.25"
-  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.0",
-    "@pnpm/find-workspace-packages": "^4.0.40",
-    "@pnpm/logger": "^4.0.0",
+    "@pnpm/find-workspace-packages": "^5.0.0",
+    "@pnpm/logger": "^5.0.0",
     "@sxzz/eslint-config": "^2.4.4",
     "@types/node": "*",
-    "@vitest/ui": "0.24.0",
+    "@vitest/ui": "^0.24.3",
     "@vue-macros/test-utils": "workspace:*",
-    "eslint": "^8.24.0",
+    "eslint": "^8.25.0",
     "eslint-define-config": "^1.7.0",
     "fast-glob": "^3.2.12",
     "npm-run-all": "^4.1.5",
     "tsup": "^6.2.3",
-    "tsx": "^3.9.0",
-    "turbo": "^1.5.5",
+    "tsx": "^3.10.1",
+    "turbo": "^1.5.6",
     "typescript": "^4.8.4",
-    "vite": "^3.1.4",
-    "vitest": "0.24.0",
-    "vue": "^3.2.40"
+    "vite": "^3.1.8",
+    "vitest": "^0.24.3",
+    "vue": "^3.2.41"
   },
   "engines": {
     "node": ">=14.19.0"

@@ -1,10 +1,4 @@
-# setupSFC
-
-::: warning
-
-Under experimental, use at your risk!
-
-:::
+# setupSFC <WarnBadge>Experimental, use at your risk</WarnBadge>
 
 ::: tip
 
@@ -12,11 +6,11 @@ If you're using `setupSFC`, then `defineRender` cannot be disabled.
 
 :::
 
-|      Features      |        Supported        |
-| :----------------: | :---------------------: |
-|       Vue 3        |   :white_check_mark:    |
-|       Vue 2        | :question: (Not Tested) |
-| TypeScript / Volar |           :x:           |
+|      Features      |     Supported      |
+| :----------------: | :----------------: |
+|       Vue 3        | :white_check_mark: |
+|       Vue 2        | :white_check_mark: |
+| TypeScript / Volar |        :x:         |
 
 ## Setup
 

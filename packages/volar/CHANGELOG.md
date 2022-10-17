@@ -1,5 +1,26 @@
 # @vue-macros/volar
 
+## 0.3.0
+
+### Minor Changes
+
+- [`901bbe3`](https://github.com/sxzz/unplugin-vue-macros/commit/901bbe36148ff664462c9332d7bafb52bdade1ba) Thanks [@sxzz](https://github.com/sxzz)! - ⚠️ BREAKING: rename `shortVmodelPrefix` to `shortVmodel.prefix`
+
+- [`e1db377`](https://github.com/sxzz/unplugin-vue-macros/commit/e1db377fd2d2a1bd32da648454aa834cc17143cb) Thanks [@sxzz](https://github.com/sxzz)! - support unified defineModel
+
+## 0.2.0
+
+### Minor Changes
+
+- [#104](https://github.com/sxzz/unplugin-vue-macros/pull/104) [`97d82c6`](https://github.com/sxzz/unplugin-vue-macros/commit/97d82c62a3aad1b1158b9697ad6bd9d052c1c086) Thanks [@sxzz](https://github.com/sxzz)! - add runtime defineModel, requires `@vueuse/core`.
+
+  ⚠️ BREAKING CHANGE: original `defineModel` renamed to `$defineModel`.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @vue-macros/short-vmodel@0.3.1
+
 ## 0.1.0
 
 ### Minor Changes

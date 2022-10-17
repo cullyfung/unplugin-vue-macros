@@ -1,5 +1,24 @@
 # @vue-macros/define-render
 
+## 0.13.2
+
+### Patch Changes
+
+- [`b00600a`](https://github.com/sxzz/unplugin-vue-macros/commit/b00600a64ec39381613d2b9b069d82e82b1a39e6) Thanks [@sxzz](https://github.com/sxzz)! - add missing dts file
+
+## 0.13.1
+
+### Patch Changes
+
+- Updated dependencies [[`97d82c6`](https://github.com/sxzz/unplugin-vue-macros/commit/97d82c62a3aad1b1158b9697ad6bd9d052c1c086)]:
+  - @vue-macros/common@0.12.1
+
+## 0.13.0
+
+### Minor Changes
+
+- [#101](https://github.com/sxzz/unplugin-vue-macros/pull/101) [`4153f51`](https://github.com/sxzz/unplugin-vue-macros/commit/4153f51274146c0282b82749a9e04eaefd60414a) Thanks [@sxzz](https://github.com/sxzz)! - add dts for Vue 2.7
+
 ## 0.12.0
 
 ### Minor Changes
