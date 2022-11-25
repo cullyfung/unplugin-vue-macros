@@ -1,5 +1,57 @@
 # @vue-macros/short-vmodel
 
+## 1.0.0
+
+### Major Changes
+
+- [`15f3d42`](https://github.com/sxzz/unplugin-vue-macros/commit/15f3d42db5219c849f1248a881db8329e5b4b87c) Thanks [@sxzz](https://github.com/sxzz)! - make it stable. NOTHING changed.
+
+### Minor Changes
+
+- [`2438e48`](https://github.com/sxzz/unplugin-vue-macros/commit/2438e48d0843dcaebb19839d07b881988b1656f0) Thanks [@sxzz](https://github.com/sxzz)! - change default prefix to `# @vue-macros/short-vmodel
+
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`419d2d2`](https://github.com/sxzz/unplugin-vue-macros/commit/419d2d21e0e01108abb6f628b4546c1c29077002)]:
+  - @vue-macros/common@0.13.4
+
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependencies [[`b7998af`](https://github.com/sxzz/unplugin-vue-macros/commit/b7998afd69a0c8f8a619fab9a379c15ba4ad889f), [`d889b02`](https://github.com/sxzz/unplugin-vue-macros/commit/d889b028adb80ef02a2c17b7b7d687688cb5d5e5)]:
+  - @vue-macros/common@0.13.3
+
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`85f1c86`](https://github.com/sxzz/unplugin-vue-macros/commit/85f1c8621ffaaeac313974445a0ef41fafdd2137)]:
+  - @vue-macros/common@0.13.2
+
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`b5fa188`](https://github.com/sxzz/unplugin-vue-macros/commit/b5fa18833b2262e9e416af7e96f83391efc877bb)]:
+  - @vue-macros/common@0.13.1
+
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`d88fe67`](https://github.com/sxzz/unplugin-vue-macros/commit/d88fe674258c2d9d418d5b2e56aea6f70a199776)]:
+  - @vue-macros/common@0.13.0
+
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`6fa5b3e`](https://github.com/sxzz/unplugin-vue-macros/commit/6fa5b3eed9de69a19921f0b38809d80d2cde3d50), [`1ac6e49`](https://github.com/sxzz/unplugin-vue-macros/commit/1ac6e496b3039a78f0288ca53698f88461ab6efc)]:
+  - @vue-macros/common@0.12.3
+
 ## 0.3.2
 
 ### Patch Changes

@@ -1,4 +1,9 @@
-# setupSFC <WarnBadge>Experimental, use at your risk</WarnBadge>
+# setupSFC
+
+<small mr-2>
+  Stability: <code class="!text-red-600">experimental</code>
+</small>
+<WarnBadge>Experimental, use at your risk</WarnBadge>
 
 ::: tip
 
@@ -9,6 +14,7 @@ If you're using `setupSFC`, then `defineRender` cannot be disabled.
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
+|       Nuxt 3       |        :x:         |
 |       Vue 2        | :white_check_mark: |
 | TypeScript / Volar |        :x:         |
 
@@ -18,7 +24,7 @@ If you're using `setupSFC`, then `defineRender` cannot be disabled.
 
 ::: code-group-item Vite
 
-```ts{7-11}
+```ts {7-11}
 // vite.config.ts
 import VueMacros from 'unplugin-vue-macros/vite'
 import Vue from '@vitejs/plugin-vue'
@@ -38,7 +44,7 @@ export default defineConfig({
 
 ::: code-group-item Rollup
 
-```ts{6-13}
+```ts {6-13}
 import Vue from 'unplugin-vue/rollup'
 import VueMacros from 'unplugin-vue-macros/rollup'
 

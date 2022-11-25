@@ -7,6 +7,7 @@ import {
   DEFINE_PROPS,
   MagicString,
   REPO_ISSUE_URL,
+  WITH_DEFAULTS,
   getTransformResult,
   isCallOf,
   parseSFC,
@@ -35,10 +36,13 @@ export const transformDefineModel = (
   let hasDefineProps = false
   let hasDefineEmits = false
   let hasDefineModel = false
+
   let propsTypeDecl: TSInterfaceBody | TSTypeLiteral | undefined
   let propsDestructureDecl: Node | undefined
   let emitsTypeDecl: TSInterfaceBody | TSTypeLiteral | undefined
   let emitsIdentifier: string | undefined
+
+  let runtimeDefineFn: string | undefined
 
   let modelDecl: Node | undefined
   let modelDeclKind: string | undefined
@@ -51,6 +55,10 @@ export const transformDefineModel = (
   let mode: 'reactivity-transform' | 'runtime' | undefined
 
   function processDefinePropsOrEmits(node: Node, declId?: LVal) {
+    if (isCallOf(node, WITH_DEFAULTS)) {
+      node = node.arguments[0]
+    }
+
     let type: 'props' | 'emits'
     if (isCallOf(node, DEFINE_PROPS)) {
       type = 'props'
@@ -61,13 +69,13 @@ export const transformDefineModel = (
     }
     const fnName = type === 'props' ? DEFINE_PROPS : DEFINE_EMITS
 
+    if (node.arguments[0]) {
+      runtimeDefineFn = fnName
+      return false
+    }
+
     if (type === 'props') hasDefineProps = true
     else hasDefineEmits = true
-
-    if (node.arguments[0])
-      throw new SyntaxError(
-        `${fnName}() cannot accept non-type arguments when used with ${DEFINE_MODEL}()`
-      )
 
     const typeDeclRaw = node.typeParameters?.params?.[0]
     if (!typeDeclRaw)
@@ -263,7 +271,7 @@ export const transformDefineModel = (
     }
   }
 
-  function extractRuntimeProps(
+  function extractPropsDefinitions(
     node: TSTypeLiteral | TSInterfaceBody
   ): Record<string, string> {
     const members = node.type === 'TSTypeLiteral' ? node.members : node.body
@@ -273,10 +281,13 @@ export const transformDefineModel = (
         (m.type === 'TSPropertySignature' || m.type === 'TSMethodSignature') &&
         m.key.type === 'Identifier'
       ) {
-        const value = scriptCompiled.loc.source.slice(
-          m.typeAnnotation!.start!,
-          m.typeAnnotation!.end!
-        )
+        const type = m.typeAnnotation?.typeAnnotation
+        const value = type
+          ? `${m.optional ? '?' : ''}: ${scriptCompiled.loc.source.slice(
+              type.start!,
+              type.end!
+            )}`
+          : ''
         map[m.key.name] = value
       }
     }
@@ -511,13 +522,19 @@ export const transformDefineModel = (
   }
 
   if (!modelTypeDecl) return
+
+  if (runtimeDefineFn)
+    throw new SyntaxError(
+      `${runtimeDefineFn}() cannot accept non-type arguments when used with ${DEFINE_MODEL}()`
+    )
+
   if (modelTypeDecl.type !== 'TSTypeLiteral') {
     throw new SyntaxError(
       `type argument passed to ${DEFINE_MODEL}() must be a literal type, or a reference to an interface or literal type.`
     )
   }
 
-  const map = extractRuntimeProps(modelTypeDecl)
+  const map = extractPropsDefinitions(modelTypeDecl)
 
   rewriteMacros()
 

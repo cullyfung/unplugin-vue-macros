@@ -1,5 +1,7 @@
 # shortVmodel
 
+<small>Stability: <code class="!text-green-600">stable</code></small>
+
 A shorthand for `v-model`.
 
 `v-model` -> `::` / `$` / `*`
@@ -9,6 +11,7 @@ If you have any questions about this feature, you can comment on [RFC Discussion
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
+|       Nuxt 3       | :white_check_mark: |
 |       Vue 2        |        :x:         |
 | TypeScript / Volar | :white_check_mark: |
 
@@ -22,7 +25,7 @@ npm i @vue-macros/short-vmodel
 
 ### Vite Integration
 
-```ts{9-17}
+```ts {9-17}
 // vite.config.ts
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -87,7 +90,7 @@ export default defineConfig({
 
 ## Volar Configuration
 
-```jsonc{5,9}
+```jsonc {5,9}
 // tsconfig.json
 {
   "vueCompilerOptions": {

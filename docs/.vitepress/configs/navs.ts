@@ -14,6 +14,18 @@ export const sidebar: DefaultTheme.Sidebar = [
         text: 'Getting Started',
         link: '/guide/getting-started',
       },
+      {
+        text: 'Bundler Integration',
+        link: '/guide/bundler-integration',
+      },
+      {
+        text: 'Nuxt Integration',
+        link: '/guide/nuxt-integration',
+      },
+      {
+        text: 'Configurations',
+        link: '/guide/configurations',
+      },
     ],
   },
   {
@@ -30,6 +42,14 @@ export const sidebar: DefaultTheme.Sidebar = [
       {
         text: 'defineModel',
         link: '/macros/define-model',
+      },
+      {
+        text: 'defineProps',
+        link: '/macros/define-props',
+      },
+      {
+        text: 'defineSlots',
+        link: '/macros/define-slots',
       },
       {
         text: 'defineRender',
@@ -59,6 +79,14 @@ export const sidebar: DefaultTheme.Sidebar = [
       {
         text: 'hoistStatic',
         link: '/features/hoist-static',
+      },
+      {
+        text: 'namedTemplate',
+        link: '/features/named-template',
+      },
+      {
+        text: 'betterDefine',
+        link: '/features/better-define',
       },
     ],
   },

@@ -1,7 +1,7 @@
 {
   "name": "@vue-macros/define-model",
-  "version": "0.13.3",
-  "packageManager": "pnpm@7.13.5",
+  "version": "1.0.0",
+  "packageManager": "pnpm@7.17.0",
   "description": "",
   "keywords": [
     "unplugin",
@@ -78,16 +78,11 @@
   "dependencies": {
     "@rollup/pluginutils": "^4.2.1",
     "@vue-macros/common": "workspace:~",
-    "ast-walker-scope": "^0.2.3",
-    "unplugin": "^0.9.6"
+    "ast-walker-scope": "^0.3.0",
+    "unplugin": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/types": "^7.19.4",
-    "fast-glob": "^3.2.12",
-    "tsup": "^6.2.3",
-    "tsx": "^3.10.1",
-    "vite": "^3.1.8",
-    "vue": "^3.2.41"
+    "vue": "^3.2.45"
   },
   "engines": {
     "node": ">=14.19.0"

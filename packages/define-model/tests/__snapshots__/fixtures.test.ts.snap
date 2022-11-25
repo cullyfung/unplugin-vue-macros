@@ -412,6 +412,26 @@ modelValue.value = 'newValue'
 "
 `;
 
+exports[`fixtures > ./fixtures/runtime/vue3/define-props-runtime.vue 1`] = `undefined`;
+
+exports[`fixtures > ./fixtures/runtime/vue3/empty.vue 1`] = `
+"<script setup lang=\\"ts\\">
+import _DM_useVModel from '/plugin-define-model/use-vmodel';
+defineProps<{
+    
+  }>();
+defineEmits<{
+    
+  }>();
+_DM_useVModel()
+</script>
+"
+`;
+
+exports[`fixtures > ./fixtures/runtime/vue3/error-empty-define-props.vue 1`] = `"defineProps() expected a type parameter when used with defineModel."`;
+
+exports[`fixtures > ./fixtures/runtime/vue3/error-runtime.vue 1`] = `"defineProps() cannot accept non-type arguments when used with defineModel()"`;
+
 exports[`fixtures > ./fixtures/runtime/vue3/multi-decl.vue 1`] = `
 "<script setup lang=\\"ts\\">
 import _DM_useVModel from '/plugin-define-model/use-vmodel';
@@ -445,6 +465,36 @@ _DM_useVModel(['modelValue', 'modelValue', 'update:modelValue'], ['visible', 'vi
 "
 `;
 
+exports[`fixtures > ./fixtures/runtime/vue3/no-type.vue 1`] = `
+"<script setup lang=\\"ts\\">
+import _DM_useVModel from '/plugin-define-model/use-vmodel';
+defineProps<{
+    foo
+bar
+  }>();
+defineEmits<{
+    (evt: 'update:foo', value): void
+(evt: 'update:bar', value): void
+  }>();
+_DM_useVModel(['foo', 'foo', 'update:foo'], ['bar', 'bar', 'update:bar'])
+</script>
+"
+`;
+
+exports[`fixtures > ./fixtures/runtime/vue3/optional.vue 1`] = `
+"<script setup lang=\\"ts\\">
+import _DM_useVModel from '/plugin-define-model/use-vmodel';
+defineProps<{
+    foo?: string
+  }>();
+defineEmits<{
+    (evt: 'update:foo', value?: string): void
+  }>();
+_DM_useVModel(['foo', 'foo', 'update:foo'])
+</script>
+"
+`;
+
 exports[`fixtures > ./fixtures/runtime/vue3/rest.vue 1`] = `
 "<script setup lang=\\"ts\\">
 import _DM_useVModel from '/plugin-define-model/use-vmodel';
@@ -459,6 +509,28 @@ defineEmits<{
 const { ...rest } = _DM_useVModel(['modelValue', 'modelValue', 'update:modelValue'], ['visible', 'visible', 'update:visible'])
 
 rest.modelValue.value = 'foo'
+</script>
+"
+`;
+
+exports[`fixtures > ./fixtures/runtime/vue3/with-defaults.vue 1`] = `
+"<script setup lang=\\"ts\\">
+import _DM_useVModel from '/plugin-define-model/use-vmodel';
+defineEmits<{
+    (evt: 'update:foo', value: string): void
+  }>();
+export interface Props {foo: string
+
+  color: string
+}
+
+const { foo } = _DM_useVModel(['foo', 'foo', 'update:foo'])
+
+withDefaults(defineProps<Props>(), {
+  color: 'blue'
+})
+
+console.log(foo)
 </script>
 "
 `;

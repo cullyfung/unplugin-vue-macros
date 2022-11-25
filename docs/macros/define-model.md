@@ -1,10 +1,13 @@
 # defineModel
 
+<small>Stability: <code class="!text-green-600">stable</code></small>
+
 Declaring and mutate `v-model` props as the same as normal variable using the `defineModel`.
 
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
+|       Nuxt 3       | :white_check_mark: |
 |       Vue 2        | :white_check_mark: |
 | TypeScript / Volar | :white_check_mark: |
 
@@ -69,7 +72,7 @@ Assignment expression is only supported in `<script setup>` block. In other word
 
 [`@vueuse/core`](https://www.npmjs.com/package/@vueuse/core) is not required.
 
-```vue{7-9}
+```vue {7-9}
 <script setup lang="ts">
 let { modelValue, count } = $defineModel<{
   modelValue: string
@@ -106,11 +109,11 @@ emit('update:count', count + 1)
 
 ## Volar Configuration
 
-```jsonc{6,9-12}
+```jsonc {6,9-12}
 // tsconfig.json
 {
   "vueCompilerOptions": {
-    "target": 3,
+    "target": 3, // or 2.7 for Vue 2
     "plugins": [
       "@vue-macros/volar/define-model"
       // ...more feature

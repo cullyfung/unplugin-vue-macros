@@ -1,7 +1,7 @@
 {
   "name": "@vue-macros/short-emits",
-  "version": "0.12.3",
-  "packageManager": "pnpm@7.13.5",
+  "version": "1.0.1",
+  "packageManager": "pnpm@7.17.0",
   "description": "",
   "keywords": [
     "unplugin",
@@ -23,7 +23,9 @@
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
-    "dist"
+    "dist",
+    "macros.d.ts",
+    "macros-global.d.ts"
   ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -68,15 +70,9 @@
   "dependencies": {
     "@rollup/pluginutils": "^4.2.1",
     "@vue-macros/common": "workspace:~",
-    "unplugin": "^0.9.6"
+    "unplugin": "^1.0.0"
   },
-  "devDependencies": {
-    "@babel/types": "^7.19.4",
-    "fast-glob": "^3.2.12",
-    "tsup": "^6.2.3",
-    "tsx": "^3.10.1",
-    "vite": "^3.1.8"
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">=14.19.0"
   }

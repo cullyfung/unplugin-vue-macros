@@ -1,5 +1,7 @@
 # defineOptions
 
+<small>Stability: <code class="!text-green-600">stable</code></small>
+
 Options API can be declared using the `defineOptions` in `<script setup>`, specifically to be able to set `name`, `props`, `emits`, and `render` inside of one function.
 
 If you support this feature, feel free to hit like :+1: or comment on the [RFC Discussion](https://github.com/vuejs/rfcs/discussions/430). Thanks!
@@ -7,6 +9,7 @@ If you support this feature, feel free to hit like :+1: or comment on the [RFC D
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
+|       Nuxt 3       | :white_check_mark: |
 |       Vue 2        | :white_check_mark: |
 | TypeScript / Volar | :white_check_mark: |
 
@@ -99,9 +102,21 @@ module.exports = {
 
 ::::
 
+### TypeScript Support
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    // ...
+    "types": ["unplugin-vue-define-options/macros-global" /* ... */]
+  }
+}
+```
+
 ## Basic Usage
 
-```vue{3-6}
+```vue {3-6}
 <script setup lang="ts">
 import { useSlots } from 'vue'
 defineOptions({
@@ -131,7 +146,7 @@ const slots = useSlots()
 
 ## JSX in `<script setup>`
 
-```vue{3-5}
+```vue {3-5}
 <script setup lang="tsx">
 defineOptions({
   render() {

@@ -8,6 +8,8 @@ import {
 } from '@vue-macros/common'
 import type { Node } from '@babel/types'
 
+export const MAGIC_COMMENT = 'hoist-static'
+
 export const transformHoistStatic = (code: string, id: string) => {
   function moveToScript(decl: Node, prefix: 'const ' | '' = '') {
     if (scriptOffset === undefined) scriptOffset = normalScript.start()
@@ -36,7 +38,14 @@ export const transformHoistStatic = (code: string, id: string) => {
       const decls = stmt.declarations
       let count = 0
       for (const [i, decl] of decls.entries()) {
-        if (!decl.init || !isStaticExpression(decl.init)) continue
+        if (
+          !decl.init ||
+          !isStaticExpression(decl.init, {
+            unary: true,
+            magicComment: MAGIC_COMMENT,
+          })
+        )
+          continue
 
         count++
         moveToScript(decl, 'const ')
@@ -55,7 +64,11 @@ export const transformHoistStatic = (code: string, id: string) => {
     } else if (stmt.type === 'TSEnumDeclaration') {
       const isAllConstant = stmt.members.every(
         (member) =>
-          !member.initializer || isStaticExpression(member.initializer)
+          !member.initializer ||
+          isStaticExpression(member.initializer, {
+            unary: true,
+            magicComment: MAGIC_COMMENT,
+          })
       )
       if (!isAllConstant) continue
       moveToScript(stmt)
@@ -64,7 +77,7 @@ export const transformHoistStatic = (code: string, id: string) => {
 
   const restSetup = s.slice(setupOffset, setupOffsetEnd)
   if (restSetup.trim().length === 0) {
-    s.appendLeft(setupOffsetEnd, '/**/')
+    s.appendLeft(setupOffsetEnd, '/* hoist static placeholder */')
   }
 
   if (scriptOffset !== undefined) normalScript.end()

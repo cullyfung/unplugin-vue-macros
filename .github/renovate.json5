@@ -9,16 +9,24 @@
       depTypeList: ['peerDependencies'],
       enabled: false,
     },
+
     {
       matchUpdateTypes: ['major'],
-      matchPackageNames: ['vue'],
+      matchPackageNames: [
+        'vue',
+
+        // wait Vite 4
+        'rollup',
+        '@rollup/pluginutils',
+        '@rollup/plugin-node-resolve',
+      ],
+      enabled: false,
+    },
+    {
+      matchUpdateTypes: ['minor'],
+      matchPackageNames: ['unplugin-combine'],
       enabled: false,
     },
   ],
-  ignoreDeps: [
-    'node',
-    '@rollup/pluginutils',
-    '@rollup/plugin-node-resolve',
-    'rollup',
-  ],
+  ignoreDeps: ['node'],
 }

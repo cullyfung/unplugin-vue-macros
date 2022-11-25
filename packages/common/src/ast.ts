@@ -1,21 +1,19 @@
-import path from 'node:path'
 import { babelParse as _babelParse, walkIdentifiers } from '@vue/compiler-sfc'
 import { walk } from 'estree-walker'
-import {
-  MAGIC_COMMENT_STATIC,
-  REGEX_JSX_FILE,
-  REGEX_TS_FILE,
-} from './constants'
-import type { CallExpression, Literal, Node, Program } from '@babel/types'
+import { REGEX_JSX_FILE } from './constants'
+import { isTs } from './lang'
+import type {
+  CallExpression,
+  Function,
+  Literal,
+  Node,
+  ObjectExpression,
+  ObjectMethod,
+  ObjectProperty,
+  Program,
+  TemplateLiteral,
+} from '@babel/types'
 import type { ParserOptions, ParserPlugin } from '@babel/parser'
-
-export function getLang(filename: string) {
-  return path.extname(filename).replace(/^\./, '')
-}
-
-export function isTs(lang?: string) {
-  return lang && REGEX_TS_FILE.test(lang)
-}
 
 export function babelParse(
   code: string,
@@ -37,7 +35,7 @@ export function babelParse(
 
 export function isCallOf(
   node: Node | null | undefined,
-  test: string | ((id: string) => boolean)
+  test: string | string[] | ((id: string) => boolean)
 ): node is CallExpression {
   return !!(
     node &&
@@ -45,6 +43,8 @@ export function isCallOf(
     node.callee.type === 'Identifier' &&
     (typeof test === 'string'
       ? node.callee.name === test
+      : Array.isArray(test)
+      ? test.includes(node.callee.name)
       : test(node.callee.name))
   )
 }
@@ -65,38 +65,85 @@ export function checkInvalidScopeReference(
   })
 }
 
-export function isStaticExpression(node: Node): boolean {
+export function isStaticExpression(
+  node: Node,
+  options: Partial<
+    Record<'object' | 'fn' | 'objectMethod' | 'array' | 'unary', boolean> & {
+      magicComment?: string
+    }
+  > = {}
+): boolean {
+  const { magicComment, fn, object, objectMethod, array, unary } = options
+
   // magic comment
   if (
+    magicComment &&
     node.leadingComments?.some(
-      (comment) => comment.value.trim() === MAGIC_COMMENT_STATIC
+      (comment) => comment.value.trim() === magicComment
     )
   )
     return true
+  else if (fn && isFunctionType(node)) return true
 
   switch (node.type) {
     case 'UnaryExpression': // !true
-      return isStaticExpression(node.argument)
+      return !!unary && isStaticExpression(node.argument, options)
+
     case 'LogicalExpression': // 1 > 2
     case 'BinaryExpression': // 1 + 2
-      return isStaticExpression(node.left) && isStaticExpression(node.right)
+      return (
+        isStaticExpression(node.left, options) &&
+        isStaticExpression(node.right, options)
+      )
 
     case 'ConditionalExpression': // 1 ? 2 : 3
       return (
-        isStaticExpression(node.test) &&
-        isStaticExpression(node.consequent) &&
-        isStaticExpression(node.alternate)
+        isStaticExpression(node.test, options) &&
+        isStaticExpression(node.consequent, options) &&
+        isStaticExpression(node.alternate, options)
       )
 
     case 'SequenceExpression': // (1, 2)
     case 'TemplateLiteral': // `123`
-      return node.expressions.every((expr) => isStaticExpression(expr))
+      return node.expressions.every((expr) => isStaticExpression(expr, options))
+
+    case 'ArrayExpression': // [1, 2]
+      return (
+        !!array &&
+        node.elements.every(
+          (element) => element && isStaticExpression(element, options)
+        )
+      )
+
+    case 'ObjectExpression': // { foo: 1 }
+      return (
+        !!object &&
+        node.properties.every((prop) => {
+          if (prop.type === 'SpreadElement') {
+            return (
+              prop.argument.type === 'ObjectExpression' &&
+              isStaticExpression(prop.argument, options)
+            )
+          } else if (!isLiteralType(prop.key) && prop.computed) {
+            return false
+          } else if (
+            prop.type === 'ObjectProperty' &&
+            !isStaticExpression(prop.value, options)
+          ) {
+            return false
+          }
+          if (prop.type === 'ObjectMethod' && !objectMethod) {
+            return false
+          }
+          return true
+        })
+      )
 
     case 'ParenthesizedExpression': // (1)
     case 'TSNonNullExpression': // 1!
     case 'TSAsExpression': // 1 as number
     case 'TSTypeAssertion': // (<number>2)
-      return isStaticExpression(node.expression)
+      return isStaticExpression(node.expression, options)
   }
 
   if (isLiteralType(node)) return true
@@ -107,7 +154,83 @@ export function isLiteralType(node: Node): node is Literal {
   return node.type.endsWith('Literal')
 }
 
-export function getStaticKey(node: Node, computed = false, raw = true) {
+export function resolveTemplateLiteral(node: TemplateLiteral) {
+  return node.quasis.reduce((prev, curr, idx) => {
+    if (node.expressions[idx]) {
+      return (
+        prev +
+        curr.value.cooked +
+        resolveLiteral(node.expressions[idx] as Literal)
+      )
+    }
+    return prev + curr.value.cooked
+  }, '')
+}
+
+export function resolveLiteral(
+  node: Literal
+): string | number | boolean | null | RegExp | bigint {
+  switch (node.type) {
+    case 'TemplateLiteral':
+      return resolveTemplateLiteral(node)
+    case 'NullLiteral':
+      return null
+    case 'BigIntLiteral':
+      return BigInt(node.value)
+    case 'RegExpLiteral':
+      return new RegExp(node.pattern, node.flags)
+
+    case 'BooleanLiteral':
+    case 'NumericLiteral':
+    case 'StringLiteral':
+      return node.value
+  }
+  return undefined as never
+}
+
+export function isStaticObjectKey(node: ObjectExpression): boolean {
+  return node.properties.every((prop) => {
+    if (prop.type === 'SpreadElement') {
+      return (
+        prop.argument.type === 'ObjectExpression' &&
+        isStaticObjectKey(prop.argument)
+      )
+    }
+    return !prop.computed || isLiteralType(prop.key)
+  })
+}
+
+/**
+ * @param node must be a static expression, SpreadElement is not supported
+ */
+export function resolveObjectExpression(node: ObjectExpression) {
+  const maps: Record<string | number, ObjectMethod | ObjectProperty> = {}
+  for (const property of node.properties) {
+    if (property.type === 'SpreadElement') {
+      if (property.argument.type !== 'ObjectExpression')
+        // not supported
+        return undefined
+      Object.assign(maps, resolveObjectExpression(property.argument)!)
+    } else {
+      const key = resolveObjectKey(property.key, property.computed, false)
+      maps[key] = property
+    }
+  }
+
+  return maps
+}
+
+export function resolveObjectKey(
+  node: Node,
+  computed?: boolean,
+  raw?: true
+): string
+export function resolveObjectKey(
+  node: Node,
+  computed: boolean | undefined,
+  raw: false
+): string | number
+export function resolveObjectKey(node: Node, computed = false, raw = true) {
   switch (node.type) {
     case 'StringLiteral':
     case 'NumericLiteral':
@@ -148,4 +271,8 @@ export function walkAST<T = Node>(
   }
 ): T {
   return walk(node as any, options as any) as any
+}
+
+export function isFunctionType(node: Node): node is Function {
+  return /Function(?:Expression|Declaration)$|Method$/.test(node.type)
 }

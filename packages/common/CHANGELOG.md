@@ -1,5 +1,45 @@
 # @vue-macros/common
 
+## 0.13.4
+
+### Patch Changes
+
+- [`419d2d2`](https://github.com/sxzz/unplugin-vue-macros/commit/419d2d21e0e01108abb6f628b4546c1c29077002) Thanks [@sxzz](https://github.com/sxzz)! - improve production mode
+
+## 0.13.3
+
+### Patch Changes
+
+- [`b7998af`](https://github.com/sxzz/unplugin-vue-macros/commit/b7998afd69a0c8f8a619fab9a379c15ba4ad889f) Thanks [@sxzz](https://github.com/sxzz)! - add `$defineProps`
+
+- [`d889b02`](https://github.com/sxzz/unplugin-vue-macros/commit/d889b028adb80ef02a2c17b7b7d687688cb5d5e5) Thanks [@sxzz](https://github.com/sxzz)! - support `$defineProps` for Volar
+
+## 0.13.2
+
+### Patch Changes
+
+- [`85f1c86`](https://github.com/sxzz/unplugin-vue-macros/commit/85f1c8621ffaaeac313974445a0ef41fafdd2137) Thanks [@sxzz](https://github.com/sxzz)! - support context in setupComponent
+
+## 0.13.1
+
+### Patch Changes
+
+- [`b5fa188`](https://github.com/sxzz/unplugin-vue-macros/commit/b5fa18833b2262e9e416af7e96f83391efc877bb) Thanks [@sxzz](https://github.com/sxzz)! - support dynamic default definitions of props
+
+## 0.13.0
+
+### Minor Changes
+
+- [#126](https://github.com/sxzz/unplugin-vue-macros/pull/126) [`d88fe67`](https://github.com/sxzz/unplugin-vue-macros/commit/d88fe674258c2d9d418d5b2e56aea6f70a199776) Thanks [@sxzz](https://github.com/sxzz)! - add better define
+
+## 0.12.3
+
+### Patch Changes
+
+- [`6fa5b3e`](https://github.com/sxzz/unplugin-vue-macros/commit/6fa5b3eed9de69a19921f0b38809d80d2cde3d50) Thanks [@sxzz](https://github.com/sxzz)! - add named template
+
+- [`1ac6e49`](https://github.com/sxzz/unplugin-vue-macros/commit/1ac6e496b3039a78f0288ca53698f88461ab6efc) Thanks [@sxzz](https://github.com/sxzz)! - add defineSlots macro
+
 ## 0.12.2
 
 ### Patch Changes
