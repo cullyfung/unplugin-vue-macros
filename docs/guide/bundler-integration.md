@@ -54,7 +54,7 @@ export default defineConfig({
 
 :::
 
-::: code-group-item Rollup (first-class support)
+::: code-group-item Rollup 3 (first-class support)
 
 ```ts
 // rollup.config.js
@@ -101,15 +101,27 @@ build({
 // webpack.config.js
 module.exports = {
   /* ... */
-  plugins: [
-    require('unplugin-vue-macros/webpack')({
-      plugins: {
-        vue: require('unplugin-vue/webpack')(),
-        // vueJsx: VueJsx(), // if needed
-      },
-    }),
-  ],
+  plugins: [require('unplugin-vue-macros/webpack')({})],
 }
+```
+
+:::
+
+::: code-group-item Vue CLI
+
+```js
+// vue.config.js
+const { defineConfig } = require('@vue/cli-service')
+const VueMacros = require('unplugin-vue-macros/webpack')
+
+module.exports = defineConfig({
+  // ...
+  // ⚠️ IMPORTANT
+  parallel: false,
+  configureWebpack: {
+    plugins: [VueMacros({})],
+  },
+})
 ```
 
 :::

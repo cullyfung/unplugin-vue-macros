@@ -1,15 +1,12 @@
 import { createUnplugin } from 'unplugin'
 import { createFilter } from '@rollup/pluginutils'
 import { REGEX_VUE_SFC } from '@vue-macros/common'
-import { createCombinePlugin } from 'unplugin-combine'
-import { parseVueRequest } from '@vitejs/plugin-vue'
-import { postTransform, preTransform } from './core'
+import { parseVueRequest, postTransform, preTransform } from './core'
 import {
   MAIN_TEMPLATE,
   QUERY_NAMED_TEMPLATE,
   QUERY_TEMPLATE,
 } from './core/constants'
-import type { UnpluginCombineInstance } from 'unplugin-combine'
 import type { FilterPattern } from '@rollup/pluginutils'
 
 export interface Options {
@@ -34,7 +31,7 @@ export type TemplateContent = Record<
 >
 
 const name = 'unplugin-vue-named-template'
-export const PrePlugin = createUnplugin<Options | undefined>(
+export const PrePlugin = createUnplugin<Options | undefined, false>(
   (userOptions = {}) => {
     const options = resolveOption(userOptions)
     const filter = createFilter(options.include, options.exclude)
@@ -88,7 +85,7 @@ export default {
 )
 
 export type CustomBlocks = Record<string, Record<string, string>>
-export const PostPlugin = createUnplugin<Options | undefined>(
+export const PostPlugin = createUnplugin<Options | undefined, false>(
   (userOptions = {}) => {
     const options = resolveOption(userOptions)
     const filter = createFilter(options.include, options.exclude)
@@ -120,15 +117,10 @@ export const PostPlugin = createUnplugin<Options | undefined>(
   }
 )
 
-const plugin: UnpluginCombineInstance<Options | undefined> =
-  createCombinePlugin((userOptions: Options = {}) => {
-    return {
-      name,
-      plugins: [
-        [PrePlugin, userOptions],
-        [PostPlugin, userOptions],
-      ],
-    }
-  })
+const plugin = createUnplugin<Options | undefined, true>(
+  (userOptions = {}, meta) => {
+    return [PrePlugin.raw(userOptions, meta), PostPlugin.raw(userOptions, meta)]
+  }
+)
 
 export default plugin

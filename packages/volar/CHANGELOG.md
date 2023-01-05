@@ -1,5 +1,29 @@
 # @vue-macros/volar
 
+## 0.5.7
+
+### Patch Changes
+
+- [`14b5fbf`](https://github.com/sxzz/unplugin-vue-macros/commit/14b5fbf3895568665ef414f3c302c62738b7cac2) Thanks [@sxzz](https://github.com/sxzz)! - upgrade volar version
+
+## 0.5.6
+
+### Patch Changes
+
+- Updated dependencies [[`d81825a`](https://github.com/sxzz/unplugin-vue-macros/commit/d81825a9bbe003f5af4ee3858241cc5bdb8f264f)]:
+  - @vue-macros/common@0.13.5
+  - @vue-macros/define-props@0.1.1
+  - @vue-macros/short-vmodel@1.0.1
+
+## 0.5.5
+
+### Patch Changes
+
+- [#177](https://github.com/sxzz/unplugin-vue-macros/pull/177) [`934d5f8`](https://github.com/sxzz/unplugin-vue-macros/commit/934d5f8e935fc6ee0a4b3846e183b6611e10c571) Thanks [@sxzz](https://github.com/sxzz)! - Support Vite 4
+  Drop Rollup 2
+- Updated dependencies [[`934d5f8`](https://github.com/sxzz/unplugin-vue-macros/commit/934d5f8e935fc6ee0a4b3846e183b6611e10c571)]:
+  - @vue-macros/define-props@0.1.0
+
 ## 0.5.4
 
 ### Patch Changes

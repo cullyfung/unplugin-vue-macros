@@ -7,18 +7,15 @@ import VueDefineRender from '@vue-macros/define-render'
 import VueDefineSlots from '@vue-macros/define-slots'
 import VueHoistStatic from '@vue-macros/hoist-static'
 import VueNamedTemplate from '@vue-macros/named-template'
+import VueReactivityTransformVue2 from '@vue-macros/reactivity-transform-vue2'
 import VueSetupBlock from '@vue-macros/setup-block'
 import VueSetupComponent from '@vue-macros/setup-component'
 import VueSetupSFC from '@vue-macros/setup-sfc'
 import VueShortEmits from '@vue-macros/short-emits'
+import { detectVueVersion } from '@vue-macros/common'
 
-import { getVueVersion } from './utils'
 import type { UnpluginInstance } from 'unplugin'
-import type {
-  OptionsPlugin,
-  Unplugin,
-  UnpluginCombineInstance,
-} from 'unplugin-combine'
+import type { OptionsPlugin, Plugin, PluginType } from 'unplugin-combine'
 import type { Options as OptionsBetterDefine } from '@vue-macros/better-define'
 import type { Options as OptionsDefineModel } from '@vue-macros/define-model'
 import type { Options as OptionsDefineOptions } from 'unplugin-vue-define-options'
@@ -27,6 +24,7 @@ import type { Options as OptionsDefineRender } from '@vue-macros/define-render'
 import type { Options as OptionsDefineSlots } from '@vue-macros/define-slots'
 import type { Options as OptionsHoistStatic } from '@vue-macros/hoist-static'
 import type { Options as OptionsNamedTemplate } from '@vue-macros/named-template'
+import type { Options as OptionsReactivityTransformVue2 } from '@vue-macros/reactivity-transform-vue2'
 import type { Options as OptionsSetupBlock } from '@vue-macros/setup-block'
 import type { Options as OptionsSetupComponent } from '@vue-macros/setup-component'
 import type { Options as OptionsSetupSFC } from '@vue-macros/setup-sfc'
@@ -41,6 +39,7 @@ export interface FeatureOptionsMap {
   defineSlots: OptionsDefineSlots
   hoistStatic: OptionsHoistStatic
   namedTemplate: OptionsNamedTemplate
+  reactivityTransformVue2: OptionsReactivityTransformVue2
   setupBlock: OptionsSetupBlock
   setupComponent: OptionsSetupComponent
   setupSFC: OptionsSetupSFC
@@ -82,6 +81,7 @@ function resolveOptions({
   defineSlots,
   hoistStatic,
   namedTemplate,
+  reactivityTransformVue2,
   setupBlock,
   setupComponent,
   setupSFC,
@@ -94,14 +94,14 @@ function resolveOptions({
     > = {},
     defaultEnabled = true
   ): FeatureOptionsMap[K] | false {
-    if (defaultEnabled ? options === false : !options) return false
-    else if (options === true || options === undefined)
-      return { ...commonOptions }
+    options = options ?? defaultEnabled
+    if (!options) return false
+    else if (options === true) return { ...commonOptions }
     else return { ...options, ...commonOptions }
   }
 
   root = root || process.cwd()
-  version = version || getVueVersion()
+  version = version || detectVueVersion()
   isProduction = isProduction ?? process.env.NODE_ENV === 'production'
 
   return {
@@ -111,12 +111,19 @@ function resolveOptions({
       isProduction,
     }),
     defineModel: resolveSubOptions<'defineModel'>(defineModel, { version }),
-    defineOptions: resolveSubOptions<'defineOptions'>(defineOptions),
-    defineProps: resolveSubOptions<'defineProps'>(defineProps),
+    defineOptions: resolveSubOptions<'defineOptions'>(defineOptions, {
+      version,
+    }),
+    defineProps: resolveSubOptions<'defineProps'>(defineProps, { version }),
     defineRender: resolveSubOptions<'defineRender'>(defineRender),
-    defineSlots: resolveSubOptions<'defineSlots'>(defineSlots),
+    defineSlots: resolveSubOptions<'defineSlots'>(defineSlots, { version }),
     hoistStatic: resolveSubOptions<'hoistStatic'>(hoistStatic),
     namedTemplate: resolveSubOptions<'namedTemplate'>(namedTemplate),
+    reactivityTransformVue2: resolveSubOptions<'reactivityTransformVue2'>(
+      reactivityTransformVue2,
+      undefined,
+      version === 2
+    ),
     setupBlock: resolveSubOptions<'setupBlock'>(setupBlock, undefined, false),
     setupComponent: resolveSubOptions<'setupComponent'>(setupComponent, {
       root,
@@ -127,48 +134,65 @@ function resolveOptions({
 }
 
 function resolvePlugin(
-  options: FeatureOptions | false,
-  unplugin: UnpluginCombineInstance<any>,
-  index: number
-): Unplugin<any> | undefined
+  unplugin: UnpluginInstance<any, true>,
+  framework: PluginType,
+  options: FeatureOptions | false
+): Plugin[] | undefined
+
 function resolvePlugin(
-  options: FeatureOptions | false,
-  unplugin: UnpluginInstance<any, false>
-): Unplugin<any> | undefined
+  unplugin: UnpluginInstance<any, false>,
+  framework: PluginType,
+  options: FeatureOptions | false
+): Plugin | undefined
+
 function resolvePlugin(
-  options: FeatureOptions | false,
-  unplugin: UnpluginInstance<any, false> | UnpluginCombineInstance<any>,
-  idx?: number
-): Unplugin<any> | undefined {
+  unplugin: UnpluginInstance<any, boolean>,
+  framework: PluginType,
+  options: FeatureOptions | false
+): Plugin | Plugin[] | undefined {
   if (!options) return
-  if ('plugins' in unplugin) {
-    return ((unplugin.plugins as any)(options) as Unplugin<any>)[idx!]
-  }
-  return [unplugin, options]
+  return unplugin[framework!](options)
 }
 
 const name = 'unplugin-vue-macros'
 
-export default createCombinePlugin((userOptions: Options = {}) => {
+export default createCombinePlugin((userOptions: Options = {}, meta) => {
   const options = resolveOptions(userOptions)
 
+  const framework = meta.framework!
+  const setupComponentPlugins = resolvePlugin(
+    VueSetupComponent,
+    framework,
+    options.setupComponent
+  )
+  const namedTemplatePlugins = resolvePlugin(
+    VueNamedTemplate,
+    framework,
+    options.namedTemplate
+  )
+
   const plugins: OptionsPlugin[] = [
-    resolvePlugin(options.setupSFC, VueSetupSFC),
-    resolvePlugin(options.setupComponent, VueSetupComponent, 0),
-    resolvePlugin(options.setupBlock, VueSetupBlock),
-    resolvePlugin(options.hoistStatic, VueHoistStatic),
-    resolvePlugin(options.namedTemplate, VueNamedTemplate, 0),
-    resolvePlugin(options.defineProps, VueDefineProps),
-    resolvePlugin(options.shortEmits, VueShortEmits),
-    resolvePlugin(options.defineModel, VueDefineModel),
-    resolvePlugin(options.defineSlots, VueDefineSlots),
-    resolvePlugin(options.betterDefine, VueBetterDefine),
-    resolvePlugin(options.defineOptions, VueDefineOptions),
+    resolvePlugin(VueSetupSFC, framework, options.setupSFC),
+    setupComponentPlugins?.[0],
+    resolvePlugin(VueSetupBlock, framework, options.setupBlock),
+    resolvePlugin(VueHoistStatic, framework, options.hoistStatic),
+    namedTemplatePlugins?.[0],
+    resolvePlugin(VueDefineProps, framework, options.defineProps),
+    resolvePlugin(VueShortEmits, framework, options.shortEmits),
+    resolvePlugin(VueDefineModel, framework, options.defineModel),
+    resolvePlugin(VueDefineSlots, framework, options.defineSlots),
+    resolvePlugin(
+      VueReactivityTransformVue2,
+      framework,
+      options.reactivityTransformVue2
+    ),
+    resolvePlugin(VueBetterDefine, framework, options.betterDefine),
+    resolvePlugin(VueDefineOptions, framework, options.defineOptions),
     options.plugins.vue,
     options.plugins.vueJsx,
-    resolvePlugin(options.defineRender, VueDefineRender),
-    resolvePlugin(options.setupComponent, VueSetupComponent, 1),
-    resolvePlugin(options.namedTemplate, VueNamedTemplate, 1),
+    resolvePlugin(VueDefineRender, framework, options.defineRender),
+    setupComponentPlugins?.[1],
+    namedTemplatePlugins?.[1],
   ].filter(Boolean)
 
   return {

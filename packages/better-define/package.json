@@ -1,7 +1,7 @@
 {
   "name": "@vue-macros/better-define",
-  "version": "1.0.0",
-  "packageManager": "pnpm@7.17.1",
+  "version": "1.1.2",
+  "packageManager": "pnpm@7.21.0",
   "description": "",
   "keywords": [
     "unplugin",
@@ -64,13 +64,13 @@
     "dev": "DEV=1 tsup"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^4.2.1",
+    "@rollup/pluginutils": "^5.0.2",
     "@vue-macros/api": "workspace:~",
     "@vue-macros/common": "workspace:~",
-    "unplugin": "^1.0.0"
+    "unplugin": "^1.0.1"
   },
   "devDependencies": {
-    "rollup": "^2.79.1"
+    "rollup": "^3.9.1"
   },
   "engines": {
     "node": ">=14.19.0"

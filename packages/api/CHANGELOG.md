@@ -1,5 +1,18 @@
 # @vue-macros/api
 
+## 0.2.2
+
+### Patch Changes
+
+- [`7776ab0`](https://github.com/sxzz/unplugin-vue-macros/commit/7776ab0706715c9f67dc255e56446a2d049c620b) Thanks [@sxzz](https://github.com/sxzz)! - support resolving dts file
+
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`d81825a`](https://github.com/sxzz/unplugin-vue-macros/commit/d81825a9bbe003f5af4ee3858241cc5bdb8f264f)]:
+  - @vue-macros/common@0.13.5
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,29 @@
 # @vue-macros/better-define
 
+## 1.1.2
+
+### Patch Changes
+
+- [`7776ab0`](https://github.com/sxzz/unplugin-vue-macros/commit/7776ab0706715c9f67dc255e56446a2d049c620b) Thanks [@sxzz](https://github.com/sxzz)! - support resolving dts file
+
+- Updated dependencies [[`7776ab0`](https://github.com/sxzz/unplugin-vue-macros/commit/7776ab0706715c9f67dc255e56446a2d049c620b)]:
+  - @vue-macros/api@0.2.2
+
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`d81825a`](https://github.com/sxzz/unplugin-vue-macros/commit/d81825a9bbe003f5af4ee3858241cc5bdb8f264f)]:
+  - @vue-macros/common@0.13.5
+  - @vue-macros/api@0.2.1
+
+## 1.1.0
+
+### Minor Changes
+
+- [#177](https://github.com/sxzz/unplugin-vue-macros/pull/177) [`934d5f8`](https://github.com/sxzz/unplugin-vue-macros/commit/934d5f8e935fc6ee0a4b3846e183b6611e10c571) Thanks [@sxzz](https://github.com/sxzz)! - Support Vite 4
+  Drop Rollup 2
+
 ## 1.0.0
 
 ### Major Changes

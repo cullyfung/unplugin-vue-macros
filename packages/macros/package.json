@@ -1,7 +1,7 @@
 {
   "name": "unplugin-vue-macros",
-  "version": "1.0.3",
-  "packageManager": "pnpm@7.17.1",
+  "version": "1.2.2",
+  "packageManager": "pnpm@7.21.0",
   "description": "Explore and extend more macros and syntax sugar to Vue.",
   "keywords": [
     "unplugin",
@@ -72,25 +72,26 @@
     "vue": "^2.7.0 || ^3.2.25"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^4.2.1",
+    "@rollup/pluginutils": "^5.0.2",
     "@vue-macros/better-define": "workspace:*",
+    "@vue-macros/common": "workspace:*",
     "@vue-macros/define-model": "workspace:*",
     "@vue-macros/define-props": "workspace:*",
     "@vue-macros/define-render": "workspace:*",
     "@vue-macros/define-slots": "workspace:*",
     "@vue-macros/hoist-static": "workspace:*",
     "@vue-macros/named-template": "workspace:*",
+    "@vue-macros/reactivity-transform-vue2": "workspace:*",
     "@vue-macros/setup-block": "workspace:*",
     "@vue-macros/setup-component": "workspace:*",
     "@vue-macros/setup-sfc": "workspace:*",
     "@vue-macros/short-emits": "workspace:*",
-    "local-pkg": "^0.4.2",
-    "unplugin-combine": "^0.2.8",
+    "unplugin-combine": "^0.5.3",
     "unplugin-vue-define-options": "workspace:*"
   },
   "devDependencies": {
-    "esbuild": "^0.15.16",
-    "unplugin": "^1.0.0",
+    "esbuild": "^0.16.12",
+    "unplugin": "^1.0.1",
     "vue": "^3.2.45"
   },
   "engines": {

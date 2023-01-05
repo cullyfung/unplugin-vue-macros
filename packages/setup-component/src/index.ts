@@ -1,5 +1,4 @@
 import { createUnplugin } from 'unplugin'
-import { createCombinePlugin } from 'unplugin-combine'
 import { createFilter } from '@rollup/pluginutils'
 import {
   REGEX_SETUP_SFC,
@@ -14,7 +13,6 @@ import {
   transformSetupComponent,
 } from './core'
 import { getMainModule, isSubModule } from './core/sub-module'
-import type { UnpluginCombineInstance } from 'unplugin-combine'
 import type { PluginContext } from 'rollup'
 import type { FilterPattern } from '@rollup/pluginutils'
 import type { SetupComponentContext } from './core'
@@ -41,7 +39,7 @@ function resolveOption(options: Options): OptionsResolved {
 }
 
 const name = 'unplugin-vue-setup-component'
-const PrePlugin = createUnplugin<Options | undefined>(
+const PrePlugin = createUnplugin<Options | undefined, false>(
   (userOptions = {}, meta) => {
     const options = resolveOption(userOptions)
     const filter = createFilter(options.include, options.exclude)
@@ -102,7 +100,7 @@ const PrePlugin = createUnplugin<Options | undefined>(
   }
 )
 
-const PostPlugin = createUnplugin(() => {
+const PostPlugin = createUnplugin<Options | undefined, false>(() => {
   return {
     name: `${name}-post`,
     enforce: 'post',
@@ -126,15 +124,10 @@ const PostPlugin = createUnplugin(() => {
   }
 })
 
-const plugin: UnpluginCombineInstance<Options | undefined> =
-  createCombinePlugin<Options | undefined>((options = {}) => {
-    return {
-      name,
-      plugins: [
-        [PrePlugin, options],
-        [PostPlugin, options],
-      ],
-    }
-  })
+const plugin = createUnplugin<Options | undefined, true>(
+  (options = {}, meta) => {
+    return [PrePlugin.raw(options, meta), PostPlugin.raw(options, meta)]
+  }
+)
 
 export default plugin

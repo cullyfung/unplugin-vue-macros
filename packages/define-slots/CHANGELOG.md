@@ -1,5 +1,21 @@
 # @vue-macros/define-slots
 
+## 0.1.1
+
+### Patch Changes
+
+- [`d81825a`](https://github.com/sxzz/unplugin-vue-macros/commit/d81825a9bbe003f5af4ee3858241cc5bdb8f264f) Thanks [@sxzz](https://github.com/sxzz)! - support webpack with vue-loader@15
+
+- Updated dependencies [[`d81825a`](https://github.com/sxzz/unplugin-vue-macros/commit/d81825a9bbe003f5af4ee3858241cc5bdb8f264f)]:
+  - @vue-macros/common@0.13.5
+
+## 0.1.0
+
+### Minor Changes
+
+- [#177](https://github.com/sxzz/unplugin-vue-macros/pull/177) [`934d5f8`](https://github.com/sxzz/unplugin-vue-macros/commit/934d5f8e935fc6ee0a4b3846e183b6611e10c571) Thanks [@sxzz](https://github.com/sxzz)! - Support Vite 4
+  Drop Rollup 2
+
 ## 0.0.6
 
 ### Patch Changes
