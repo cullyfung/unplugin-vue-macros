@@ -51,7 +51,9 @@ export default defineNuxtModule<VueMacrosOptions>({
     nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins ||= []
     nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins.push(
       '@vue-macros/volar/define-model',
-      '@vue-macros/volar/define-slots'
+      '@vue-macros/volar/define-props',
+      '@vue-macros/volar/define-slots',
+      '@vue-macros/volar/export-props'
     )
 
     nuxt.options.vite.vue ||= {}

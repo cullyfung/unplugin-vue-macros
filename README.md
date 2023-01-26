@@ -16,8 +16,6 @@
   <a href="https://vue-macros.sxzz.moe/">📜 Documentation</a>
 </p>
 
-English | [简体中文](./README-zh-CN.md)
-
 ## Features
 
 - ✨ Explore and extend more macros and syntax sugar to Vue.
@@ -55,4 +53,4 @@ npm i unplugin-vue-macros -D
 
 ## License
 
-[MIT](./LICENSE) License © 2022 [三咲智子](https://github.com/sxzz)
+[MIT](./LICENSE) License © 2022-PRESENT [三咲智子](https://github.com/sxzz)

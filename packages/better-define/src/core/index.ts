@@ -2,11 +2,11 @@ import { MagicString, getTransformResult, parseSFC } from '@vue-macros/common'
 import { analyzeSFC } from '@vue-macros/api'
 import type { TSEmits, TSProps } from '@vue-macros/api'
 
-export const transformBetterDefine = async (
+export async function transformBetterDefine(
   code: string,
   id: string,
   isProduction?: boolean
-) => {
+) {
   const s = new MagicString(code)
   const sfc = parseSFC(code, id)
   if (sfc.script || !sfc.scriptSetup) return
@@ -27,21 +27,24 @@ export const transformBetterDefine = async (
 
     const runtimeDecls = `{\n  ${Object.entries(runtimeDefs)
       .map(([key, { type, required, default: defaultDecl }]) => {
+        const escapedKey = JSON.stringify(key)
         let defaultString = ''
         if (defaultDecl) {
           defaultString = defaultDecl('default')
         }
         if (!isProduction) {
-          return `${key}: { type: ${toRuntimeTypeString(
+          return `${escapedKey}: { type: ${toRuntimeTypeString(
             type
           )}, required: ${required}, ${defaultString} }`
         } else if (type.some((el) => el === 'Boolean' || el === 'Function')) {
-          return `${key}: { type: ${toRuntimeTypeString(
+          return `${escapedKey}: { type: ${toRuntimeTypeString(
             type
           )}, ${defaultString} }`
         } else {
           // production: checks are useless
-          return `${key}: ${defaultString ? `{ ${defaultString} }` : 'null'}`
+          return `${escapedKey}: ${
+            defaultString ? `{ ${defaultString} }` : 'null'
+          }`
         }
       })
       .join(',\n  ')}\n}`

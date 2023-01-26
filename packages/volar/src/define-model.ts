@@ -1,14 +1,11 @@
 import { DEFINE_MODEL, DEFINE_MODEL_DOLLAR } from '@vue-macros/common'
-import { FileKind } from '@volar/language-core'
-import { getVueLibraryName } from './common'
-import type {
-  FileCapabilities,
-  FileRangeCapabilities,
-} from '@volar/language-core'
+import { FileKind, FileRangeCapabilities } from '@volar/language-core'
+import { addProps, getVueLibraryName } from './common'
+import type { FileCapabilities } from '@volar/language-core'
 import type { Segment } from 'muggle-string'
 import type {
-  ResolvedVueCompilerOptions,
   Sfc,
+  VueCompilerOptions,
   VueEmbeddedFile,
   VueLanguagePlugin,
 } from '@volar/vue-language-core'
@@ -31,9 +28,14 @@ function transformDefineModel({
     source,
     'scriptSetup',
     typeArg!.pos,
-    { references: true, definition: true, rename: true },
+    FileRangeCapabilities.full,
   ]
-  mergeProps() || addProps()
+  mergeProps() ||
+    addProps(
+      codes,
+      ['__VLS_TypePropsToRuntimeProps<__VLS_ModelToProps<', seg, '>>'],
+      vueLibName
+    )
   mergeEmits() || addEmits()
 
   codes.push(
@@ -54,23 +56,6 @@ function transformDefineModel({
     if (idx === -1) return false
 
     codes.splice(idx + 2, 0, ' & __VLS_ModelToProps<', seg, '>')
-    return true
-  }
-
-  function addProps() {
-    const idx = codes.indexOf('setup() {\n')
-    if (idx === -1) return false
-    const segs: Segment<FileRangeCapabilities>[] = [
-      'props: ({} as __VLS_TypePropsToRuntimeProps<__VLS_ModelToProps<',
-      seg,
-      '>>),\n',
-    ]
-    codes.splice(idx, 0, ...segs)
-
-    codes.push(
-      `type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;\n`,
-      `type __VLS_TypePropsToRuntimeProps<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? { type: import('${vueLibName}').PropType<__VLS_NonUndefinedable<T[K]>> } : { type: import('${vueLibName}').PropType<T[K]>, required: true } };\n`
-    )
     return true
   }
 
@@ -135,7 +120,7 @@ function resolve({
   embeddedFile,
 }: {
   ts: typeof import('typescript/lib/tsserverlibrary')
-  vueCompilerOptions: ResolvedVueCompilerOptions
+  vueCompilerOptions: VueCompilerOptions
   sfc: Sfc
   embeddedFile: VueEmbeddedFile
 }) {
@@ -149,7 +134,7 @@ function resolve({
   const typeArg = getTypeArg(ts, sfc)
   if (!typeArg) return
 
-  const vueVersion = vueCompilerOptions.target ?? 3
+  const vueVersion = vueCompilerOptions.target
   const vueLibName = getVueLibraryName(vueVersion)
   const unified =
     (vueVersion < 3 && (vueCompilerOptions as any)?.defineModel?.unified) ??

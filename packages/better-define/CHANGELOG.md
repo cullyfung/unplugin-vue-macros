@@ -1,5 +1,66 @@
 # @vue-macros/better-define
 
+## 1.1.10
+
+### Patch Changes
+
+- [`a24f0d3`](https://github.com/sxzz/unplugin-vue-macros/commit/a24f0d398cf0c6dd0bd9d0706f89fae52d5bc620) Thanks [@sxzz](https://github.com/sxzz)! - optional method props
+
+- Updated dependencies [[`a24f0d3`](https://github.com/sxzz/unplugin-vue-macros/commit/a24f0d398cf0c6dd0bd9d0706f89fae52d5bc620)]:
+  - @vue-macros/api@0.2.7
+
+## 1.1.9
+
+### Patch Changes
+
+- [`0ec95df`](https://github.com/sxzz/unplugin-vue-macros/commit/0ec95df76457c21da07e38af6d2123d95cc2903b) Thanks [@sxzz](https://github.com/sxzz)! - fix cycle imports on HMR
+
+## 1.1.8
+
+### Patch Changes
+
+- [`9432d0d`](https://github.com/sxzz/unplugin-vue-macros/commit/9432d0d9521278e318cff0f793c3f054d173e764) Thanks [@sxzz](https://github.com/sxzz)! - escape prop key
+
+## 1.1.7
+
+### Patch Changes
+
+- Updated dependencies [[`af45741`](https://github.com/sxzz/unplugin-vue-macros/commit/af4574121dd43957343669fdc4051fb452a23e6b)]:
+  - @vue-macros/common@0.14.0
+  - @vue-macros/api@0.2.6
+
+## 1.1.6
+
+### Patch Changes
+
+- [`ca7e5b0`](https://github.com/sxzz/unplugin-vue-macros/commit/ca7e5b01f32b6211204c9ea72131059414172104) Thanks [@sxzz](https://github.com/sxzz)! - catch errors when resolve failed
+
+## 1.1.5
+
+### Patch Changes
+
+- [#210](https://github.com/sxzz/unplugin-vue-macros/pull/210) [`a673932`](https://github.com/sxzz/unplugin-vue-macros/commit/a673932d712f235c6ba98b38222306a7695ef1d7) Thanks [@alexzhang1030](https://github.com/alexzhang1030)! - fix cannot import type from vue file
+
+- Updated dependencies [[`a673932`](https://github.com/sxzz/unplugin-vue-macros/commit/a673932d712f235c6ba98b38222306a7695ef1d7)]:
+  - @vue-macros/api@0.2.5
+  - @vue-macros/common@0.13.8
+
+## 1.1.4
+
+### Patch Changes
+
+- Updated dependencies [[`7829161`](https://github.com/sxzz/unplugin-vue-macros/commit/7829161929733ce4e094d5c567ef8fbba9675168), [`3010b1e`](https://github.com/sxzz/unplugin-vue-macros/commit/3010b1ea9bc81bb7e09b5155f4b1695c6457a2db)]:
+  - @vue-macros/common@0.13.7
+  - @vue-macros/api@0.2.4
+
+## 1.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`b9218d4`](https://github.com/sxzz/unplugin-vue-macros/commit/b9218d45db8845a8ea44b1e825cdd97c7adb7a7d), [`af9978b`](https://github.com/sxzz/unplugin-vue-macros/commit/af9978bac81a9fa8e5fb09feefea704d6cde5ecf), [`fa6b968`](https://github.com/sxzz/unplugin-vue-macros/commit/fa6b9682f33812c99117515ea98471e534b28da4)]:
+  - @vue-macros/common@0.13.6
+  - @vue-macros/api@0.2.3
+
 ## 1.1.2
 
 ### Patch Changes

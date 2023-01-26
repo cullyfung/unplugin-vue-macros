@@ -12,8 +12,16 @@
 
     {
       matchUpdateTypes: ['major'],
-      matchPackageNames: ['vue'],
+      matchPackageNames: ['vue', 'vue2'],
       enabled: false,
+    },
+
+    {
+      groupName: 'volarjs',
+      groupSlug: 'volar-related',
+      matchPackagePrefixes: ['vue-tsc', '@volar'],
+      rangeStrategy: 'replace',
+      matchDepTypes: ['peerDependencies', 'devDependencies', 'dependencies'],
     },
   ],
   ignoreDeps: ['node'],

@@ -1,7 +1,11 @@
 import { readFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
-import { babelParse, getLang, resolveObjectKey } from '@vue-macros/common'
+import {
+  babelParse,
+  getFileCodeAndLang,
+  resolveObjectKey,
+} from '@vue-macros/common'
 import { isDeclaration } from '@babel/types'
 
 import type {
@@ -63,10 +67,8 @@ export const tsFileCache: Record<string, TSFile> = {}
 export async function getTSFile(filePath: string): Promise<TSFile> {
   if (tsFileCache[filePath]) return tsFileCache[filePath]
   const content = await readFile(filePath, 'utf-8')
-  const program = babelParse(
-    await readFile(filePath, 'utf-8'),
-    getLang(filePath)
-  )
+  const { code, lang } = getFileCodeAndLang(content, filePath)
+  const program = babelParse(code, lang)
   return (tsFileCache[filePath] = {
     filePath,
     content,
@@ -74,8 +76,9 @@ export async function getTSFile(filePath: string): Promise<TSFile> {
   })
 }
 
-export const isTSDeclaration = (node: any): node is TSDeclaration =>
-  isDeclaration(node) && node.type.startsWith('TS')
+export function isTSDeclaration(node: any): node is TSDeclaration {
+  return isDeclaration(node) && node.type.startsWith('TS')
+}
 
 export function mergeTSProperties(
   a: TSProperties,

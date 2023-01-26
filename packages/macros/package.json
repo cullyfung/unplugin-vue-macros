@@ -1,7 +1,7 @@
 {
   "name": "unplugin-vue-macros",
-  "version": "1.2.2",
-  "packageManager": "pnpm@7.21.0",
+  "version": "1.6.1",
+  "packageManager": "pnpm@7.25.1",
   "description": "Explore and extend more macros and syntax sugar to Vue.",
   "keywords": [
     "unplugin",
@@ -79,9 +79,10 @@
     "@vue-macros/define-props": "workspace:*",
     "@vue-macros/define-render": "workspace:*",
     "@vue-macros/define-slots": "workspace:*",
+    "@vue-macros/export-props": "workspace:*",
     "@vue-macros/hoist-static": "workspace:*",
     "@vue-macros/named-template": "workspace:*",
-    "@vue-macros/reactivity-transform-vue2": "workspace:*",
+    "@vue-macros/reactivity-transform": "workspace:*",
     "@vue-macros/setup-block": "workspace:*",
     "@vue-macros/setup-component": "workspace:*",
     "@vue-macros/setup-sfc": "workspace:*",
@@ -90,7 +91,7 @@
     "unplugin-vue-define-options": "workspace:*"
   },
   "devDependencies": {
-    "esbuild": "^0.16.12",
+    "esbuild": "^0.17.4",
     "unplugin": "^1.0.1",
     "vue": "^3.2.45"
   },

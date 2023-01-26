@@ -1,7 +1,6 @@
 import {
   MagicString,
   addNormalScript,
-  babelParse,
   getTransformResult,
   isStaticExpression,
   parseSFC,
@@ -10,7 +9,7 @@ import type { Node } from '@babel/types'
 
 export const MAGIC_COMMENT = 'hoist-static'
 
-export const transformHoistStatic = (code: string, id: string) => {
+export function transformHoistStatic(code: string, id: string) {
   function moveToScript(decl: Node, prefix: 'const ' | '' = '') {
     if (scriptOffset === undefined) scriptOffset = normalScript.start()
 
@@ -20,16 +19,16 @@ export const transformHoistStatic = (code: string, id: string) => {
     s.removeNode(decl, { offset: setupOffset })
   }
 
-  const ctx = parseSFC(code, id)
-  const { scriptSetup, lang } = ctx
+  const sfc = parseSFC(code, id)
+  const { scriptSetup, getSetupAst } = sfc
   if (!scriptSetup) return
 
   const setupOffset = scriptSetup.loc.start.offset
   const setupOffsetEnd = scriptSetup.loc.end.offset
   const s = new MagicString(code)
-  const program = babelParse(scriptSetup.loc.source, lang)
+  const program = getSetupAst()!
 
-  let normalScript = addNormalScript(ctx, s)
+  let normalScript = addNormalScript(sfc, s)
   let scriptOffset: number | undefined
 
   for (const stmt of program.body) {

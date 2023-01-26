@@ -11,6 +11,7 @@ import {
   getTransformResult,
   isCallOf,
   parseSFC,
+  resolveObjectKey,
 } from '@vue-macros/common'
 import { emitHelperId, useVmodelHelperId } from './helper'
 import type {
@@ -20,19 +21,18 @@ import type {
   ObjectExpression,
   ObjectPattern,
   ObjectProperty,
-  Program,
   Statement,
   TSInterfaceBody,
   TSTypeLiteral,
   VariableDeclaration,
 } from '@babel/types'
 
-export const transformDefineModel = (
+export function transformDefineModel(
   code: string,
   id: string,
   version: 2 | 3,
   unified: boolean
-) => {
+) {
   let hasDefineProps = false
   let hasDefineEmits = false
   let hasDefineModel = false
@@ -155,7 +155,7 @@ export const transformDefineModel = (
           }
         }
       } else {
-        modelIdentifier = scriptCompiled.loc.source.slice(
+        modelIdentifier = scriptSetup!.loc.source.slice(
           declId.start!,
           declId.end!
         )
@@ -176,11 +176,12 @@ export const transformDefineModel = (
   }
 
   function processVue2Script() {
-    if (!scriptCompiled.scriptAst || scriptCompiled.scriptAst.length === 0)
-      return
+    if (!script) return
+    const scriptAst = getScriptAst()!.body
+    if (scriptAst.length === 0) return
 
     // process normal <script>
-    for (const node of scriptCompiled.scriptAst as Statement[]) {
+    for (const node of scriptAst as Statement[]) {
       if (node.type === 'ExportDefaultDeclaration') {
         const { declaration } = node
         if (declaration.type === 'ObjectExpression') {
@@ -261,8 +262,7 @@ export const transformDefineModel = (
           return isQualifiedType(node.declaration)
         }
       }
-      const body = sfc.scriptCompiled.scriptSetupAst!
-      for (const node of body) {
+      for (const node of setupAst) {
         const qualified = isQualifiedType(node)
         if (qualified) {
           return qualified
@@ -271,37 +271,70 @@ export const transformDefineModel = (
     }
   }
 
-  function extractPropsDefinitions(
-    node: TSTypeLiteral | TSInterfaceBody
-  ): Record<string, string> {
+  function extractPropsDefinitions(node: TSTypeLiteral | TSInterfaceBody) {
     const members = node.type === 'TSTypeLiteral' ? node.members : node.body
-    const map: Record<string, string> = {}
+    const map: Record<
+      string,
+      {
+        typeAnnotation: string
+        options?: Record<string, string>
+      }
+    > = {}
+
     for (const m of members) {
       if (
         (m.type === 'TSPropertySignature' || m.type === 'TSMethodSignature') &&
         m.key.type === 'Identifier'
       ) {
         const type = m.typeAnnotation?.typeAnnotation
-        const value = type
-          ? `${m.optional ? '?' : ''}: ${scriptCompiled.loc.source.slice(
-              type.start!,
-              type.end!
-            )}`
-          : ''
-        map[m.key.name] = value
+        let typeAnnotation = ''
+        let options: Record<string, string> | undefined
+        if (type) {
+          typeAnnotation += `${m.optional ? '?' : ''}: `
+          if (
+            type.type === 'TSTypeReference' &&
+            type.typeName.type === 'Identifier' &&
+            type.typeName.name === 'ModelOptions' &&
+            type.typeParameters?.type === 'TSTypeParameterInstantiation' &&
+            type.typeParameters.params[0]
+          ) {
+            typeAnnotation += setupContent.slice(
+              type.typeParameters.params[0].start!,
+              type.typeParameters.params[0].end!
+            )
+            if (type.typeParameters.params[1]?.type === 'TSTypeLiteral') {
+              options = {}
+              for (const m of type.typeParameters.params[1].members) {
+                if (
+                  (m.type === 'TSPropertySignature' ||
+                    m.type === 'TSMethodSignature') &&
+                  m.key.type === 'Identifier'
+                ) {
+                  const type = m.typeAnnotation?.typeAnnotation
+                  if (type)
+                    options[setupContent.slice(m.key.start!, m.key.end!)] =
+                      setupContent.slice(type.start!, type.end!)
+                }
+              }
+            }
+          } else
+            typeAnnotation += `${setupContent.slice(type.start!, type.end!)}`
+        }
+
+        map[m.key.name] = { typeAnnotation, options }
       }
     }
     return map
   }
 
-  function getPropKey(key: string) {
+  function getPropKey(key: string, omitDefault = false) {
     if (unified && version === 2 && key === 'modelValue') {
       return 'value'
     }
-    return key
+    return !omitDefault ? key : undefined
   }
 
-  function getEventKey(key: string) {
+  function getEventKey(key: string, omitDefault = false) {
     if (version === 2) {
       if (modelVue2.prop === key) {
         return modelVue2.event
@@ -309,7 +342,7 @@ export const transformDefineModel = (
         return 'input'
       }
     }
-    return `update:${key}`
+    return !omitDefault ? `update:${key}` : undefined
   }
 
   function rewriteMacros() {
@@ -320,12 +353,15 @@ export const transformDefineModel = (
 
     function rewriteDefines() {
       const propsText = Object.entries(map)
-        .map(([key, type]) => `${getPropKey(key)}${type}`)
+        .map(
+          ([key, { typeAnnotation }]) => `${getPropKey(key)}${typeAnnotation}`
+        )
         .join('\n')
 
       const emitsText = Object.entries(map)
         .map(
-          ([key, type]) => `(evt: '${getEventKey(key)}', value${type}): void`
+          ([key, { typeAnnotation }]) =>
+            `(evt: '${getEventKey(key)}', value${typeAnnotation}): void`
         )
         .join('\n')
 
@@ -389,9 +425,22 @@ export const transformDefineModel = (
         `\nimport _DM_useVModel from '${useVmodelHelperId}';`
       )
 
-      const names = Object.keys(map)
-      const text = `_DM_useVModel(${names
-        .map((n) => `['${n}', '${getPropKey(n)}', '${getEventKey(n)}']`)
+      const text = `_DM_useVModel(${Object.entries(map)
+        .map(([name, { options }]) => {
+          const prop = getPropKey(name, true)
+          const evt = getEventKey(name, true)
+          if (!prop && !evt && !options) return stringifyValue(name)
+
+          const args = [name, prop, evt].map((arg) => stringifyValue(arg))
+          if (options) {
+            const str = Object.entries(options)
+              .map(([k, v]) => `  ${stringifyValue(k)}: ${v}`)
+              .join(',\n')
+            args.push(`{\n${str}\n}`)
+          }
+
+          return `[${args.join(', ')}]`
+        })
         .join(', ')})`
       s.overwriteNode(modelDecl!, text, { offset: setupOffset })
     }
@@ -403,14 +452,7 @@ export const transformDefineModel = (
         `Identifier of returning value of ${DEFINE_EMITS} is not found, please report this issue.\n${REPO_ISSUE_URL}`
       )
 
-    const program: Program = {
-      type: 'Program',
-      body: scriptCompiled.scriptSetupAst as Statement[],
-      directives: [],
-      sourceType: 'module',
-      sourceFile: '',
-    }
-    let hasTransfromed = false
+    let hasTransformed = false
 
     function overwrite(
       node: Node,
@@ -418,14 +460,15 @@ export const transformDefineModel = (
       value: string,
       original = false
     ) {
-      hasTransfromed = true
+      hasTransformed = true
+      const eventName = aliasMap[id.name]
       const content = `_DM_emitHelper(${emitsIdentifier}, '${getEventKey(
-        id.name
+        String(eventName)
       )}', ${value}${original ? `, ${id.name}` : ''})`
-      s.overwrite(setupOffset + node.start!, setupOffset + node.end!, content)
+      s.overwriteNode(node, content, { offset: setupOffset })
     }
 
-    walkAST(program, {
+    walkAST(setupAst!, {
       leave(node) {
         if (node.type === 'AssignmentExpression') {
           if (node.left.type !== 'Identifier') return
@@ -453,7 +496,7 @@ export const transformDefineModel = (
       },
     })
 
-    if (hasTransfromed) {
+    if (hasTransformed) {
       s.prependLeft(
         setupOffset,
         `\nimport _DM_emitHelper from '${emitHelperId}';`
@@ -462,19 +505,19 @@ export const transformDefineModel = (
   }
 
   if (!code.includes(DEFINE_MODEL)) return
-  const sfc = parseSFC(code, id)
-  if (!sfc.scriptSetup) return
+  const { script, scriptSetup, getSetupAst, getScriptAst } = parseSFC(code, id)
+  if (!scriptSetup) return
 
-  const { scriptCompiled } = sfc
-  if (!scriptCompiled) return
+  const setupOffset = scriptSetup.loc.start.offset
+  const setupContent = scriptSetup.content
+  const setupAst = getSetupAst()!.body
 
   const s = new MagicString(code)
-  const setupOffset = scriptCompiled.loc.start.offset
 
   if (version === 2) processVue2Script()
 
   // process <script setup>
-  for (const node of scriptCompiled.scriptSetupAst as Statement[]) {
+  for (const node of setupAst) {
     if (node.type === 'ExpressionStatement') {
       processDefinePropsOrEmits(node.expression)
 
@@ -535,11 +578,27 @@ export const transformDefineModel = (
   }
 
   const map = extractPropsDefinitions(modelTypeDecl)
+  const aliasMap: Record<string, string | number> = {}
+  if (modelDestructureDecl)
+    for (const p of modelDestructureDecl.properties) {
+      if (p.type !== 'ObjectProperty') continue
+      try {
+        const key = resolveObjectKey(p.key, p.computed, false)
+        if (p.value.type !== 'Identifier') continue
+        aliasMap[p.value.name] = key
+      } catch {}
+    }
 
+  // const defaults = resolveObjectExpression(defaultsAst)
+  // if (!defaults) return { defaultsAst }
   rewriteMacros()
 
   if (mode === 'reactivity-transform' && hasDefineModel)
     processAssignModelVariable()
 
   return getTransformResult(s, id)
+}
+
+function stringifyValue(value: string | undefined) {
+  return value !== undefined ? JSON.stringify(value) : 'undefined'
 }

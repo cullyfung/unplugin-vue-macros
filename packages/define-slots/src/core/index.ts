@@ -6,22 +6,21 @@ import {
   parseSFC,
 } from '@vue-macros/common'
 
-export const transfromDefineSlots = (code: string, id: string) => {
+export function transformDefineSlots(code: string, id: string) {
   if (!code.includes(DEFINE_SLOTS)) return
 
-  const sfc = parseSFC(code, id)
-  if (!sfc.scriptSetup || !sfc.scriptCompiled.scriptSetupAst) return
+  const { scriptSetup, getSetupAst } = parseSFC(code, id)
+  if (!scriptSetup) return
 
-  const { scriptSetupAst } = sfc.scriptCompiled
   const s = new MagicString(code)
 
-  for (const stmt of scriptSetupAst) {
+  for (const stmt of getSetupAst()!.body) {
     if (
       stmt.type === 'ExpressionStatement' &&
       isCallOf(stmt.expression, DEFINE_SLOTS)
     ) {
       s.overwriteNode(stmt, '/*defineSlots*/', {
-        offset: sfc.scriptSetup.loc.start.offset,
+        offset: scriptSetup.loc.start.offset,
       })
     }
   }

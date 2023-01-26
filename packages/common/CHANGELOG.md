@@ -1,5 +1,35 @@
 # @vue-macros/common
 
+## 0.14.0
+
+### Minor Changes
+
+- [`af45741`](https://github.com/sxzz/unplugin-vue-macros/commit/af4574121dd43957343669fdc4051fb452a23e6b) Thanks [@sxzz](https://github.com/sxzz)! - refactor sfc ast
+
+## 0.13.8
+
+### Patch Changes
+
+- [#210](https://github.com/sxzz/unplugin-vue-macros/pull/210) [`a673932`](https://github.com/sxzz/unplugin-vue-macros/commit/a673932d712f235c6ba98b38222306a7695ef1d7) Thanks [@alexzhang1030](https://github.com/alexzhang1030)! - fix cannot import type from vue file
+
+## 0.13.7
+
+### Patch Changes
+
+- [`7829161`](https://github.com/sxzz/unplugin-vue-macros/commit/7829161929733ce4e094d5c567ef8fbba9675168) Thanks [@sxzz](https://github.com/sxzz)! - exclude node_modules by default
+
+- [#205](https://github.com/sxzz/unplugin-vue-macros/pull/205) [`3010b1e`](https://github.com/sxzz/unplugin-vue-macros/commit/3010b1ea9bc81bb7e09b5155f4b1695c6457a2db) Thanks [@posva](https://github.com/posva)! - use getters in SFC
+
+## 0.13.6
+
+### Patch Changes
+
+- [`b9218d4`](https://github.com/sxzz/unplugin-vue-macros/commit/b9218d45db8845a8ea44b1e825cdd97c7adb7a7d) Thanks [@sxzz](https://github.com/sxzz)! - remove compileScript
+
+- [`af9978b`](https://github.com/sxzz/unplugin-vue-macros/commit/af9978bac81a9fa8e5fb09feefea704d6cde5ecf) Thanks [@sxzz](https://github.com/sxzz)! - support jsx by default
+
+- [`fa6b968`](https://github.com/sxzz/unplugin-vue-macros/commit/fa6b9682f33812c99117515ea98471e534b28da4) Thanks [@sxzz](https://github.com/sxzz)! - extract SFC ast parse to common
+
 ## 0.13.5
 
 ### Patch Changes

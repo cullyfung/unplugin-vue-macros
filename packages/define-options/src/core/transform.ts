@@ -10,26 +10,25 @@ import { walkAST } from 'ast-walker-scope'
 import { filterMacro, hasPropsOrEmits } from './utils'
 import type { ExportDefaultDeclaration, Statement } from '@babel/types'
 
-export const transform = (code: string, id: string) => {
+export function transformDefineOptions(code: string, id: string) {
   if (!code.includes(DEFINE_OPTIONS)) return
 
   const sfc = parseSFC(code, id)
   if (!sfc.scriptSetup) return
-
-  const { script, scriptSetup, scriptCompiled } = sfc
+  const { scriptSetup, getSetupAst, getScriptAst } = sfc
   const setupOffset = scriptSetup.loc.start.offset
+  const setupAst = getSetupAst()!
 
-  const nodes = filterMacro(scriptCompiled.scriptSetupAst as Statement[])
+  const nodes = filterMacro(setupAst!.body)
   if (nodes.length === 0) {
     return
   } else if (nodes.length > 1)
     throw new SyntaxError(`duplicate ${DEFINE_OPTIONS}() call`)
 
-  if (script) checkDefaultExport(scriptCompiled.scriptAst as any)
+  const scriptAst = getScriptAst()!
+  if (scriptAst) checkDefaultExport(scriptAst.body)
 
-  const setupBindings = scriptCompiled.scriptSetupAst
-    ? getIdentifiers(scriptCompiled.scriptSetupAst as any)
-    : []
+  const setupBindings = getIdentifiers(setupAst!.body)
 
   const s = new MagicString(code)
 

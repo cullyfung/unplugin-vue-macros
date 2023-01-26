@@ -5,9 +5,10 @@ import VueDefineOptions from 'unplugin-vue-define-options'
 import VueDefineProps from '@vue-macros/define-props'
 import VueDefineRender from '@vue-macros/define-render'
 import VueDefineSlots from '@vue-macros/define-slots'
+import VueExportProps from '@vue-macros/export-props'
 import VueHoistStatic from '@vue-macros/hoist-static'
 import VueNamedTemplate from '@vue-macros/named-template'
-import VueReactivityTransformVue2 from '@vue-macros/reactivity-transform-vue2'
+import VueReactivityTransform from '@vue-macros/reactivity-transform'
 import VueSetupBlock from '@vue-macros/setup-block'
 import VueSetupComponent from '@vue-macros/setup-component'
 import VueSetupSFC from '@vue-macros/setup-sfc'
@@ -22,9 +23,10 @@ import type { Options as OptionsDefineOptions } from 'unplugin-vue-define-option
 import type { Options as OptionsDefineProps } from '@vue-macros/define-props'
 import type { Options as OptionsDefineRender } from '@vue-macros/define-render'
 import type { Options as OptionsDefineSlots } from '@vue-macros/define-slots'
+import type { Options as OptionsExportProps } from '@vue-macros/export-props'
 import type { Options as OptionsHoistStatic } from '@vue-macros/hoist-static'
 import type { Options as OptionsNamedTemplate } from '@vue-macros/named-template'
-import type { Options as OptionsReactivityTransformVue2 } from '@vue-macros/reactivity-transform-vue2'
+import type { Options as OptionsReactivityTransform } from '@vue-macros/reactivity-transform'
 import type { Options as OptionsSetupBlock } from '@vue-macros/setup-block'
 import type { Options as OptionsSetupComponent } from '@vue-macros/setup-component'
 import type { Options as OptionsSetupSFC } from '@vue-macros/setup-sfc'
@@ -37,9 +39,10 @@ export interface FeatureOptionsMap {
   defineProps: OptionsDefineProps
   defineRender: OptionsDefineRender
   defineSlots: OptionsDefineSlots
+  exportProps: OptionsExportProps
   hoistStatic: OptionsHoistStatic
   namedTemplate: OptionsNamedTemplate
-  reactivityTransformVue2: OptionsReactivityTransformVue2
+  reactivityTransform: OptionsReactivityTransform
   setupBlock: OptionsSetupBlock
   setupComponent: OptionsSetupComponent
   setupSFC: OptionsSetupSFC
@@ -79,9 +82,10 @@ function resolveOptions({
   defineProps,
   defineRender,
   defineSlots,
+  exportProps,
   hoistStatic,
   namedTemplate,
-  reactivityTransformVue2,
+  reactivityTransform,
   setupBlock,
   setupComponent,
   setupSFC,
@@ -117,10 +121,11 @@ function resolveOptions({
     defineProps: resolveSubOptions<'defineProps'>(defineProps, { version }),
     defineRender: resolveSubOptions<'defineRender'>(defineRender),
     defineSlots: resolveSubOptions<'defineSlots'>(defineSlots, { version }),
+    exportProps: resolveSubOptions<'exportProps'>(exportProps, { version }),
     hoistStatic: resolveSubOptions<'hoistStatic'>(hoistStatic),
     namedTemplate: resolveSubOptions<'namedTemplate'>(namedTemplate),
-    reactivityTransformVue2: resolveSubOptions<'reactivityTransformVue2'>(
-      reactivityTransformVue2,
+    reactivityTransform: resolveSubOptions<'reactivityTransform'>(
+      reactivityTransform,
       undefined,
       version === 2
     ),
@@ -175,18 +180,19 @@ export default createCombinePlugin((userOptions: Options = {}, meta) => {
     resolvePlugin(VueSetupSFC, framework, options.setupSFC),
     setupComponentPlugins?.[0],
     resolvePlugin(VueSetupBlock, framework, options.setupBlock),
-    resolvePlugin(VueHoistStatic, framework, options.hoistStatic),
     namedTemplatePlugins?.[0],
     resolvePlugin(VueDefineProps, framework, options.defineProps),
+    resolvePlugin(VueExportProps, framework, options.exportProps),
     resolvePlugin(VueShortEmits, framework, options.shortEmits),
     resolvePlugin(VueDefineModel, framework, options.defineModel),
     resolvePlugin(VueDefineSlots, framework, options.defineSlots),
     resolvePlugin(
-      VueReactivityTransformVue2,
+      VueReactivityTransform,
       framework,
-      options.reactivityTransformVue2
+      options.reactivityTransform
     ),
     resolvePlugin(VueBetterDefine, framework, options.betterDefine),
+    resolvePlugin(VueHoistStatic, framework, options.hoistStatic),
     resolvePlugin(VueDefineOptions, framework, options.defineOptions),
     options.plugins.vue,
     options.plugins.vueJsx,

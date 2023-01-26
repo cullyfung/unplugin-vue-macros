@@ -1,5 +1,37 @@
 # @vue-macros/setup-component
 
+## 0.14.2
+
+### Patch Changes
+
+- Updated dependencies [[`af45741`](https://github.com/sxzz/unplugin-vue-macros/commit/af4574121dd43957343669fdc4051fb452a23e6b)]:
+  - @vue-macros/common@0.14.0
+
+## 0.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`a673932`](https://github.com/sxzz/unplugin-vue-macros/commit/a673932d712f235c6ba98b38222306a7695ef1d7)]:
+  - @vue-macros/common@0.13.8
+
+## 0.14.0
+
+### Minor Changes
+
+- [`7829161`](https://github.com/sxzz/unplugin-vue-macros/commit/7829161929733ce4e094d5c567ef8fbba9675168) Thanks [@sxzz](https://github.com/sxzz)! - exclude node_modules by default
+
+### Patch Changes
+
+- Updated dependencies [[`7829161`](https://github.com/sxzz/unplugin-vue-macros/commit/7829161929733ce4e094d5c567ef8fbba9675168), [`3010b1e`](https://github.com/sxzz/unplugin-vue-macros/commit/3010b1ea9bc81bb7e09b5155f4b1695c6457a2db)]:
+  - @vue-macros/common@0.13.7
+
+## 0.13.2
+
+### Patch Changes
+
+- Updated dependencies [[`b9218d4`](https://github.com/sxzz/unplugin-vue-macros/commit/b9218d45db8845a8ea44b1e825cdd97c7adb7a7d), [`af9978b`](https://github.com/sxzz/unplugin-vue-macros/commit/af9978bac81a9fa8e5fb09feefea704d6cde5ecf), [`fa6b968`](https://github.com/sxzz/unplugin-vue-macros/commit/fa6b9682f33812c99117515ea98471e534b28da4)]:
+  - @vue-macros/common@0.13.6
+
 ## 0.13.1
 
 ### Patch Changes

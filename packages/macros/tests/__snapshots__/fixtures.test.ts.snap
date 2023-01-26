@@ -7,8 +7,21 @@ import { useVModel } from '@vueuse/core';
 var _DM_useVModel = (...keys) => {
   const props = getCurrentInstance().proxy.$props;
   const ret = {};
-  for (const [key, prop, eventName] of keys)
-    ret[key] = useVModel(props, prop, undefined, { eventName });
+  for (const _k of keys) {
+    if (typeof _k === 'string') {
+      ret[_k] = useVModel(props, _k, undefined, {
+        eventName: \`update:\${_k}\`,
+        passive: true,
+      });
+    } else {
+      const [key, prop = key, eventName = \`update:\${key}\`, options = {}] = _k;
+      ret[key] = useVModel(props, prop, undefined, {
+        eventName,
+        passive: true,
+        ...options,
+      });
+    }
+  }
   return ret
 };
 
@@ -19,13 +32,13 @@ const __default__ = defineComponent({
 var _sfc_main = /* @__PURE__ */ defineComponent({
   ...__default__,
   props: {
-    modelValue: { type: String, required: true },
-    title: { type: String, required: true }
+    \\"modelValue\\": { type: String, required: true },
+    \\"title\\": { type: String, required: true }
   },
   emits: [\\"update:modelValue\\", \\"change\\"],
   setup(__props, { emit }) {
     const { title } = __props;
-    let { modelValue } = _DM_useVModel([\\"modelValue\\", \\"modelValue\\", \\"update:modelValue\\"]);
+    let { modelValue } = _DM_useVModel(\\"modelValue\\");
     const handleClick = () => {
       emit(\\"change\\");
       modelValue.value = \\"hello, \\" + title;
@@ -46,6 +59,35 @@ var _export_sfc = (sfc, props) => {
 var basic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { basic as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/case-233.vue 1`] = `
+"import { defineComponent } from 'vue';
+
+const msg = \\"Hello\\";
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"case-233\\",
+  props: {
+    \\"msg\\": { type: String, required: true, default: msg }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+
+var case233 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { case233 as default };
 "
 `;
 
@@ -88,7 +130,10 @@ export { hoistStatic as default };
 exports[`fixtures > tests/fixtures/hoist-static-scope.vue 1`] = `
 "import { defineComponent, openBlock, createElementBlock } from 'vue';
 
-const [name] = [\\"VarCompName\\"];
+const [name] = (
+  /* hoist-static*/
+  [\\"VarCompName\\"]
+);
 const __default__ = defineComponent({
   name
 });
@@ -149,8 +194,21 @@ import { useVModel } from '@vueuse/core';
 var _DM_useVModel = (...keys) => {
   const props = getCurrentInstance().proxy.$props;
   const ret = {};
-  for (const [key, prop, eventName] of keys)
-    ret[key] = useVModel(props, prop, undefined, { eventName });
+  for (const _k of keys) {
+    if (typeof _k === 'string') {
+      ret[_k] = useVModel(props, _k, undefined, {
+        eventName: \`update:\${_k}\`,
+        passive: true,
+      });
+    } else {
+      const [key, prop = key, eventName = \`update:\${key}\`, options = {}] = _k;
+      ret[key] = useVModel(props, prop, undefined, {
+        eventName,
+        passive: true,
+        ...options,
+      });
+    }
+  }
   return ret
 };
 
@@ -164,12 +222,12 @@ const __default__ = defineComponent({
 var _sfc_main = /* @__PURE__ */ defineComponent({
   ...__default__,
   props: {
-    value: { type: String, required: true },
-    title: { type: String, required: true }
+    \\"value\\": { type: String, required: true },
+    \\"title\\": { type: String, required: true }
   },
   emits: [\\"input\\", \\"changeInput\\", \\"change\\"],
   setup(__props, { emit }) {
-    let { modelValue, value } = _DM_useVModel([\\"modelValue\\", \\"value\\", \\"input\\"], [\\"value\\", \\"value\\", \\"changeInput\\"]);
+    let { modelValue, value } = _DM_useVModel([\\"modelValue\\", \\"value\\", \\"input\\"], [\\"value\\", void 0, \\"changeInput\\"]);
     const handleClick = () => {
       emit(\\"change\\");
       modelValue.value = \\"hello, \\" + __props.title;

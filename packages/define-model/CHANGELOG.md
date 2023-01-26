@@ -1,5 +1,55 @@
 # @vue-macros/define-model
 
+## 1.2.5
+
+### Patch Changes
+
+- [#230](https://github.com/sxzz/unplugin-vue-macros/pull/230) [`7c19e34`](https://github.com/sxzz/unplugin-vue-macros/commit/7c19e34c487c597dcb60cad3718b23133a99daf7) Thanks [@alexzhang1030](https://github.com/alexzhang1030)! - replace transfrom to transform
+
+## 1.2.4
+
+### Patch Changes
+
+- [`af45741`](https://github.com/sxzz/unplugin-vue-macros/commit/af4574121dd43957343669fdc4051fb452a23e6b) Thanks [@sxzz](https://github.com/sxzz)! - refactor sfc ast
+
+- Updated dependencies [[`af45741`](https://github.com/sxzz/unplugin-vue-macros/commit/af4574121dd43957343669fdc4051fb452a23e6b)]:
+  - @vue-macros/common@0.14.0
+
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies [[`a673932`](https://github.com/sxzz/unplugin-vue-macros/commit/a673932d712f235c6ba98b38222306a7695ef1d7)]:
+  - @vue-macros/common@0.13.8
+
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`7829161`](https://github.com/sxzz/unplugin-vue-macros/commit/7829161929733ce4e094d5c567ef8fbba9675168), [`3010b1e`](https://github.com/sxzz/unplugin-vue-macros/commit/3010b1ea9bc81bb7e09b5155f4b1695c6457a2db)]:
+  - @vue-macros/common@0.13.7
+
+## 1.2.1
+
+### Patch Changes
+
+- [`ed21c75`](https://github.com/sxzz/unplugin-vue-macros/commit/ed21c75324012b55b1a9393d143e994e32332620) Thanks [@sxzz](https://github.com/sxzz)! - support rename in declaration
+
+## 1.2.0
+
+### Minor Changes
+
+- [`3691988`](https://github.com/sxzz/unplugin-vue-macros/commit/36919886766d79584afe787eb6bb83addabd8d8a) Thanks [@sxzz](https://github.com/sxzz)! - support passing model options to vueuse
+
+### Patch Changes
+
+- [`93bb81e`](https://github.com/sxzz/unplugin-vue-macros/commit/93bb81e5ef323383dd7ed302b49a8fe60be557d5) Thanks [@sxzz](https://github.com/sxzz)! - remove scriptCompiled
+
+- [`fa6b968`](https://github.com/sxzz/unplugin-vue-macros/commit/fa6b9682f33812c99117515ea98471e534b28da4) Thanks [@sxzz](https://github.com/sxzz)! - extract SFC ast parse to common
+
+- Updated dependencies [[`b9218d4`](https://github.com/sxzz/unplugin-vue-macros/commit/b9218d45db8845a8ea44b1e825cdd97c7adb7a7d), [`af9978b`](https://github.com/sxzz/unplugin-vue-macros/commit/af9978bac81a9fa8e5fb09feefea704d6cde5ecf), [`fa6b968`](https://github.com/sxzz/unplugin-vue-macros/commit/fa6b9682f33812c99117515ea98471e534b28da4)]:
+  - @vue-macros/common@0.13.6
+
 ## 1.1.1
 
 ### Patch Changes

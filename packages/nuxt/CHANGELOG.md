@@ -1,5 +1,137 @@
 # @vue-macros/nuxt
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.6.1
+
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependencies [[`3b47d12`](https://github.com/sxzz/unplugin-vue-macros/commit/3b47d122dc5fda81f6bb4da1f5c8d92df76fc7f6)]:
+  - unplugin-vue-macros@1.6.0
+  - @vue-macros/volar@0.6.3
+
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`d3b7427`](https://github.com/sxzz/unplugin-vue-macros/commit/d3b74271673471df44559a8c1782b753e017598b), [`72de51f`](https://github.com/sxzz/unplugin-vue-macros/commit/72de51f0d511102a23007c511be75776551d112c)]:
+  - @vue-macros/volar@0.6.2
+  - unplugin-vue-macros@1.5.3
+
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.5.2
+
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [[`345294f`](https://github.com/sxzz/unplugin-vue-macros/commit/345294f6c53373d3f10bbcf295fe30f994416f8e)]:
+  - @vue-macros/volar@0.6.1
+  - unplugin-vue-macros@1.5.1
+
+## 0.3.0
+
+### Minor Changes
+
+- [`5e7a177`](https://github.com/sxzz/unplugin-vue-macros/commit/5e7a1778ab793b44176245ad3048b9f694bd48f0) Thanks [@sxzz](https://github.com/sxzz)! - add volar support of export props
+
+### Patch Changes
+
+- Updated dependencies [[`6c5cdbc`](https://github.com/sxzz/unplugin-vue-macros/commit/6c5cdbcf3371b06eefb465cfe810c55828ffd9c1), [`5e7a177`](https://github.com/sxzz/unplugin-vue-macros/commit/5e7a1778ab793b44176245ad3048b9f694bd48f0)]:
+  - unplugin-vue-macros@1.5.0
+  - @vue-macros/volar@0.6.0
+  - @vue-macros/short-vmodel@1.0.5
+
+## 0.2.16
+
+### Patch Changes
+
+- Updated dependencies [[`ba37691`](https://github.com/sxzz/unplugin-vue-macros/commit/ba376914acb4766d64254402ed04a039c50ed9a1)]:
+  - @vue-macros/volar@0.5.15
+  - unplugin-vue-macros@1.4.2
+
+## 0.2.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.4.1
+
+## 0.2.14
+
+### Patch Changes
+
+- Updated dependencies [[`e2ed0f6`](https://github.com/sxzz/unplugin-vue-macros/commit/e2ed0f62af5d2f94f6d4d83a5fe7a6b6a9e6a393)]:
+  - unplugin-vue-macros@1.4.0
+  - @vue-macros/volar@0.5.14
+
+## 0.2.13
+
+### Patch Changes
+
+- [`98fc138`](https://github.com/sxzz/unplugin-vue-macros/commit/98fc138f176b3fafceabe0cc256f87d06d0f5c1e) Thanks [@sxzz](https://github.com/sxzz)! - enable volar plugin of $defineProps
+
+- Updated dependencies [[`b821618`](https://github.com/sxzz/unplugin-vue-macros/commit/b82161836e741c68287f43fc69a2709b83e85b4b), [`6d50584`](https://github.com/sxzz/unplugin-vue-macros/commit/6d50584be502e8779c626ce80fcc7305e98c4d43)]:
+  - unplugin-vue-macros@1.3.4
+  - @vue-macros/volar@0.5.13
+
+## 0.2.12
+
+### Patch Changes
+
+- Updated dependencies [[`5070025`](https://github.com/sxzz/unplugin-vue-macros/commit/5070025439b9c1045c1fa6abe8dc745c971771ad)]:
+  - @vue-macros/volar@0.5.12
+
+## 0.2.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.3.3
+  - @vue-macros/short-vmodel@1.0.4
+  - @vue-macros/volar@0.5.11
+
+## 0.2.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.3.2
+  - @vue-macros/short-vmodel@1.0.3
+  - @vue-macros/volar@0.5.10
+
+## 0.2.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.3.1
+
+## 0.2.8
+
+### Patch Changes
+
+- Updated dependencies [[`3691988`](https://github.com/sxzz/unplugin-vue-macros/commit/36919886766d79584afe787eb6bb83addabd8d8a)]:
+  - unplugin-vue-macros@1.3.0
+  - @vue-macros/short-vmodel@1.0.2
+  - @vue-macros/volar@0.5.9
+
+## 0.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`646f7dd`](https://github.com/sxzz/unplugin-vue-macros/commit/646f7dd5b2ba9060aebb5c8ab4b0d2e85508bd83)]:
+  - @vue-macros/volar@0.5.8
+
 ## 0.2.6
 
 ### Patch Changes

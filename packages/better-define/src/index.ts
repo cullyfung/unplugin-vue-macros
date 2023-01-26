@@ -57,10 +57,14 @@ export default createUnplugin<Options | undefined, false>(
           const ctx = this as PluginContext
           const resolveFn: ResolveTSFileIdImpl = async (id, importer) => {
             const tryResolve = async (id: string) => {
-              return (
-                (await ctx.resolve(id, importer)) ||
-                ctx.resolve(`${id}.d`, importer)
-              )
+              try {
+                return (
+                  (await ctx.resolve(id, importer)) ||
+                  ctx.resolve(`${id}.d`, importer)
+                )
+              } catch {
+                return
+              }
             }
 
             let resolved = (await tryResolve(id))?.id
@@ -99,9 +103,13 @@ export default createUnplugin<Options | undefined, false>(
         },
 
         handleHotUpdate({ file, server, modules }) {
+          const cache = new Map<string, Set<ModuleNode>>()
           function getAffectedModules(file: string): Set<ModuleNode> {
+            if (cache.has(file)) return cache.get(file)!
+
             if (!referencedFiles.has(file)) return new Set([])
             const modules = new Set<ModuleNode>([])
+            cache.set(file, modules)
             for (const importer of referencedFiles.get(file)!) {
               const mods = server.moduleGraph.getModulesByFile(importer)
               if (mods) mods.forEach((m) => modules.add(m))
