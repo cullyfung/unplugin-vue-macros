@@ -1,5 +1,67 @@
 # unplugin-vue-macros
 
+## 1.7.0
+
+### Minor Changes
+
+- [`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862) Thanks [@sxzz](https://github.com/sxzz)! - support TypeScript 5.0
+
+- [`c91cb0f`](https://github.com/sxzz/unplugin-vue-macros/commit/c91cb0f761a06d0b5e6b7ef662824773cb4a2e61) Thanks [@sxzz](https://github.com/sxzz)! - introduce `definePropsRefs`
+
+### Patch Changes
+
+- Updated dependencies [[`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862), [`c91cb0f`](https://github.com/sxzz/unplugin-vue-macros/commit/c91cb0f761a06d0b5e6b7ef662824773cb4a2e61)]:
+  - @vue-macros/reactivity-transform@0.2.0
+  - @vue-macros/setup-component@0.15.0
+  - unplugin-vue-define-options@1.2.0
+  - @vue-macros/named-template@0.2.0
+  - @vue-macros/better-define@1.2.0
+  - @vue-macros/define-render@1.2.0
+  - @vue-macros/define-model@1.3.0
+  - @vue-macros/define-props@0.3.0
+  - @vue-macros/define-slots@0.2.0
+  - @vue-macros/export-props@0.2.0
+  - @vue-macros/hoist-static@1.2.0
+  - @vue-macros/setup-block@0.1.0
+  - @vue-macros/short-emits@1.2.0
+  - @vue-macros/setup-sfc@0.14.0
+  - @vue-macros/common@1.0.0
+  - @vue-macros/define-props-refs@0.1.0
+
+## 1.6.4
+
+### Patch Changes
+
+- [`859b347`](https://github.com/sxzz/unplugin-vue-macros/commit/859b347e87f83dd0799630535779a48e035cec44) Thanks [@sxzz](https://github.com/sxzz)! - enable reactivity transform on vue 3 by default
+
+## 1.6.3
+
+### Patch Changes
+
+- Updated dependencies [[`8cc7b4c`](https://github.com/sxzz/unplugin-vue-macros/commit/8cc7b4cec38034540f7fecae0626965a9b1e7171), [`88aa90d`](https://github.com/sxzz/unplugin-vue-macros/commit/88aa90d768bd61c66b955338a2e672bf06d9d342), [`75bda71`](https://github.com/sxzz/unplugin-vue-macros/commit/75bda71e3bc5b82e2f88234563cfefe535fceb88)]:
+  - @vue-macros/reactivity-transform@0.1.2
+  - @vue-macros/common@0.15.0
+  - @vue-macros/better-define@1.1.11
+  - @vue-macros/define-model@1.2.6
+  - unplugin-vue-define-options@1.1.6
+  - @vue-macros/define-props@0.2.4
+  - @vue-macros/define-render@1.1.6
+  - @vue-macros/define-slots@0.1.7
+  - @vue-macros/export-props@0.1.2
+  - @vue-macros/hoist-static@1.1.6
+  - @vue-macros/named-template@0.1.6
+  - @vue-macros/setup-block@0.0.7
+  - @vue-macros/setup-component@0.14.3
+  - @vue-macros/setup-sfc@0.13.7
+  - @vue-macros/short-emits@1.1.6
+
+## 1.6.2
+
+### Patch Changes
+
+- Updated dependencies [[`5fee1ad`](https://github.com/sxzz/unplugin-vue-macros/commit/5fee1ade3f8a5ee986681c81c1d0d55d35c30075)]:
+  - @vue-macros/reactivity-transform@0.1.1
+
 ## 1.6.1
 
 ### Patch Changes

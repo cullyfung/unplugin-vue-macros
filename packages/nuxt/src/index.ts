@@ -1,5 +1,4 @@
 import { defineNuxtModule } from '@nuxt/kit'
-// @ts-ignore error when no bundle (CI typecheck)
 import VueMacros from 'unplugin-vue-macros/vite'
 import { transformShortVmodel } from '@vue-macros/short-vmodel'
 import type { Options } from 'unplugin-vue-macros'
@@ -52,6 +51,7 @@ export default defineNuxtModule<VueMacrosOptions>({
     nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins.push(
       '@vue-macros/volar/define-model',
       '@vue-macros/volar/define-props',
+      '@vue-macros/volar/define-props-refs',
       '@vue-macros/volar/define-slots',
       '@vue-macros/volar/export-props'
     )

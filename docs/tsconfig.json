@@ -8,20 +8,16 @@
     "jsx": "preserve",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client",
-      "vitepress",
-      "unplugin-vue-define-options/macros-global"
-    ],
+    "types": ["vite/client", "vitepress", "unplugin-vue-macros/macros-global"],
     "paths": {
       "~/*": ["src/*"]
     }
   },
-  "include": ["./*.ts", "./.vitepress/**/*.ts", "./.vitepress/**/*.vue"],
+  "include": ["**/*", "./.*/**/*"],
   "exclude": ["dist", "node_modules"]
 }

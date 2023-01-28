@@ -1,7 +1,7 @@
 {
   "name": "unplugin-vue-macros",
-  "version": "1.6.1",
-  "packageManager": "pnpm@7.25.1",
+  "version": "1.7.0",
+  "packageManager": "pnpm@7.26.0",
   "description": "Explore and extend more macros and syntax sugar to Vue.",
   "keywords": [
     "unplugin",
@@ -30,39 +30,36 @@
   ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./vite": {
+      "types": "./dist/vite.d.ts",
       "require": "./dist/vite.js",
       "import": "./dist/vite.mjs"
     },
     "./webpack": {
+      "types": "./dist/webpack.d.ts",
       "require": "./dist/webpack.js",
       "import": "./dist/webpack.mjs"
     },
     "./rollup": {
+      "types": "./dist/rollup.d.ts",
       "require": "./dist/rollup.js",
       "import": "./dist/rollup.mjs"
     },
     "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
       "require": "./dist/esbuild.js",
       "import": "./dist/esbuild.mjs"
     },
     "./macros-global": "./macros-global.d.ts",
     "./vue2-macros-global": "./vue2-macros-global.d.ts",
     "./*": "./*"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
   },
   "scripts": {
     "build": "tsup && tsx ../../scripts/postbuild.mts",
@@ -77,6 +74,7 @@
     "@vue-macros/common": "workspace:*",
     "@vue-macros/define-model": "workspace:*",
     "@vue-macros/define-props": "workspace:*",
+    "@vue-macros/define-props-refs": "workspace:*",
     "@vue-macros/define-render": "workspace:*",
     "@vue-macros/define-slots": "workspace:*",
     "@vue-macros/export-props": "workspace:*",
@@ -87,7 +85,7 @@
     "@vue-macros/setup-component": "workspace:*",
     "@vue-macros/setup-sfc": "workspace:*",
     "@vue-macros/short-emits": "workspace:*",
-    "unplugin-combine": "^0.5.3",
+    "unplugin-combine": "^0.6.0",
     "unplugin-vue-define-options": "workspace:*"
   },
   "devDependencies": {

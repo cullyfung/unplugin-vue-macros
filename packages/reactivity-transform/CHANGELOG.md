@@ -1,5 +1,37 @@
 # @vue-macros/reactivity-transform
 
+## 0.2.0
+
+### Minor Changes
+
+- [`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862) Thanks [@sxzz](https://github.com/sxzz)! - support TypeScript 5.0
+
+### Patch Changes
+
+- Updated dependencies [[`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862), [`c91cb0f`](https://github.com/sxzz/unplugin-vue-macros/commit/c91cb0f761a06d0b5e6b7ef662824773cb4a2e61)]:
+  - @vue-macros/common@1.0.0
+
+## 0.1.2
+
+### Patch Changes
+
+- [`8cc7b4c`](https://github.com/sxzz/unplugin-vue-macros/commit/8cc7b4cec38034540f7fecae0626965a9b1e7171) Thanks [@sxzz](https://github.com/sxzz)! - update check to catch toRef and customRef
+
+  [Original PR](https://github.com/vuejs/core/pull/5100)
+
+- [`88aa90d`](https://github.com/sxzz/unplugin-vue-macros/commit/88aa90d768bd61c66b955338a2e672bf06d9d342) Thanks [@sxzz](https://github.com/sxzz)! - get definition from nested scope
+
+- [`75bda71`](https://github.com/sxzz/unplugin-vue-macros/commit/75bda71e3bc5b82e2f88234563cfefe535fceb88) Thanks [@sxzz](https://github.com/sxzz)! - unwrap TS node
+
+- Updated dependencies [[`75bda71`](https://github.com/sxzz/unplugin-vue-macros/commit/75bda71e3bc5b82e2f88234563cfefe535fceb88)]:
+  - @vue-macros/common@0.15.0
+
+## 0.1.1
+
+### Patch Changes
+
+- [`5fee1ad`](https://github.com/sxzz/unplugin-vue-macros/commit/5fee1ade3f8a5ee986681c81c1d0d55d35c30075) Thanks [@sxzz](https://github.com/sxzz)! - inline estree-walker
+
 ## 0.1.0
 
 ### Minor Changes

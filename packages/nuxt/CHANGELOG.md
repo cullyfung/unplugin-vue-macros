@@ -1,5 +1,46 @@
 # @vue-macros/nuxt
 
+## 1.0.0
+
+### Major Changes
+
+- [`c91cb0f`](https://github.com/sxzz/unplugin-vue-macros/commit/c91cb0f761a06d0b5e6b7ef662824773cb4a2e61) Thanks [@sxzz](https://github.com/sxzz)! - introduce `definePropsRefs`
+
+### Minor Changes
+
+- [`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862) Thanks [@sxzz](https://github.com/sxzz)! - support TypeScript 5.0
+
+### Patch Changes
+
+- Updated dependencies [[`33849ad`](https://github.com/sxzz/unplugin-vue-macros/commit/33849ad63ad3d1d06a0a9e3ef4f58da545b90862), [`c91cb0f`](https://github.com/sxzz/unplugin-vue-macros/commit/c91cb0f761a06d0b5e6b7ef662824773cb4a2e61)]:
+  - @vue-macros/short-vmodel@1.1.0
+  - unplugin-vue-macros@1.7.0
+  - @vue-macros/volar@0.8.0
+
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`859b347`](https://github.com/sxzz/unplugin-vue-macros/commit/859b347e87f83dd0799630535779a48e035cec44)]:
+  - unplugin-vue-macros@1.6.4
+
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - unplugin-vue-macros@1.6.3
+  - @vue-macros/short-vmodel@1.0.6
+  - @vue-macros/volar@0.7.1
+
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`cf20f6f`](https://github.com/sxzz/unplugin-vue-macros/commit/cf20f6f309bfa1da9383f3ef13e8acdd2be3eadb)]:
+  - @vue-macros/volar@0.7.0
+  - unplugin-vue-macros@1.6.2
+
 ## 0.3.5
 
 ### Patch Changes

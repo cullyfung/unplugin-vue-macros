@@ -1,7 +1,7 @@
 {
   "name": "unplugin-vue-define-options",
-  "version": "1.1.5",
-  "packageManager": "pnpm@7.25.1",
+  "version": "1.2.0",
+  "packageManager": "pnpm@7.26.0",
   "description": "Add defineOptions support for Vue <script setup>.",
   "keywords": [
     "unplugin",
@@ -28,39 +28,36 @@
   ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./vite": {
+      "types": "./dist/vite.d.ts",
       "require": "./dist/vite.js",
       "import": "./dist/vite.mjs"
     },
     "./webpack": {
+      "types": "./dist/webpack.d.ts",
       "require": "./dist/webpack.js",
       "import": "./dist/webpack.mjs"
     },
     "./rollup": {
+      "types": "./dist/rollup.d.ts",
       "require": "./dist/rollup.js",
       "import": "./dist/rollup.mjs"
     },
     "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
       "require": "./dist/esbuild.js",
       "import": "./dist/esbuild.mjs"
     },
     "./macros": "./macros.d.ts",
     "./macros-global": "./macros-global.d.ts",
     "./*": "./*"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./*"
-      ]
-    }
   },
   "scripts": {
     "build": "tsup && tsx ../../scripts/postbuild.mts",
@@ -69,11 +66,11 @@
   "dependencies": {
     "@rollup/pluginutils": "^5.0.2",
     "@vue-macros/common": "workspace:~",
-    "ast-walker-scope": "^0.3.1",
+    "ast-walker-scope": "^0.4.0",
     "unplugin": "^1.0.1"
   },
   "devDependencies": {
-    "rollup": "^3.10.1",
+    "rollup": "^3.11.0",
     "vue": "^3.2.45"
   },
   "engines": {
