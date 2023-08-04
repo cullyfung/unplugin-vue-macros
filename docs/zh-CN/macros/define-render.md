@@ -1,28 +1,28 @@
 # defineRender
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
-Defining render function in `<script setup>` using the `defineRender`.
+使用 `defineRender` 可以直接在 `<script setup>` 中定义渲染函数。
 
-|  Features  |     Supported      |
+|    特性    |        支持        |
 | :--------: | :----------------: |
 |   Vue 3    | :white_check_mark: |
 |   Nuxt 3   | :white_check_mark: |
 |   Vue 2    | :white_check_mark: |
 | TypeScript | :white_check_mark: |
 
-## Basic Usage
+## 基本用法
 
 ```vue
 <script setup lang="tsx">
-// JSX passed directly
+// 可以直接传递 JSX
 defineRender(
   <div>
     <span>Hello</span>
   </div>
 )
 
-// Or using render function
+// 或使用渲染函数
 defineRender(() => {
   return (
     <div>

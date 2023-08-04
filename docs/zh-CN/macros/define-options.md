@@ -1,36 +1,36 @@
 # defineOptions
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
-Options API can be declared using the `defineOptions` in `<script setup>`, specifically to be able to set `name`, `props`, `emits`, and `render` inside of one function.
+可以通过 `defineOptions` 宏在 `<script setup>` 中使用选项式 API，也就是说可以在一个宏函数中设置 `name`, `props`, `emits`, `render`。
 
-If you support this feature, feel free to hit like :+1: or comment on the [RFC Discussion](https://github.com/vuejs/rfcs/discussions/430). Thanks!
+在 Vue >= 3.3 中，此功能将默认关闭。
 
-|  Features  |     Supported      |
+|    特性    |        支持        |
 | :--------: | :----------------: |
 |   Vue 3    | :white_check_mark: |
 |   Nuxt 3   | :white_check_mark: |
 |   Vue 2    | :white_check_mark: |
 | TypeScript | :white_check_mark: |
 
-## Installation Standalone Version
+## 安装独立版本
 
-if you need `defineOptions` feature only, the standalone version is more appropriate for you.
+如果你只需要 `defineOptions` 功能, 那么独立版本更适合你。
 
-### Installation
+### 安装
 
 ::: code-group
 
 ```bash [npm]
-npm i -D unplugin-vue-define-options
+npm i -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 ```bash [yarn]
-yarn add -D unplugin-vue-define-options
+yarn add -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 ```bash [pnpm]
-pnpm add -D unplugin-vue-define-options
+pnpm add -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 :::
@@ -74,7 +74,7 @@ module.exports = {
 
 :::
 
-### TypeScript Support
+### TypeScript 支持
 
 ```json
 // tsconfig.json
@@ -86,7 +86,7 @@ module.exports = {
 }
 ```
 
-## Basic Usage
+## 基本用法
 
 ```vue {3-6}
 <script setup lang="ts">
@@ -99,7 +99,7 @@ const slots = useSlots()
 </script>
 ```
 
-::: details Compiled Code
+::: details 编译后的代码
 
 ```vue
 <script lang="ts">
@@ -116,7 +116,7 @@ const slots = useSlots()
 
 :::
 
-## JSX in `<script setup>`
+## `<script setup>` 中使用 JSX
 
 ```vue {3-5}
 <script setup lang="tsx">
@@ -128,7 +128,7 @@ defineOptions({
 </script>
 ```
 
-::: details Compiled Code
+::: details 编译后的代码
 
 ```vue
 <script lang="tsx">
@@ -141,3 +141,18 @@ export default {
 ```
 
 :::
+
+## Volar 配置
+
+```jsonc {6}
+// tsconfig.json
+{
+  "vueCompilerOptions": {
+    "target": 3, // 或 2.7 用于 Vue 2
+    "plugins": [
+      "@vue-macros/volar/define-options"
+      // ...更多功能
+    ]
+  }
+}
+```

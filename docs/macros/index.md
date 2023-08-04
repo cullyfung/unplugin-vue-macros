@@ -4,12 +4,24 @@ List of all available macros.
 
 Please make sure `unplugin-vue-macros` is set up correctly. If you haven't yet, read [Getting Started](/guide/getting-started) first.
 
+## Implemented by Vue 3.3
+
 - [defineOptions](/macros/define-options)
-- [defineModel](/macros/define-model)
-- [defineProps](/macros/define-props)
 - [defineSlots](/macros/define-slots)
-- [defineRender](/macros/define-render)
 - [shortEmits](/macros/short-emits)
+
+## Stable Features
+
+- [defineModels](/macros/define-models)
+- [defineProps](/macros/define-props)
+- [definePropsRefs](/macros/define-props-refs)
+- [defineRender](/macros/define-render)
 - [shortVmodel](/macros/short-vmodel)
-- [setupComponent](/macros/setup-component) <WarnBadge>Experimental</WarnBadge>
-- [setupSFC](/macros/setup-sfc) <WarnBadge>Experimental</WarnBadge>
+
+## Experimental Features
+
+- [defineProp](/macros/define-prop)
+- [defineEmit](/macros/define-emit)
+- [setupComponent](/macros/setup-component)
+- [setupSFC](/macros/setup-sfc)
+- [chainCall](/macros/chain-call)

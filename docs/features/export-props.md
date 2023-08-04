@@ -1,14 +1,14 @@
 # exportProps
 
-<small py2>Stability: <code class="!text-red-600">experimental</code></small>
+<StabilityLevel level="experimental" />
 
 [Svelte-like Declaring props](https://svelte.dev/docs#component-format-script-1-export-creates-a-component-prop) for Vue.
 
 |   Features   |     Supported      |
 | :----------: | :----------------: |
 |    Vue 3     | :white_check_mark: |
-|    Nuxt 3    |         ?          |
-|    Vue 2     |         ?          |
+|    Nuxt 3    |     :question:     |
+|    Vue 2     |     :question:     |
 | Volar Plugin | :white_check_mark: |
 
 ## Usage

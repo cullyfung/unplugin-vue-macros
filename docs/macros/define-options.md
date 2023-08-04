@@ -1,10 +1,10 @@
 # defineOptions
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
 Options API can be declared using the `defineOptions` in `<script setup>`, specifically to be able to set `name`, `props`, `emits`, and `render` inside of one function.
 
-If you support this feature, feel free to hit like :+1: or comment on the [RFC Discussion](https://github.com/vuejs/rfcs/discussions/430). Thanks!
+For Vue >= 3.3, this feature will be turned off by default.
 
 |  Features  |     Supported      |
 | :--------: | :----------------: |
@@ -22,15 +22,15 @@ if you need `defineOptions` feature only, the standalone version is more appropr
 ::: code-group
 
 ```bash [npm]
-npm i -D unplugin-vue-define-options
+npm i -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 ```bash [yarn]
-yarn add -D unplugin-vue-define-options
+yarn add -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 ```bash [pnpm]
-pnpm add -D unplugin-vue-define-options
+pnpm add -D unplugin-vue-define-options @vue-macros/volar
 ```
 
 :::
@@ -141,3 +141,18 @@ export default {
 ```
 
 :::
+
+## Volar Configuration
+
+```jsonc {6}
+// tsconfig.json
+{
+  "vueCompilerOptions": {
+    "target": 3, // or 2.7 for Vue 2
+    "plugins": [
+      "@vue-macros/volar/define-options"
+      // ...more feature
+    ]
+  }
+}
+```

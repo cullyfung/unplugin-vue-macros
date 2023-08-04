@@ -1,15 +1,26 @@
 {
   "name": "@vue-macros/common",
-  "version": "1.0.0",
-  "packageManager": "pnpm@7.26.0",
+  "version": "1.6.2",
+  "packageManager": "pnpm@8.6.11",
+  "description": "common feature from Vue Macros.",
+  "keywords": [
+    "vue-macros",
+    "macros",
+    "vue",
+    "sfc",
+    "setup",
+    "script-setup",
+    "common"
+  ],
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/unplugin-vue-macros#readme",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/unplugin-vue-macros/issues"
+    "url": "https://github.com/vue-macros/vue-macros/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/unplugin-vue-macros.git"
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/common"
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
@@ -20,15 +31,22 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
-    "./*": "./*"
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
   },
   "scripts": {
-    "build": "tsup && tsx ../../scripts/postbuild.mts",
-    "dev": "DEV=1 tsup"
+    "build": "tsup",
+    "dev": "DEV=true tsup"
   },
   "peerDependencies": {
     "vue": "^2.7.0 || ^3.2.25"
@@ -39,16 +57,17 @@
     }
   },
   "dependencies": {
-    "@babel/types": "^7.20.7",
-    "@vue/compiler-sfc": "^3.2.45",
+    "@babel/types": "^7.22.5",
+    "@rollup/pluginutils": "^5.0.2",
+    "@vue/compiler-sfc": "^3.3.4",
+    "ast-kit": "^0.9.4",
     "local-pkg": "^0.4.3",
-    "magic-string": "^0.27.0"
+    "magic-string-ast": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/parser": "^7.20.13",
-    "estree-walker": "^3.0.3"
+    "@babel/parser": "^7.22.7"
   },
   "engines": {
-    "node": ">=14.19.0"
+    "node": ">=16.14.0"
   }
 }

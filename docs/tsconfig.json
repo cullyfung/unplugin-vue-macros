@@ -13,11 +13,13 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client", "vitepress", "unplugin-vue-macros/macros-global"],
+    "types": ["vite/client", "vitepress", "vite-plugin-pwa/client"],
     "paths": {
       "~/*": ["src/*"]
-    }
+    },
+    "customConditions": ["dev"]
   },
-  "include": ["**/*", "./.*/**/*"],
+  "vueCompilerOptions": {},
+  "include": ["**/*", "./.*/**/*", "../packages/shim.d.ts"],
   "exclude": ["dist", "node_modules"]
 }

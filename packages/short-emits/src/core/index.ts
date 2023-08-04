@@ -1,24 +1,22 @@
 import {
+  DEFINE_EMITS,
   MagicString,
-  getTransformResult,
+  generateTransform,
+  isCallOf,
   isTs,
+  isTypeOf,
   parseSFC,
   resolveObjectKey,
   walkAST,
 } from '@vue-macros/common'
-import type {
-  Identifier,
-  Node,
-  RestElement,
-  TSMethodSignature,
-  TSPropertySignature,
-  TSType,
-  TSTypeReference,
+import {
+  type Identifier,
+  type Node,
+  type RestElement,
+  type TSType,
 } from '@babel/types'
 
 export function transformShortEmits(code: string, id: string) {
-  if (!code.includes('SE') && !code.includes('ShortEmits')) return
-
   const sfc = parseSFC(code, id)
   const { scriptSetup, lang, getSetupAst } = sfc
   if (!scriptSetup || !isTs(lang)) return
@@ -26,67 +24,54 @@ export function transformShortEmits(code: string, id: string) {
   const offset = scriptSetup.loc.start.offset
   const ast = getSetupAst()!
 
-  const nodes: {
-    def: TSType
-    type: TSTypeReference
-  }[] = []
+  const params: TSType[] = []
+  const s = new MagicString(code)
 
   walkAST<Node>(ast, {
     enter(node) {
-      if (
-        node.type === 'TSTypeReference' &&
-        node.typeName.type === 'Identifier' &&
-        ['SE', 'ShortEmits'].includes(node.typeName.name) &&
-        node.typeParameters?.params[0].type
-      ) {
-        nodes.push({
-          def: node.typeParameters.params[0],
-          type: node,
-        })
+      if (isCallOf(node, DEFINE_EMITS) && node.typeParameters?.params?.[0]) {
+        let param = node.typeParameters?.params?.[0]
+
+        if (
+          param.type === 'TSTypeReference' &&
+          param.typeName.type === 'Identifier' &&
+          ['SE', 'ShortEmits'].includes(param.typeName.name) &&
+          param.typeParameters?.params[0]
+        ) {
+          const inner = param.typeParameters?.params[0]
+
+          // remove SE<...>
+          s.remove(offset + param.start!, offset + inner.start!)
+          s.remove(offset + inner.end!, offset + param.end!)
+
+          param = inner
+        }
+
+        params.push(param)
       }
     },
   })
 
-  const s = new MagicString(code)
+  for (const param of params) {
+    if (param.type !== 'TSTypeLiteral') continue
 
-  function stringifyParams(params: Array<Identifier | RestElement>) {
-    return params.length > 0 ? s.sliceNodes(params, { offset }) : ''
-  }
+    for (const member of param.members) {
+      if (!isTypeOf(member, ['TSPropertySignature', 'TSMethodSignature']))
+        continue
 
-  for (const { def, type } of nodes) {
-    if (def.type !== 'TSTypeLiteral')
-      throw new SyntaxError(
-        `accepts object literal only: ${s.sliceNode(def, { offset })}`
-      )
-
-    // remove SE<...>
-    s.remove(offset + type.start!, offset + def.start!)
-    s.remove(offset + def.end!, offset + type.end!)
-
-    for (const _member of def.members) {
-      if (!['TSPropertySignature', 'TSMethodSignature'].includes(_member.type))
-        throw new SyntaxError(
-          `accepts method and property only: ${s.sliceNode(_member, {
-            offset,
-          })}`
-        )
-
-      const member = _member as TSPropertySignature | TSMethodSignature
-
-      const key = resolveObjectKey(member.key, member.computed)
+      const key = resolveObjectKey(member, true)
       let params = ''
 
       switch (member.type) {
         case 'TSPropertySignature': {
           if (
             !member.typeAnnotation ||
-            !['TSTupleType', 'TSFunctionType'].includes(
-              member.typeAnnotation.typeAnnotation.type
-            )
+            !isTypeOf(member.typeAnnotation.typeAnnotation, [
+              'TSTupleType',
+              'TSFunctionType',
+            ])
           )
-            throw new SyntaxError(
-              `not supported: ${s.sliceNode(member, { offset })}`
-            )
+            continue
 
           switch (member.typeAnnotation.typeAnnotation.type) {
             case 'TSTupleType':
@@ -118,5 +103,9 @@ export function transformShortEmits(code: string, id: string) {
     }
   }
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
+
+  function stringifyParams(params: Array<Identifier | RestElement>) {
+    return params.length > 0 ? s.sliceNode(params, { offset }) : ''
+  }
 }

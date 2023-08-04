@@ -1,99 +1,133 @@
 {
   "name": "unplugin-vue-macros",
-  "version": "1.7.0",
-  "packageManager": "pnpm@7.26.0",
-  "description": "Explore and extend more macros and syntax sugar to Vue.",
+  "version": "2.4.3",
+  "packageManager": "pnpm@8.6.11",
+  "description": "Explore more macros and syntax sugar to Vue.",
   "keywords": [
-    "unplugin",
-    "vue",
+    "vue-macros",
     "macros",
+    "vue",
+    "sfc",
+    "setup",
     "script-setup",
-    "define-options",
-    "define-model",
-    "define-render",
-    "setup-sfc",
-    "setup-component"
+    "macros",
+    "unplugin"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/unplugin-vue-macros#readme",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/unplugin-vue-macros/issues"
+    "url": "https://github.com/vue-macros/vue-macros/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/unplugin-vue-macros.git"
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/macros"
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
-    "dist",
-    "*.d.ts"
+    "*.d.ts",
+    "dist"
   ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
+    "./esbuild": {
+      "dev": "./src/esbuild.ts",
+      "types": {
+        "require": "./dist/esbuild.d.ts",
+        "import": "./dist/esbuild.d.mts"
+      },
+      "require": "./dist/esbuild.js",
+      "import": "./dist/esbuild.mjs"
+    },
+    "./rollup": {
+      "dev": "./src/rollup.ts",
+      "types": {
+        "require": "./dist/rollup.d.ts",
+        "import": "./dist/rollup.d.mts"
+      },
+      "require": "./dist/rollup.js",
+      "import": "./dist/rollup.mjs"
+    },
     "./vite": {
-      "types": "./dist/vite.d.ts",
+      "dev": "./src/vite.ts",
+      "types": {
+        "require": "./dist/vite.d.ts",
+        "import": "./dist/vite.d.mts"
+      },
       "require": "./dist/vite.js",
       "import": "./dist/vite.mjs"
     },
     "./webpack": {
-      "types": "./dist/webpack.d.ts",
+      "dev": "./src/webpack.ts",
+      "types": {
+        "require": "./dist/webpack.d.ts",
+        "import": "./dist/webpack.d.mts"
+      },
       "require": "./dist/webpack.js",
       "import": "./dist/webpack.mjs"
     },
-    "./rollup": {
-      "types": "./dist/rollup.d.ts",
-      "require": "./dist/rollup.js",
-      "import": "./dist/rollup.mjs"
-    },
-    "./esbuild": {
-      "types": "./dist/esbuild.d.ts",
-      "require": "./dist/esbuild.js",
-      "import": "./dist/esbuild.mjs"
-    },
-    "./macros-global": "./macros-global.d.ts",
-    "./vue2-macros-global": "./vue2-macros-global.d.ts",
-    "./*": "./*"
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
   },
   "scripts": {
-    "build": "tsup && tsx ../../scripts/postbuild.mts",
-    "dev": "DEV=1 tsup"
+    "build": "tsup",
+    "dev": "DEV=true tsup"
   },
   "peerDependencies": {
     "vue": "^2.7.0 || ^3.2.25"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.0.2",
     "@vue-macros/better-define": "workspace:*",
+    "@vue-macros/chain-call": "workspace:^",
     "@vue-macros/common": "workspace:*",
-    "@vue-macros/define-model": "workspace:*",
+    "@vue-macros/define-emit": "workspace:^",
+    "@vue-macros/define-models": "workspace:*",
+    "@vue-macros/define-prop": "workspace:^",
     "@vue-macros/define-props": "workspace:*",
     "@vue-macros/define-props-refs": "workspace:*",
     "@vue-macros/define-render": "workspace:*",
     "@vue-macros/define-slots": "workspace:*",
+    "@vue-macros/devtools": "workspace:^",
+    "@vue-macros/export-expose": "workspace:*",
     "@vue-macros/export-props": "workspace:*",
     "@vue-macros/hoist-static": "workspace:*",
+    "@vue-macros/jsx-directive": "workspace:*",
     "@vue-macros/named-template": "workspace:*",
     "@vue-macros/reactivity-transform": "workspace:*",
     "@vue-macros/setup-block": "workspace:*",
     "@vue-macros/setup-component": "workspace:*",
     "@vue-macros/setup-sfc": "workspace:*",
     "@vue-macros/short-emits": "workspace:*",
-    "unplugin-combine": "^0.6.0",
+    "unplugin": "^1.4.0",
+    "unplugin-combine": "^0.7.0",
     "unplugin-vue-define-options": "workspace:*"
   },
   "devDependencies": {
-    "esbuild": "^0.17.4",
-    "unplugin": "^1.0.1",
-    "vue": "^3.2.45"
+    "esbuild": "^0.18.17",
+    "vue": "^3.3.4"
   },
   "engines": {
-    "node": ">=14.19.0"
+    "node": ">=16.14.0"
   }
 }

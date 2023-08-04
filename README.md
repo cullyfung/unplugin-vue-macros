@@ -4,7 +4,7 @@
 
 <h1 align="center">Vue Macros</h1>
 
-<p align="center">Explore and extend more macros and syntax sugar to Vue.</p>
+<p align="center">Explore more macros and syntax sugar to Vue.</p>
 
 <p align="center">
   <a href="https://npmjs.com/package/unplugin-vue-macros">
@@ -18,7 +18,7 @@
 
 ## Features
 
-- ✨ Explore and extend more macros and syntax sugar to Vue.
+- ✨ Explore more macros and syntax sugar to Vue.
 - 💚 Supports both Vue 2.7 and Vue 3 out-of-the-box.
 - 🦾 Full TypeScript / Volar support.
 - ⚡️ Supports Vite, Nuxt, Webpack, Vue CLI, Rollup 3, esbuild and more, powered by [unplugin](https://github.com/unjs/unplugin).
@@ -26,14 +26,14 @@
 ## Installation
 
 ```bash
-npm i unplugin-vue-macros -D
+npm i -D unplugin-vue-macros
 ```
 
 ## Sponsors
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg'/>
+  <a href="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg">
+    <img src='https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg'/>
   </a>
 </p>
 
@@ -42,8 +42,8 @@ npm i unplugin-vue-macros -D
 💕 Thank you to all the contributors!
 
 <p align="center">
-  <a href="https://github.com/sxzz/unplugin-vue-macros/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=sxzz/unplugin-vue-macros" />
+  <a href="https://github.com/vue-macros/vue-macros/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=vue-macros/vue-macros" />
   </a>
 </p>
 

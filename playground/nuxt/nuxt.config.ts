@@ -1,12 +1,10 @@
-import Inspect from 'vite-plugin-inspect'
-
 export default defineNuxtConfig({
-  modules: ['@vue-macros/nuxt'],
-  macros: {},
-  experimental: {
-    reactivityTransform: true,
-  },
-  vite: {
-    plugins: [Inspect()],
+  modules: [
+    '@nuxt/devtools',
+    '@unocss/nuxt',
+    '../../packages/nuxt/src/index.ts',
+  ],
+  macros: {
+    setupSFC: true,
   },
 })

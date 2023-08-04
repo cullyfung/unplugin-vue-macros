@@ -1,11 +1,17 @@
-import { defineNuxtModule } from '@nuxt/kit'
+import { defineNuxtModule, useNuxt } from '@nuxt/kit'
 import VueMacros from 'unplugin-vue-macros/vite'
-import { transformShortVmodel } from '@vue-macros/short-vmodel'
-import type { Options } from 'unplugin-vue-macros'
-import type { Options as OptionsShortVmodel } from '@vue-macros/short-vmodel'
-import type { Plugin } from 'vite'
+import {
+  type Options as OptionsShortVmodel,
+  transformShortVmodel,
+} from '@vue-macros/short-vmodel'
+import { transformBooleanProp } from '@vue-macros/boolean-prop'
+import { type Options, resolveOptions } from 'unplugin-vue-macros'
+import { type Plugin } from 'vite'
+import type {} from '@nuxt/devtools'
+import { type VolarOptions } from '@vue-macros/volar'
 
 export type VueMacrosOptions = Options & {
+  booleanProp?: {} | false
   shortVmodel?: OptionsShortVmodel | false
 }
 
@@ -15,8 +21,11 @@ export default defineNuxtModule<VueMacrosOptions>({
     configKey: 'macros',
   },
   defaults: {},
-  setup(options, nuxt) {
-    nuxt.hook('vite:extendConfig', (config) => {
+  setup(options) {
+    const nuxt = useNuxt()
+    const resolvedOptions = resolveOptions(options)
+
+    nuxt.hook('vite:extendConfig', (config, { isClient }) => {
       function findPluginAndRemove(name: string): Plugin | undefined {
         const idx = config.plugins!.findIndex(
           (plugin) => plugin && 'name' in plugin && plugin.name === name
@@ -32,11 +41,9 @@ export default defineNuxtModule<VueMacrosOptions>({
 
       config.plugins.push(
         VueMacros({
-          ...options,
-          plugins: {
-            vue,
-            vueJsx,
-          },
+          ...resolvedOptions,
+          plugins: { vue, vueJsx },
+          nuxtContext: { isClient },
         })
       )
     })
@@ -45,40 +52,81 @@ export default defineNuxtModule<VueMacrosOptions>({
       opts.references.push({ types: 'unplugin-vue-macros/macros-global' })
     })
 
+    nuxt.hook('devtools:customTabs', (tabs) => {
+      tabs.push({
+        name: 'vue-macros',
+        title: 'Vue Macros',
+        icon: 'https://raw.githubusercontent.com/vue-macros/vue-macros/main/docs/public/favicon.svg',
+        view: {
+          type: 'iframe',
+          src: '/__vue-macros',
+        },
+      })
+    })
+
     nuxt.options.typescript.tsConfig ||= {}
+
+    // @ts-expect-error https://github.com/unjs/pkg-types/pull/130
     nuxt.options.typescript.tsConfig.vueCompilerOptions ||= {}
-    nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins ||= []
-    nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins.push(
-      '@vue-macros/volar/define-model',
-      '@vue-macros/volar/define-props',
-      '@vue-macros/volar/define-props-refs',
-      '@vue-macros/volar/define-slots',
-      '@vue-macros/volar/export-props'
-    )
+    const vueCompilerOptions =
+      // @ts-expect-error
+      nuxt.options.typescript.tsConfig.vueCompilerOptions
+
+    vueCompilerOptions.vueMacros ||= {}
+    const volarOptions = vueCompilerOptions.vueMacros as VolarOptions
+
+    vueCompilerOptions.plugins ||= []
+    const volarPlugins = vueCompilerOptions.plugins
+
+    if (resolvedOptions.defineOptions)
+      volarPlugins.push('@vue-macros/volar/define-options')
+
+    if (resolvedOptions.defineSlots)
+      volarPlugins.push('@vue-macros/volar/define-slots')
+
+    if (resolvedOptions.defineModels)
+      volarPlugins.push('@vue-macros/volar/define-models')
+
+    if (resolvedOptions.defineProps)
+      volarPlugins.push('@vue-macros/volar/define-props')
+
+    if (resolvedOptions.definePropsRefs)
+      volarPlugins.push('@vue-macros/volar/define-props-refs')
+
+    if (resolvedOptions.exportProps)
+      volarPlugins.push('@vue-macros/volar/export-props')
+
+    if (resolvedOptions.jsxDirective)
+      volarPlugins.push('@vue-macros/volar/jsx-directive')
+
+    if (resolvedOptions.defineProp)
+      vueCompilerOptions.experimentalDefinePropProposal =
+        resolvedOptions.defineProp.edition || 'kevinEdition'
 
     nuxt.options.vite.vue ||= {}
     nuxt.options.vite.vue.include ||= [/\.vue$/]
     if (!Array.isArray(nuxt.options.vite.vue.include))
       nuxt.options.vite.vue.include = [nuxt.options.vite.vue.include]
-    nuxt.options.vite.vue.include.push(/setup\.[cm]?[jt]sx?$/)
+    nuxt.options.vite.vue.include.push(/\.setup\.[cm]?[jt]sx?$/)
 
-    // configure shortVmodel
-    if (options.shortVmodel !== false) {
-      nuxt.options.typescript.tsConfig.vueCompilerOptions.plugins.push(
-        '@vue-macros/volar/short-vmodel'
-      )
-
-      if (options.shortVmodel)
-        nuxt.options.typescript.tsConfig.vueCompilerOptions.shortVmodel = {
-          prefix: options.shortVmodel.prefix,
-        }
-
+    if (options.shortVmodel !== false || options.booleanProp !== false) {
       nuxt.options.vite.vue.template ||= {}
       nuxt.options.vite.vue.template.compilerOptions ||= {}
       nuxt.options.vite.vue.template.compilerOptions.nodeTransforms ||= []
-      nuxt.options.vite.vue.template.compilerOptions.nodeTransforms.push(
-        transformShortVmodel(options.shortVmodel)
-      )
+      const { nodeTransforms } = nuxt.options.vite.vue.template.compilerOptions
+
+      if (options.shortVmodel !== false) {
+        volarPlugins.push('@vue-macros/volar/short-vmodel')
+        nodeTransforms.push(transformShortVmodel(options.shortVmodel))
+        if (options.shortVmodel) {
+          volarOptions.shortVmodel = {
+            prefix: options.shortVmodel.prefix,
+          }
+        }
+      }
+
+      if (options.booleanProp !== false)
+        nodeTransforms.push(transformBooleanProp())
     }
   },
 })

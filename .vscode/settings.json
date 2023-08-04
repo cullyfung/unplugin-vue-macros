@@ -10,5 +10,16 @@
     "vmodel",
     "vueuse"
   ],
-  "unocss.root": ["./docs"]
+  "unocss.root": [
+    "./docs",
+    "./playground/vue3",
+    "./packages/devtools/src/client"
+  ],
+  "explorer.fileNesting.patterns": {
+    "index.ts": "rollup.ts, vite.ts, webpack.ts, esbuild.ts",
+    "macros.d.ts": "macros*.d.ts, vue2-macros*.d.ts"
+  },
+  "eslint.experimental.useFlatConfig": true,
+
+  "vue.server.reverseConfigFilePriority": true
 }

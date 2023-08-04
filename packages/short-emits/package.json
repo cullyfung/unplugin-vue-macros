@@ -1,75 +1,113 @@
 {
   "name": "@vue-macros/short-emits",
-  "version": "1.2.0",
-  "packageManager": "pnpm@7.26.0",
-  "description": "",
+  "version": "1.4.6",
+  "packageManager": "pnpm@8.6.11",
+  "description": "short-emits feature from Vue Macros.",
   "keywords": [
-    "unplugin",
+    "vue-macros",
+    "macros",
     "vue",
     "sfc",
     "setup",
-    "macros",
     "script-setup",
-    "short-emits"
+    "short-emits",
+    "unplugin"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/unplugin-vue-macros#readme",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/unplugin-vue-macros/issues"
+    "url": "https://github.com/vue-macros/vue-macros/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/unplugin-vue-macros.git"
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/short-emits"
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
-    "dist",
-    "macros.d.ts",
-    "macros-global.d.ts"
+    "*.d.ts",
+    "dist"
   ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
+    "./api": {
+      "dev": "./src/api.ts",
+      "types": {
+        "require": "./dist/api.d.ts",
+        "import": "./dist/api.d.mts"
+      },
+      "require": "./dist/api.js",
+      "import": "./dist/api.mjs"
+    },
+    "./esbuild": {
+      "dev": "./src/esbuild.ts",
+      "types": {
+        "require": "./dist/esbuild.d.ts",
+        "import": "./dist/esbuild.d.mts"
+      },
+      "require": "./dist/esbuild.js",
+      "import": "./dist/esbuild.mjs"
+    },
+    "./rollup": {
+      "dev": "./src/rollup.ts",
+      "types": {
+        "require": "./dist/rollup.d.ts",
+        "import": "./dist/rollup.d.mts"
+      },
+      "require": "./dist/rollup.js",
+      "import": "./dist/rollup.mjs"
+    },
     "./vite": {
-      "types": "./dist/vite.d.ts",
+      "dev": "./src/vite.ts",
+      "types": {
+        "require": "./dist/vite.d.ts",
+        "import": "./dist/vite.d.mts"
+      },
       "require": "./dist/vite.js",
       "import": "./dist/vite.mjs"
     },
     "./webpack": {
-      "types": "./dist/webpack.d.ts",
+      "dev": "./src/webpack.ts",
+      "types": {
+        "require": "./dist/webpack.d.ts",
+        "import": "./dist/webpack.d.mts"
+      },
       "require": "./dist/webpack.js",
       "import": "./dist/webpack.mjs"
     },
-    "./rollup": {
-      "types": "./dist/rollup.d.ts",
-      "require": "./dist/rollup.js",
-      "import": "./dist/rollup.mjs"
-    },
-    "./esbuild": {
-      "types": "./dist/esbuild.d.ts",
-      "require": "./dist/esbuild.js",
-      "import": "./dist/esbuild.mjs"
-    },
-    "./macros": "./macros.d.ts",
-    "./macros-global": "./macros-global.d.ts",
-    "./*": "./*"
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
   },
   "scripts": {
-    "build": "tsup && tsx ../../scripts/postbuild.mts",
-    "dev": "DEV=1 tsup"
+    "build": "tsup",
+    "dev": "DEV=true tsup"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.0.2",
-    "@vue-macros/common": "workspace:~",
-    "unplugin": "^1.0.1"
+    "@vue-macros/common": "workspace:*",
+    "unplugin": "^1.4.0"
   },
   "engines": {
-    "node": ">=14.19.0"
+    "node": ">=16.14.0"
   }
 }

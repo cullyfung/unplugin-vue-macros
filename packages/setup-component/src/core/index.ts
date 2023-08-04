@@ -1,24 +1,27 @@
 import {
+  type AttachedScope,
   DEFINE_SETUP_COMPONENT,
+  HELPER_PREFIX,
   MagicString,
+  attachScopes,
   babelParse,
+  generateTransform,
   getLang,
-  getTransformResult,
   isCallOf,
+  normalizePath,
   walkAST,
 } from '@vue-macros/common'
-import { attachScopes, normalizePath } from '@rollup/pluginutils'
+import { type Function, type Node, type Program } from '@babel/types'
+import { type HmrContext, type ModuleNode } from 'vite'
+import { isSubModule } from './sub-module'
 import {
   SETUP_COMPONENT_ID_REGEX,
   SETUP_COMPONENT_ID_SUFFIX,
   SETUP_COMPONENT_TYPE,
 } from './constants'
-import { isSubModule } from './sub-module'
-import type { AttachedScope } from '@rollup/pluginutils'
-import type { Function, Node, Program } from '@babel/types'
-import type { HmrContext, ModuleNode } from 'vite'
 
 export * from './constants'
+export * from './sub-module'
 
 interface FileContextComponent {
   code: string
@@ -139,7 +142,7 @@ export function transformSetupComponent(
   ctx[id] = fileContext
 
   for (const [i, { node, scopes }] of components.entries()) {
-    const importName = `setupComponent_${i}`
+    const importName = `${HELPER_PREFIX}setupComponent_${i}`
 
     s.overwrite(
       node.start!,
@@ -152,7 +155,7 @@ export function transformSetupComponent(
     )
   }
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }
 
 export function loadSetupComponent(
@@ -186,7 +189,7 @@ export function loadSetupComponent(
   s.prepend(
     `const { ${scopes
       .filter((name) => !rootVars.includes(name))
-      .join(', ')} } = _SC_ctx();\n`
+      .join(', ')} } = ${HELPER_PREFIX}ctx();\n`
   )
 
   for (const i of imports) s.prepend(`${i}\n`)
@@ -246,18 +249,18 @@ export function transformPost(code: string, _id: string) {
         } else if (
           node.type === 'Identifier' &&
           node.name === '_sfc_main' &&
-          ((parent.type === 'CallExpression' &&
+          ((parent?.type === 'CallExpression' &&
             parent.callee.type === 'Identifier' &&
             parent.callee.name === '_export_sfc' &&
             node.name === '_sfc_main') ||
-            parent.type === 'ExportDefaultDeclaration')
+            parent?.type === 'ExportDefaultDeclaration')
         ) {
           s.appendLeft(node.end!, '(ctx)')
         }
       },
     })
 
-    return getTransformResult(s, id)
+    return generateTransform(s, id)
   }
 
   function transformScript() {
@@ -268,13 +271,13 @@ export function transformPost(code: string, _id: string) {
           const exportDefault = node.declaration
           s.prependLeft(
             exportDefault.leadingComments?.[0].start ?? exportDefault.start!,
-            '(_SC_ctx) => '
+            `(${HELPER_PREFIX}ctx) => `
           )
         }
       },
     })
 
-    return getTransformResult(s, id)
+    return generateTransform(s, id)
   }
 }
 

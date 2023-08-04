@@ -1,6 +1,6 @@
 # betterDefine
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
 With enabling `betterDefine`, imported types are supported in `<script setup>` type-based-macros.
 
@@ -19,7 +19,7 @@ With enabling `betterDefine`, imported types are supported in `<script setup>` t
 
 ```vue [App.vue]
 <script setup lang="ts">
-import type { BaseProps } from './types'
+import { type BaseProps } from './types'
 
 interface Props extends BaseProps {
   foo: string
@@ -47,6 +47,7 @@ Complex types are not supported in some key places. For example:
 - All utility types
   - [Built-in types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
   - All types from `type-fest` package.
+  - `typeof` keyword.
   - ...
 - Index Signature
   ```ts
@@ -72,7 +73,7 @@ defineProps<{
 }>()
 ```
 
-- The names of events.
+- The names of emits.
 
 ```ts
 interface Emits {

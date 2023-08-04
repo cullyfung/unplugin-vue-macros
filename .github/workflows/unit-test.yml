@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: lts/*
           cache: pnpm
 
       - name: Setup
@@ -33,9 +33,6 @@ jobs:
 
       - name: Build
         run: nr build
-        env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: sxzz
 
       - name: Lint
         run: nr lint
@@ -47,7 +44,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [14.19.0, 16.x, 18]
+        node-version: [16, 18]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -57,7 +54,7 @@ jobs:
 
       - uses: pnpm/action-setup@v2
 
-      - name: Set node ${{ matrix.node }}
+      - name: Set node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -71,12 +68,10 @@ jobs:
 
       - name: Build
         run: nr build
-        env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: sxzz
 
       - name: Unit Test
         run: nr test
 
       - name: Build Playground
-        run: cd playground && pnpm build
+        run: pnpm run --filter "./playground/*" --parallel build
+        if: ${{ matrix.os == 'ubuntu-latest' }}

@@ -1,8 +1,10 @@
 # shortEmits
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
 Simplify the definition of emits.
+
+For Vue >= 3.3, this feature will be turned off by default.
 
 |  Features  |     Supported      |
 | :--------: | :----------------: |
@@ -16,14 +18,15 @@ Using type `ShortEmits` or for short `SE`.
 
 ```vue
 <script setup lang="ts">
-const emits = defineEmits<
-  // `ShortEmits` or for short `SE`
-  SE<{
-    // tuple
-    'update:modelValue': [val: string]
-    // function
-    update(val: string): void
-  }>
->()
+const emits = defineEmits<{
+  // tuple
+  'update:modelValue': [val: string]
+  // function
+  update(val: string): void
+}>()
 </script>
 ```
+
+## Difference with Official Version
+
+- function style of declaration is not supported by official version.

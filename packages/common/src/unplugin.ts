@@ -1,19 +1,20 @@
-import type MagicString from 'magic-string'
+import {
+  type FilterPattern,
+  createFilter as createRollupFilter,
+} from '@rollup/pluginutils'
+import { generateTransform } from 'magic-string-ast'
 
-export function getTransformResult(
-  s: MagicString | undefined,
-  id: string
-): { code: string; map: any } | undefined {
-  if (s?.hasChanged()) {
-    return {
-      code: s.toString(),
-      get map() {
-        return s.generateMap({
-          source: id,
-          includeContent: true,
-          hires: true,
-        })
-      },
-    }
-  }
+/** @deprecated use `generateTransform` instead */
+export const getTransformResult = generateTransform
+
+export interface BaseOptions {
+  include?: FilterPattern
+  exclude?: FilterPattern
+  version?: number
 }
+
+export function createFilter(options: BaseOptions) {
+  return createRollupFilter(options.include, options.exclude)
+}
+
+export { normalizePath } from '@rollup/pluginutils'

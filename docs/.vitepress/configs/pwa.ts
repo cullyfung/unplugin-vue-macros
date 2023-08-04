@@ -1,12 +1,12 @@
+import { type PwaOptions } from '@vite-pwa/vitepress'
 import { icons } from './icons'
-import type { PwaOptions } from '../pwa'
 
 export const pwa: PwaOptions = {
   outDir: '.vitepress/dist',
   manifest: {
     name: 'Vue Macros',
     short_name: 'Vue Macros',
-    description: 'Explore and extend more macros and syntax sugar to Vue.',
+    description: 'Explore more macros and syntax sugar to Vue.',
     theme_color: '#914796',
     id: '/',
     icons,
@@ -60,7 +60,7 @@ export const pwa: PwaOptions = {
         },
       },
       {
-        // For `https://contrib.rocks/image?repo=sxzz/unplugin-vue-macros`
+        // For `https://contrib.rocks/image?repo=vue-macros/vue-macros`
         urlPattern: /^https:\/\/contrib.rocks\/.*/i,
         handler: 'NetworkFirst',
         options: {

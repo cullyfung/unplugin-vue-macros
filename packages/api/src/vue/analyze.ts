@@ -1,17 +1,21 @@
 import {
   DEFINE_EMITS,
   DEFINE_PROPS,
+  type MagicString,
+  type SFC,
   WITH_DEFAULTS,
   babelParse,
   isCallOf,
 } from '@vue-macros/common'
-import { handleTSPropsDefinition } from './props'
-import { handleTSEmitsDefinition } from './emits'
-import type { TSFile } from '../ts'
-import type { Emits } from './emits'
-import type { DefaultsASTRaw, DefinePropsStatement, Props } from './props'
-import type { MagicString, SFC } from '@vue-macros/common'
-import type { CallExpression, LVal, Node } from '@babel/types'
+import { type CallExpression, type LVal, type Node } from '@babel/types'
+import { type TSFile } from '../ts'
+import {
+  type DefaultsASTRaw,
+  type DefinePropsStatement,
+  type Props,
+  handleTSPropsDefinition,
+} from './props'
+import { type Emits, handleTSEmitsDefinition } from './emits'
 
 export type { SFC } from '@vue-macros/common'
 export { parseSFC } from '@vue-macros/common'
@@ -25,8 +29,7 @@ export async function analyzeSFC(
   s: MagicString,
   sfc: SFC
 ): Promise<AnalyzeResult> {
-  if (sfc.script || !sfc.scriptSetup)
-    throw new Error('Only <script setup> is supported')
+  if (!sfc.scriptSetup) throw new Error('Only <script setup> is supported')
 
   const { scriptSetup } = sfc
 
@@ -37,6 +40,7 @@ export async function analyzeSFC(
 
   const offset = scriptSetup.loc.start.offset
   const file: TSFile = {
+    kind: 'file',
     filePath: sfc.filename,
     content: scriptSetup.content,
     ast: body,

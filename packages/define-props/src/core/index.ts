@@ -2,12 +2,12 @@ import {
   DEFINE_PROPS,
   DEFINE_PROPS_DOLLAR,
   MagicString,
-  getTransformResult,
+  generateTransform,
   isCallOf,
   parseSFC,
   walkAST,
 } from '@vue-macros/common'
-import type { Node } from '@babel/types'
+import { type Node } from '@babel/types'
 
 export function transformDefineProps(code: string, id: string) {
   if (!code.includes(DEFINE_PROPS_DOLLAR)) return
@@ -32,5 +32,5 @@ export function transformDefineProps(code: string, id: string) {
     },
   })
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }

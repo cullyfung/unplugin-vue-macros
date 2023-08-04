@@ -1,3 +1,6 @@
-import cfg from '../common/tsup.config.js'
+import config from '../../tsup.config.js'
 
-export default cfg
+export default {
+  ...config,
+  entry: ['./src/index.ts'],
+}

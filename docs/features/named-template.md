@@ -1,11 +1,12 @@
 # namedTemplate
 
+<StabilityLevel level="experimental" />
 
-<div py2 flex>
-  <small>Stability: <code class="!text-red-600">experimental</code></small>
-  <WarnBadge>Experimental, use at your risk</WarnBadge>
-</div>
+::: warning
 
+Not actively maintained now. Try [createReusableTemplate](https://vueuse.org/core/createReusableTemplate/) instead.
+
+:::
 
 With enabling `namedTemplate`, `<template>` can be referenced like a variable.
 
@@ -16,6 +17,7 @@ If you support this feature, you can go to [the discussion](https://github.com/v
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
+|      Vue 3.3       |        :x:         |
 |       Nuxt 3       |        :x:         |
 |       Vue 2        |        :x:         |
 | TypeScript / Volar |        :x:         |

@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.lib.json",
-  "exclude": ["**/dist", "**/tests", "**/*macros*.d.ts"],
-  "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node"
-  }
-}

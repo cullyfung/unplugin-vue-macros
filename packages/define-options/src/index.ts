@@ -1,44 +1,34 @@
 import { createUnplugin } from 'unplugin'
-import { createFilter } from '@rollup/pluginutils'
 import {
+  type BaseOptions,
+  type MarkRequired,
   REGEX_SETUP_SFC,
   REGEX_VUE_SFC,
   REGEX_VUE_SUB,
+  createFilter,
   detectVueVersion,
 } from '@vue-macros/common'
-import { transformDefineOptions } from './core/transform'
-import type { UnpluginContextMeta } from 'unplugin'
-import type { MarkRequired } from '@vue-macros/common'
-import type { FilterPattern } from '@rollup/pluginutils'
+import { transformDefineOptions } from './core'
 
-export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
-  version?: 2 | 3
-}
-
+export type Options = BaseOptions
 export type OptionsResolved = MarkRequired<Options, 'include' | 'version'>
 
-function resolveOption(
-  options: Options,
-  framework: UnpluginContextMeta['framework']
-): OptionsResolved {
+function resolveOption(options: Options): OptionsResolved {
   const version = options.version || detectVueVersion()
   return {
-    include: [REGEX_VUE_SFC, REGEX_SETUP_SFC].concat(
-      version === 2 && framework === 'webpack' ? REGEX_VUE_SUB : []
-    ),
+    include: [REGEX_VUE_SFC, REGEX_SETUP_SFC, REGEX_VUE_SUB],
     ...options,
     version,
   }
 }
 
-export default createUnplugin<Options | undefined, false>(
-  (userOptions = {}, { framework }) => {
-    const options = resolveOption(userOptions, framework)
-    const filter = createFilter(options.include, options.exclude)
+const name = 'unplugin-vue-define-options'
 
-    const name = 'unplugin-vue-define-options'
+export default createUnplugin<Options | undefined, false>(
+  (userOptions = {}) => {
+    const options = resolveOption(userOptions)
+    const filter = createFilter(options)
+
     return {
       name,
       enforce: 'pre',
@@ -48,11 +38,7 @@ export default createUnplugin<Options | undefined, false>(
       },
 
       transform(code, id) {
-        try {
-          return transformDefineOptions(code, id)
-        } catch (err: unknown) {
-          this.error(`${name} ${err}`)
-        }
+        return transformDefineOptions(code, id)
       },
     }
   }

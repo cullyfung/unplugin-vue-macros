@@ -1,22 +1,23 @@
 import { createUnplugin } from 'unplugin'
-import { createFilter } from '@rollup/pluginutils'
-import { REGEX_SETUP_SFC, REGEX_VUE_SFC } from '@vue-macros/common'
+import {
+  type BaseOptions,
+  type MarkRequired,
+  REGEX_SETUP_SFC,
+  REGEX_VUE_SFC,
+  createFilter,
+  detectVueVersion,
+} from '@vue-macros/common'
 import { transformShortEmits } from './core'
-import type { FilterPattern } from '@rollup/pluginutils'
 
-export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
-}
-
-export type OptionsResolved = Omit<Required<Options>, 'exclude'> & {
-  exclude?: FilterPattern
-}
+export type Options = BaseOptions
+export type OptionsResolved = MarkRequired<Options, 'include' | 'version'>
 
 function resolveOption(options: Options): OptionsResolved {
+  const version = options.version || detectVueVersion()
   return {
     include: [REGEX_VUE_SFC, REGEX_SETUP_SFC],
     ...options,
+    version,
   }
 }
 
@@ -25,7 +26,7 @@ const name = 'unplugin-vue-short-emits'
 export default createUnplugin<Options | undefined, false>(
   (userOptions = {}) => {
     const options = resolveOption(userOptions)
-    const filter = createFilter(options.include, options.exclude)
+    const filter = createFilter(options)
 
     return {
       name,
@@ -36,11 +37,7 @@ export default createUnplugin<Options | undefined, false>(
       },
 
       transform(code, id) {
-        try {
-          return transformShortEmits(code, id)
-        } catch (err: unknown) {
-          this.error(`${name} ${err}`)
-        }
+        return transformShortEmits(code, id)
       },
     }
   }

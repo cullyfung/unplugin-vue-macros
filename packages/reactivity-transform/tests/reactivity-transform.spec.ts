@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { parse } from '@babel/parser'
-import { transform } from '../src/core/impl'
+import { transform } from '../src/core/transform'
 
 function assertCode(code: string) {
   // parse the generated code to make sure it is valid
@@ -9,10 +9,10 @@ function assertCode(code: string) {
       sourceType: 'module',
       plugins: ['typescript'],
     })
-  } catch (e: any) {
+  } catch (error: any) {
     // eslint-disable-next-line no-console
     console.log(code)
-    throw e
+    throw error
   }
   expect(code).toMatchSnapshot()
 }

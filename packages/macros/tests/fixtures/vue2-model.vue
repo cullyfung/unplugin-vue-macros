@@ -3,7 +3,7 @@ defineOptions({
   name: 'Foo',
   model: {
     prop: 'value',
-    event: 'changeInput'
+    event: 'changeInput',
   },
 })
 const { title } = defineProps<{
@@ -12,7 +12,7 @@ const { title } = defineProps<{
 const emit = defineEmits<{
   (evt: 'change'): void
 }>()
-let { modelValue, value } = defineModel<{
+let { modelValue, value } = defineModels<{
   modelValue: string
   value: string
 }>()

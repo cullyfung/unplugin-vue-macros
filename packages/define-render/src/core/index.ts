@@ -2,13 +2,13 @@ import {
   DEFINE_RENDER,
   MagicString,
   babelParse,
+  generateTransform,
   getLang,
-  getTransformResult,
   isCallOf,
   isFunctionType,
   walkAST,
 } from '@vue-macros/common'
-import type { BlockStatement, ExpressionStatement, Node } from '@babel/types'
+import type * as t from '@babel/types'
 
 export function transformDefineRender(code: string, id: string) {
   if (!code.includes(DEFINE_RENDER)) return
@@ -17,16 +17,16 @@ export function transformDefineRender(code: string, id: string) {
   const program = babelParse(code, lang === 'vue' ? 'js' : lang)
 
   const nodes: {
-    parent: BlockStatement
-    node: ExpressionStatement
-    arg: Node
+    parent: t.BlockStatement
+    node: t.ExpressionStatement
+    arg: t.Node
   }[] = []
-  walkAST<Node>(program, {
+  walkAST<t.Node>(program, {
     enter(node, parent) {
       if (
         node.type !== 'ExpressionStatement' ||
         !isCallOf(node.expression, DEFINE_RENDER) ||
-        parent.type !== 'BlockStatement'
+        parent?.type !== 'BlockStatement'
       )
         return
 
@@ -60,5 +60,5 @@ export function transformDefineRender(code: string, id: string) {
     s.remove(arg.end!, node.end!)
   }
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }

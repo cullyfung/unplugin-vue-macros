@@ -1,41 +1,43 @@
 # defineSlots
 
-<small>Stability: <code class="!text-yellow-600">unstable</code></small>
+<StabilityLevel level="stable" />
 
-Declaring type of SFC slots in `<script setup>` using the `defineSlots`.
+使用 `defineSlots` 可以在 `<script setup>` 中声明 SFC 中插槽的类型
 
-|       Features       |              Supported              |
-| :------------------: | :---------------------------------: |
-|        Vue 3         |         :white_check_mark:          |
-|        Nuxt 3        |         :white_check_mark:          |
-|        Vue 2         |         :white_check_mark:          |
-| Volar Plugin + Vue 3 |         :white_check_mark:          |
-| Volar Plugin + Vue 2 | :x: (Volar does not support it yet) |
+在 Vue >= 3.3 中，此功能将默认关闭。
 
-## Basic Usage
+|         特性         |         支持         |
+| :------------------: | :------------------: |
+|        Vue 3         |  :white_check_mark:  |
+|        Nuxt 3        |  :white_check_mark:  |
+|        Vue 2         |  :white_check_mark:  |
+| Volar Plugin + Vue 3 |  :white_check_mark:  |
+| Volar Plugin + Vue 2 | :x: (Volar 还不支持) |
+
+## 基本用法
 
 ```vue
 <script setup lang="ts">
 defineSlots<{
-  // slot name
+  // 插槽名称
   title: {
-    // scoped slot
+    // 作用域插槽
     foo: 'bar' | boolean
   }
 }>()
 </script>
 ```
 
-## Volar Configuration
+## Volar 配置
 
 ```jsonc {6}
 // tsconfig.json
 {
   "vueCompilerOptions": {
-    "target": 3, // or 2.7 is not supported by Volar.
+    "target": 3, // Volar 暂不支持 2.7 版本
     "plugins": [
       "@vue-macros/volar/define-slots"
-      // ...more feature
+      // ...更多功能
     ]
   }
 }

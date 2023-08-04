@@ -1,14 +1,17 @@
+import {
+  type DefaultTheme,
+  type HeadConfig,
+  type LocaleConfig,
+} from 'vitepress'
 import * as common from './common'
-import type { DefaultTheme, HeadConfig, LocaleConfig } from 'vitepress'
 
 export const title = 'Vue Macros'
-export const description =
-  'Explore and extend more macros and syntax sugar to Vue.'
+export const description = 'Explore more macros and syntax sugar to Vue.'
 
 export const nav: DefaultTheme.NavItem[] = [
-  { text: 'Guide', link: '/guide/getting-started' },
-  { text: 'Macros', link: '/macros/' },
-  { text: 'Features', link: '/features/hoist-static' },
+  { text: 'Guide', link: '/guide/getting-started', activeMatch: 'guide' },
+  { text: 'Macros', link: '/macros/', activeMatch: 'macros' },
+  { text: 'Features', link: '/features/hoist-static', activeMatch: 'features' },
 ]
 
 export const sidebar = common.sidebar('')
@@ -22,7 +25,7 @@ export const themeConfig: DefaultTheme.Config = {
       'MIT License © 2022-PRESENT <a href="https://github.com/sxzz">三咲智子 Kevin Deng</a>',
   },
   editLink: {
-    pattern: 'https://github.com/sxzz/unplugin-vue-macros/edit/main/docs/:path',
+    pattern: 'https://github.com/vue-macros/vue-macros/edit/main/docs/:path',
     text: 'Edit this page on GitHub',
   },
   nav,

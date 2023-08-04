@@ -1,23 +1,23 @@
 # exportProps
 
-<small py2>Stability: <code class="!text-red-600">experimental</code></small>
+<StabilityLevel level="experimental" />
 
-[Svelte-like Declaring props](https://svelte.dev/docs#component-format-script-1-export-creates-a-component-prop) for Vue.
+在 Vue 中使用 [Svelte 风格声明 `props`](https://svelte.dev/docs#component-format-script-1-export-creates-a-component-prop)。
 
-|   Features   |     Supported      |
+|     特性     |        支持        |
 | :----------: | :----------------: |
 |    Vue 3     | :white_check_mark: |
 |    Nuxt 3    |         ?          |
 |    Vue 2     |         ?          |
 | Volar Plugin | :white_check_mark: |
 
-## Usage
+## 用法
 
-Using export syntax to declare props.
+使用导出语法来声明 `props`。
 
 ```vue
 <script setup lang="ts">
 export let foo: string
-export const bar: number = 1 // with default value
+export const bar: number = 1 // 带有默认值
 </script>
 ```

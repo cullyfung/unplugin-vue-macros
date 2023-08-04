@@ -1,6 +1,6 @@
 # shortVmodel
 
-<small>Stability: <code class="!text-green-600">stable</code></small>
+<StabilityLevel level="stable" />
 
 A shorthand for `v-model`.
 
@@ -98,9 +98,10 @@ export default defineConfig({
       "@vue-macros/volar/short-vmodel"
       // ...
     ],
-    // prefix
-    "shortVmodel": {
-      "prefix": "$"
+    "vueMacros": {
+      "shortVmodel": {
+        "prefix": "$"
+      }
     }
   }
 }

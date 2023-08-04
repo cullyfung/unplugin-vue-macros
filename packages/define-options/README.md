@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/sxzz/unplugin-vue-macros/raw/main/docs/public/logo.svg" width="200px" />
+  <img src="https://github.com/vue-macros/vue-macros/raw/main/docs/public/logo.svg" width="200px" />
 </p>
 
 # unplugin-vue-define-options [![npm](https://img.shields.io/npm/v/unplugin-vue-define-options.svg)](https://npmjs.com/package/unplugin-vue-define-options)
@@ -25,8 +25,8 @@ If you support this feature, feel free to hit like 👍 or comment on [RFC Discu
 ## Sponsors
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.svg'/>
+  <a href="https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg">
+    <img src='https://cdn.jsdelivr.net/gh/sxzz/sponsors/sponsors.wide.svg'/>
   </a>
 </p>
 

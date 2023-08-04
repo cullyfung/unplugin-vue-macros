@@ -1,9 +1,6 @@
 # setupSFC
 
-<small mr-2>
-  Stability: <code class="!text-red-600">experimental</code>
-</small>
-<WarnBadge>Experimental, use at your risk</WarnBadge>
+<StabilityLevel level="experimental" />
 
 ::: tip
 
@@ -14,7 +11,7 @@ If you're using `setupSFC`, then `defineRender` cannot be disabled.
 |      Features      |     Supported      |
 | :----------------: | :----------------: |
 |       Vue 3        | :white_check_mark: |
-|       Nuxt 3       |        :x:         |
+|       Nuxt 3       | :white_check_mark: |
 |       Vue 2        | :white_check_mark: |
 | TypeScript / Volar |        :x:         |
 
@@ -31,7 +28,7 @@ export default defineConfig({
   plugins: [
     VueMacros(),
     Vue({
-      include: [/\.vue$/, /setup\.[cm]?[jt]sx?$/],
+      include: [/\.vue$/, /\.setup\.[cm]?[jt]sx?$/],
       //                   ⬆️ setupSFC pattern need to be added
     }),
   ],
@@ -47,7 +44,7 @@ export default defineConfig({
     VueMacros({
       plugins: {
         vue: Vue({
-          include: [/\.vue$/, /setup\.[cm]?[jt]sx?$/],
+          include: [/\.vue$/, /\.setup\.[cm]?[jt]sx?$/],
           //                   ⬆️ setupSFC pattern need to be added
         }),
       },

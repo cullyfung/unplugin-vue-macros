@@ -1,34 +1,36 @@
 import {
+  type MagicString,
+  type SFC,
   babelParse,
   isStaticExpression,
   resolveLiteral,
 } from '@vue-macros/common'
 import {
-  isTSExports,
+  type CallExpression,
+  type ExpressionStatement,
+  type LVal,
+  type Node,
+  type StringLiteral,
+  type TSCallSignatureDeclaration,
+  type TSFunctionType,
+  type TSInterfaceDeclaration,
+  type TSIntersectionType,
+  type TSType,
+  type TSTypeLiteral,
+  type UnaryExpression,
+  type VariableDeclaration,
+} from '@babel/types'
+import {
+  type TSFile,
+  type TSResolvedType,
+  isTSNamespace,
   resolveTSProperties,
   resolveTSReferencedType,
   resolveTSScope,
 } from '../ts'
 import { keyToString } from '../utils'
-import { DefinitionKind } from './types'
+import { type ASTDefinition, DefinitionKind } from './types'
 import { attachNodeLoc } from './utils'
-import type { TSFile, TSResolvedType } from '../ts'
-import type { MagicString, SFC } from '@vue-macros/common'
-import type { ASTDefinition } from './types'
-import type {
-  CallExpression,
-  ExpressionStatement,
-  LVal,
-  Node,
-  StringLiteral,
-  TSCallSignatureDeclaration,
-  TSInterfaceDeclaration,
-  TSIntersectionType,
-  TSType,
-  TSTypeLiteral,
-  UnaryExpression,
-  VariableDeclaration,
-} from '@babel/types'
 
 export async function handleTSEmitsDefinition({
   s,
@@ -100,7 +102,7 @@ export async function handleTSEmitsDefinition({
     if (!def) return false
 
     if (def.scope === file) s.removeNode(def.ast, { offset })
-    delete definitions[key][idx]
+    definitions[key].splice(idx, 1)
     return true
   }
 
@@ -124,23 +126,26 @@ export async function handleTSEmitsDefinition({
 
   async function resolveDefinitions(typeDeclRaw: TSResolvedType<TSType>) {
     const resolved = await resolveTSReferencedType(typeDeclRaw)
-    if (!resolved || isTSExports(resolved))
+    if (!resolved || isTSNamespace(resolved))
       throw new SyntaxError(`Cannot resolve TS definition.`)
 
     const { type: definitionsAst, scope } = resolved
     if (
       definitionsAst.type !== 'TSInterfaceDeclaration' &&
       definitionsAst.type !== 'TSTypeLiteral' &&
-      definitionsAst.type !== 'TSIntersectionType'
+      definitionsAst.type !== 'TSIntersectionType' &&
+      definitionsAst.type !== 'TSFunctionType'
     )
-      throw new SyntaxError(`Cannot resolve TS definition.`)
+      throw new SyntaxError(
+        `Cannot resolve TS definition: ${definitionsAst.type}`
+      )
 
     const properties = await resolveTSProperties({
       scope,
       type: definitionsAst,
     })
 
-    const definitions: TSEmits['definitions'] = {}
+    const definitions: TSEmits['definitions'] = Object.create(null)
     for (const signature of properties.callSignatures) {
       const evtArg = signature.type.parameters[0]
       if (
@@ -154,16 +159,24 @@ export async function handleTSEmitsDefinition({
         type: evtArg.typeAnnotation.typeAnnotation,
         scope: signature.scope,
       })
-      if (isTSExports(evtType) || evtType?.type.type !== 'TSLiteralType')
-        continue
 
-      const literal = evtType.type.literal
-      if (!isStaticExpression(literal)) continue
-      const evt = String(
-        resolveLiteral(literal as Exclude<typeof literal, UnaryExpression>)
-      )
-      if (!definitions[evt]) definitions[evt] = []
-      definitions[evt].push(buildDefinition(signature))
+      if (isTSNamespace(evtType) || !evtType?.type) continue
+
+      const types =
+        evtType.type.type === 'TSUnionType'
+          ? evtType.type.types
+          : [evtType.type]
+
+      for (const type of types) {
+        if (type.type !== 'TSLiteralType') continue
+        const literal = type.literal
+        if (!isStaticExpression(literal)) continue
+        const evt = String(
+          resolveLiteral(literal as Exclude<typeof literal, UnaryExpression>)
+        )
+        if (!definitions[evt]) definitions[evt] = []
+        definitions[evt].push(buildDefinition(signature))
+      }
     }
 
     return {
@@ -197,9 +210,12 @@ export interface EmitsBase {
 export interface TSEmits extends EmitsBase {
   kind: DefinitionKind.TS
 
-  definitions: Record<string, ASTDefinition<TSCallSignatureDeclaration>[]>
+  definitions: Record<
+    string,
+    ASTDefinition<TSCallSignatureDeclaration | TSFunctionType>[]
+  >
   definitionsAst: ASTDefinition<
-    TSTypeLiteral | TSIntersectionType | TSInterfaceDeclaration
+    TSTypeLiteral | TSIntersectionType | TSInterfaceDeclaration | TSFunctionType
   >
 
   /**

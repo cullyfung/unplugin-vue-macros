@@ -1,41 +1,44 @@
 import { createUnplugin } from 'unplugin'
-import { createFilter } from '@rollup/pluginutils'
 import {
+  type BaseOptions,
+  type MarkRequired,
   REGEX_NODE_MODULES,
   REGEX_SETUP_SFC,
   REGEX_SRC_FILE,
   REGEX_VUE_SUB,
+  createFilter,
+  detectVueVersion,
 } from '@vue-macros/common'
+import { type PluginContext } from 'rollup'
 import {
   SETUP_COMPONENT_ID_REGEX,
+  type SetupComponentContext,
   hotUpdateSetupComponent,
   loadSetupComponent,
   transformPost,
   transformSetupComponent,
 } from './core'
 import { getMainModule, isSubModule } from './core/sub-module'
-import type { PluginContext } from 'rollup'
-import type { FilterPattern } from '@rollup/pluginutils'
-import type { SetupComponentContext } from './core'
 
 export type { SetupComponentContext } from './core'
 
-export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
+export interface Options extends BaseOptions {
   root?: string
 }
-
-export type OptionsResolved = Omit<Required<Options>, 'exclude'> & {
-  exclude?: FilterPattern
-}
+export type OptionsResolved = MarkRequired<
+  Options,
+  'include' | 'version' | 'root'
+>
 
 function resolveOption(options: Options): OptionsResolved {
+  const root = options.root || process.cwd()
+  const version = options.version || detectVueVersion(root)
   return {
     include: [REGEX_SRC_FILE],
     exclude: [REGEX_SETUP_SFC, REGEX_VUE_SUB, REGEX_NODE_MODULES],
-    root: process.cwd(),
     ...options,
+    root,
+    version,
   }
 }
 
@@ -43,7 +46,7 @@ const name = 'unplugin-vue-setup-component'
 const PrePlugin = createUnplugin<Options | undefined, false>(
   (userOptions = {}, meta) => {
     const options = resolveOption(userOptions)
-    const filter = createFilter(options.include, options.exclude)
+    const filter = createFilter(options)
 
     const setupComponentContext: SetupComponentContext = {}
 
@@ -79,11 +82,7 @@ const PrePlugin = createUnplugin<Options | undefined, false>(
       },
 
       transform(code, id) {
-        try {
-          return transformSetupComponent(code, id, setupComponentContext)
-        } catch (err: unknown) {
-          this.error(`${name} ${err}`)
-        }
+        return transformSetupComponent(code, id, setupComponentContext)
       },
 
       vite: {

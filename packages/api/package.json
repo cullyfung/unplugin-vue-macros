@@ -1,15 +1,26 @@
 {
   "name": "@vue-macros/api",
-  "version": "0.3.0",
-  "packageManager": "pnpm@7.26.0",
+  "version": "0.8.2",
+  "packageManager": "pnpm@8.6.11",
+  "description": "General API for Vue Macros.",
+  "keywords": [
+    "vue-macros",
+    "macros",
+    "vue",
+    "sfc",
+    "setup",
+    "script-setup",
+    "api"
+  ],
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/unplugin-vue-macros#readme",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/unplugin-vue-macros/issues"
+    "url": "https://github.com/vue-macros/vue-macros/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/unplugin-vue-macros.git"
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/api"
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
@@ -20,21 +31,32 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
-    "./*": "./*"
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
   },
   "scripts": {
-    "build": "tsup && tsx ../../scripts/postbuild.mts",
-    "dev": "DEV=1 tsup"
+    "build": "tsup",
+    "dev": "DEV=true tsup"
   },
   "dependencies": {
-    "@babel/types": "^7.20.7",
-    "@vue-macros/common": "workspace:~"
+    "@babel/types": "^7.22.5",
+    "@vue-macros/common": "workspace:*",
+    "resolve.exports": "^2.0.2"
+  },
+  "devDependencies": {
+    "rollup": "^3.27.0"
   },
   "engines": {
-    "node": ">=14.19.0"
+    "node": ">=16.14.0"
   }
 }

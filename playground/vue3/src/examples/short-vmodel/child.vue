@@ -1,9 +1,9 @@
 <script setup lang="ts">
-$defineModel<{
+$defineModels<{
   foo: string
 }>()
 </script>
 
 <template>
-  <div />
+  {{ foo }}
 </template>

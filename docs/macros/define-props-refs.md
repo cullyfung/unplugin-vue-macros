@@ -1,6 +1,6 @@
 # definePropsRefs
 
-<small>Stability: <code class="!text-yellow-600">unstable</code></small>
+<StabilityLevel level="stable" />
 
 Returns refs from `defineProps` instead of a reactive object. It can be destructured without losing reactivity.
 
@@ -24,6 +24,23 @@ const { foo, bar } = definePropsRefs<{
 }>()
 //          ⬇️ Ref<string>
 console.log(foo.value, bar.value)
+</script>
+```
+
+## With Default Value
+
+```vue {2-3,8}
+<script setup lang="ts">
+import { withDefaults } from 'unplugin-vue-macros/macros' assert { type: 'macro' }
+
+const { foo } = withDefaults(
+  definePropsRefs<{
+    foo?: string
+  }>(),
+  { foo: 'test' }
+)
+//          ⬇️ Ref<string>
+console.log(foo.value)
 </script>
 ```
 

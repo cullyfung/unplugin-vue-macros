@@ -1,39 +1,52 @@
 import {
+  HELPER_PREFIX,
   MagicString,
   babelParse,
+  generateTransform,
   getLang,
-  getTransformResult,
+  importHelperFn,
   isCallOf,
   walkAST,
 } from '@vue-macros/common'
-import { createTransformContext, parse, traverseNode } from '@vue/compiler-dom'
+import {
+  type AttributeNode,
+  type ElementNode,
+  type NodeTransform,
+  type NodeTypes,
+  type RootNode,
+  createTransformContext,
+  parse,
+  traverseNode,
+} from '@vue/compiler-dom'
+import {
+  type CallExpression,
+  type Identifier,
+  type Node,
+  type Program,
+} from '@babel/types'
+import { type CustomBlocks, type TemplateContent } from '..'
 import { getChildrenLocation, parseVueRequest } from './utils'
-import {} from '@rollup/pluginutils'
 import {
   MAIN_TEMPLATE,
   QUERY_NAMED_TEMPLATE,
   QUERY_TEMPLATE_MAIN,
 } from './constants'
-import type { CallExpression, Identifier, Node, Program } from '@babel/types'
-import type { CustomBlocks, TemplateContent } from '..'
-import type {
-  AttributeNode,
-  ElementNode,
-  NodeTransform,
-  RootNode,
-} from '@vue/compiler-dom'
 
 export * from './constants'
 export * from './utils'
 
 export function transformTemplateIs(s: MagicString): NodeTransform {
   return (node) => {
-    if (!(node.type === 1 /* NodeTypes.ELEMENT */ && node.tag === 'template'))
+    if (
+      !(
+        node.type === (1 satisfies NodeTypes.ELEMENT) && node.tag === 'template'
+      )
+    )
       return
 
     const propIs = node.props.find(
       (prop): prop is AttributeNode =>
-        prop.type === 6 /* NodeTypes.ATTRIBUTE */ && prop.name === 'is'
+        prop.type === (6 satisfies NodeTypes.ATTRIBUTE) && prop.name === 'is'
     )
     if (!propIs?.value) return
 
@@ -55,7 +68,7 @@ export function preTransform(
 
   const templates = root.children.filter(
     (node): node is ElementNode =>
-      node.type === 1 /* NodeTypes.ELEMENT */ && node.tag === 'template'
+      node.type === (1 satisfies NodeTypes.ELEMENT) && node.tag === 'template'
   )
   if (templates.length <= 1) return
 
@@ -63,7 +76,7 @@ export function preTransform(
   for (const node of templates) {
     const propName = node.props.find(
       (prop): prop is AttributeNode =>
-        prop.type === 6 /* NodeTypes.ATTRIBUTE */ && prop.name === 'name'
+        prop.type === (6 satisfies NodeTypes.ATTRIBUTE) && prop.name === 'name'
     )
     if (!propName) {
       preTransformMainTemplate({ s, root, node, id, templateContent })
@@ -80,17 +93,17 @@ export function preTransform(
       template = s.slice(...templateLoc)
     }
 
-    if (!templateContent[id]) templateContent[id] = {}
+    if (!templateContent[id]) templateContent[id] = Object.create(null)
     templateContent[id][name] = template
 
     s.appendLeft(node.loc.start.offset, `<named-template name="${name}">`)
     s.appendLeft(node.loc.end.offset, '</named-template>')
   }
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }
 
-function preTransformMainTemplate({
+export function preTransformMainTemplate({
   s,
   root,
   node,
@@ -112,7 +125,7 @@ function preTransformMainTemplate({
   const loc = getChildrenLocation(node)
   if (!loc) return
 
-  if (!templateContent[id]) templateContent[id] = {}
+  if (!templateContent[id]) templateContent[id] = Object.create(null)
   templateContent[id][MAIN_TEMPLATE] = s.slice(...loc)
 
   s.remove(...loc)
@@ -185,33 +198,31 @@ export function postTransform(
 
   if (subTemplates.length === 0) return
 
-  let importFragment = false
   for (const { vnode, component, name, fnName } of subTemplates) {
     const block = customBlocks[filename]?.[name]
     if (!block) throw new SyntaxError(`Unknown named template: ${name}`)
 
-    const render = `_NT_block_${name}.render(...args)`
+    const render = `${HELPER_PREFIX}block_${escapeTemplateName(
+      name
+    )}.render(...args)`
     if (fnName === '_createVNode') {
       s.overwriteNode(vnode, render)
     } else if (fnName === '_createBlock') {
-      s.overwriteNode(component, '_NT_Fragment')
+      s.overwriteNode(component, importHelperFn(s, 0, 'Fragment'))
       const text = `${vnode.arguments[1] ? '' : ', null'}, [${render}]`
       s.appendLeft((vnode.arguments[1] || vnode.arguments[0]).end!, text)
-      importFragment = true
     }
   }
 
   for (const [name, source] of Object.entries(customBlocks[filename])) {
     s.prepend(
-      `import { default as _NT_block_${name} } from ${JSON.stringify(source)}\n`
+      `import ${HELPER_PREFIX}block_${escapeTemplateName(
+        name
+      )} from ${JSON.stringify(source)};\n`
     )
   }
 
-  if (importFragment) {
-    s.prepend(`import { Fragment as _NT_Fragment } from 'vue'\n`)
-  }
-
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }
 
 export function postTransformMainEntry(
@@ -225,8 +236,12 @@ export function postTransformMainEntry(
       node.source.value.includes(QUERY_NAMED_TEMPLATE)
     ) {
       const { name } = parseVueRequest(node.source.value).query as any
-      if (!customBlocks[id]) customBlocks[id] = {}
+      if (!customBlocks[id]) customBlocks[id] = Object.create(null)
       customBlocks[id][name] = node.source.value
     }
   }
+}
+
+function escapeTemplateName(name: string) {
+  return name.replaceAll('-', '$DASH')
 }

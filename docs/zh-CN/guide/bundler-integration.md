@@ -1,6 +1,6 @@
-# Bundler Integration
+# 打包器集成
 
-### Installation
+### 安装
 
 ::: code-group
 
@@ -31,7 +31,7 @@ export default defineConfig({
     VueMacros({
       plugins: {
         vue: Vue(),
-        // vueJsx: VueJsx(), // if needed
+        // vueJsx: VueJsx(), // 如果需要
       },
     }),
   ],
@@ -48,7 +48,7 @@ export default {
     VueMacros({
       plugins: {
         vue: Vue(),
-        // vueJsx: VueJsx(), // if needed
+        // vueJsx: VueJsx(), // 如果需要
       },
     }),
   ],
@@ -64,7 +64,7 @@ build({
     require('unplugin-vue-macros/esbuild')({
       plugins: {
         vue: require('unplugin-vue/esbuild')(),
-        // vueJsx: VueJsx(), // if needed
+        // vueJsx: VueJsx(), // 如果需要
       },
     }),
   ],
@@ -86,7 +86,7 @@ const VueMacros = require('unplugin-vue-macros/webpack')
 
 module.exports = defineConfig({
   // ...
-  // ⚠️ IMPORTANT
+  // ⚠️ 重要
   parallel: false,
   configureWebpack: {
     plugins: [VueMacros({})],
@@ -96,7 +96,7 @@ module.exports = defineConfig({
 
 :::
 
-## TypeScript Support
+## TypeScript 支持
 
 ::: code-group
 
@@ -122,9 +122,9 @@ module.exports = defineConfig({
 
 :::
 
-## Volar Support
+## Volar 支持
 
-For detailed configuration, please refer to the description of the specific macro.
+有关宏的详细配置请参考每个宏的具体说明。
 
 ```bash
 npm i -D @vue-macros/volar
@@ -135,18 +135,20 @@ npm i -D @vue-macros/volar
 {
   "vueCompilerOptions": {
     "plugins": [
-      "@vue-macros/volar/define-model",
+      "@vue-macros/volar/define-options",
+      "@vue-macros/volar/define-models",
       "@vue-macros/volar/define-props",
       "@vue-macros/volar/define-props-refs",
       "@vue-macros/volar/short-vmodel",
       "@vue-macros/volar/define-slots",
-      "@vue-macros/volar/export-props"
+      "@vue-macros/volar/export-props",
+      "@vue-macros/volar/jsx-directive"
     ]
     // ...
   }
 }
 ```
 
-:tada: Congratulations! You have successfully set up `unplugin-vue-macros`.
+:tada: 恭喜你! 目前你已经成功将 `unplugin-vue-macros` 设置完成。
 
-To learn more about the macros, please visit [All Macros](/macros/) :laughing:.
+如果你还想要了解有关宏的更多信息, 请访问 [全部宏](/zh-CN/macros/) :laughing:。

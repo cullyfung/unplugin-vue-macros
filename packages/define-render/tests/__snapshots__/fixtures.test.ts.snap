@@ -1,7 +1,8 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`fixtures > tests/fixtures/basic.vue 1`] = `
-"import { defineComponent, h } from 'vue';
+exports[`fixtures > tests/fixtures/basic.vue > isProduction = false 1`] = `
+"import { defineComponent, h, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"basic\\",
@@ -10,13 +11,25 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock(\\"div\\", null, \\"basic\\");
+}
+var basic = /* @__PURE__ */ _export_sfc(_sfc_main, [[\\"render\\", _sfc_render], __FILE__]);
+
+export { basic as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/basic.vue > isProduction = true 1`] = `
+"import { defineComponent, h } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"basic\\",
+  setup(__props) {
+    return () => h(\\"div\\");
   }
-  return target;
-};
+});
 
 var basic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -24,8 +37,9 @@ export { basic as default };
 "
 `;
 
-exports[`fixtures > tests/fixtures/id.vue 1`] = `
+exports[`fixtures > tests/fixtures/id.vue > isProduction = false 1`] = `
 "import { defineComponent, createVNode, createTextVNode } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"id\\",
@@ -35,13 +49,23 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
+var id = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { id as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/id.vue > isProduction = true 1`] = `
+"import { defineComponent, createVNode, createTextVNode } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"id\\",
+  setup(__props) {
+    const renderFn = () => createVNode(\\"div\\", null, [createTextVNode(\\"Hello\\")]);
+    return renderFn;
   }
-  return target;
-};
+});
 
 var id = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -49,8 +73,9 @@ export { id as default };
 "
 `;
 
-exports[`fixtures > tests/fixtures/tsx.vue 1`] = `
-"import { defineComponent, createVNode, createTextVNode } from 'vue';
+exports[`fixtures > tests/fixtures/tsx.vue > isProduction = false 1`] = `
+"import { defineComponent, createVNode, createTextVNode, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"tsx\\",
@@ -59,13 +84,25 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createElementBlock(\\"div\\");
+}
+var tsx = /* @__PURE__ */ _export_sfc(_sfc_main, [[\\"render\\", _sfc_render], __FILE__]);
+
+export { tsx as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/tsx.vue > isProduction = true 1`] = `
+"import { defineComponent, createVNode, createTextVNode } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"tsx\\",
+  setup(__props) {
+    return () => createVNode(\\"div\\", null, [createTextVNode(\\"Hello\\")]);
   }
-  return target;
-};
+});
 
 var tsx = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -73,8 +110,9 @@ export { tsx as default };
 "
 `;
 
-exports[`fixtures > tests/fixtures/without-fn.vue 1`] = `
+exports[`fixtures > tests/fixtures/without-fn.vue > isProduction = false 1`] = `
 "import { defineComponent, createVNode, createTextVNode } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"without-fn\\",
@@ -83,13 +121,22 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
+var withoutFn = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { withoutFn as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/without-fn.vue > isProduction = true 1`] = `
+"import { defineComponent, createVNode, createTextVNode } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"without-fn\\",
+  setup(__props) {
+    return () => createVNode(\\"div\\", null, [createTextVNode(\\"Hello\\")]);
   }
-  return target;
-};
+});
 
 var withoutFn = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 

@@ -1,23 +1,26 @@
 {
   "name": "@vue-macros/nuxt",
-  "version": "1.0.0",
-  "packageManager": "pnpm@7.26.0",
-  "description": "",
+  "version": "1.5.0",
+  "packageManager": "pnpm@8.6.11",
+  "description": "nuxt feature from Vue Macros.",
   "keywords": [
-    "unplugin",
+    "vue-macros",
+    "macros",
     "vue",
     "sfc",
-    "macros",
+    "setup",
+    "script-setup",
     "nuxt"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/sxzz/unplugin-vue-macros#readme",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
   "bugs": {
-    "url": "https://github.com/sxzz/unplugin-vue-macros/issues"
+    "url": "https://github.com/vue-macros/vue-macros/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sxzz/unplugin-vue-macros.git"
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/nuxt"
   },
   "author": "三咲智子 <sxzz@sxzz.moe>",
   "files": [
@@ -28,29 +31,38 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
-    "./*": "./*"
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
   },
   "scripts": {
-    "build": "tsup && tsx ../../scripts/postbuild.mts",
-    "dev": "DEV=1 tsup"
+    "build": "tsup",
+    "dev": "DEV=true tsup"
   },
   "peerDependencies": {
     "nuxt": "^3.0.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.1.1",
-    "@vue-macros/short-vmodel": "workspace:~",
-    "@vue-macros/volar": "workspace:~",
-    "unplugin-vue-macros": "workspace:~"
+    "@nuxt/kit": "^3.6.5",
+    "@vue-macros/boolean-prop": "workspace:*",
+    "@vue-macros/short-vmodel": "workspace:*",
+    "@vue-macros/volar": "workspace:*",
+    "unplugin-vue-macros": "workspace:*"
   },
   "devDependencies": {
-    "@nuxt/schema": "^3.1.1"
+    "@nuxt/devtools": "^0.7.2",
+    "@nuxt/schema": "^3.6.5"
   },
   "engines": {
-    "node": ">=14.19.0"
+    "node": ">=16.14.0"
   }
 }

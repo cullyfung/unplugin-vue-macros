@@ -1,11 +1,13 @@
 import { FileKind, FileRangeCapabilities } from '@volar/language-core'
 import { DEFINE_SLOTS } from '@vue-macros/common'
-import { replace, toString } from 'muggle-string'
-import type {
-  Sfc,
-  VueEmbeddedFile,
-  VueLanguagePlugin,
-} from '@volar/vue-language-core'
+import {
+  type Segment,
+  type Sfc,
+  type VueEmbeddedFile,
+  type VueLanguagePlugin,
+  replace,
+  toString,
+} from '@vue/language-core'
 
 const transform = ({
   embeddedFile,
@@ -13,7 +15,7 @@ const transform = ({
   sfc,
 }: {
   embeddedFile: VueEmbeddedFile
-  typeArg: ts.TypeNode
+  typeArg: import('typescript/lib/tsserverlibrary').TypeNode
   sfc: Sfc
 }) => {
   if (embeddedFile.kind !== FileKind.TypeScriptHostFile) return
@@ -26,9 +28,9 @@ const transform = ({
 
   replace(
     embeddedFile.content,
-    'return __VLS_slots',
-    `return __VLS_slots as __VLS_DefineSlots<`,
-    () => [
+    /var __VLS_slots!: .*/,
+    'var __VLS_slots!: __VLS_DefineSlots<',
+    (): Segment<FileRangeCapabilities> => [
       // slots type
       sfc.scriptSetup!.content.slice(typeArg.pos, typeArg.end),
       'scriptSetup',
@@ -38,7 +40,7 @@ const transform = ({
     '>'
   )
   embeddedFile.content.push(
-    `type __VLS_DefineSlots<T> = { [SlotName in keyof T]: (_: T[SlotName]) => any }`
+    `type __VLS_DefineSlots<T> = { [SlotName in keyof T]: T[SlotName] extends Function ? T[SlotName] : (_: T[SlotName]) => any }`
   )
 }
 
@@ -46,7 +48,7 @@ function getTypeArg(
   ts: typeof import('typescript/lib/tsserverlibrary'),
   sfc: Sfc
 ) {
-  function getCallArg(node: ts.Node) {
+  function getCallArg(node: import('typescript/lib/tsserverlibrary').Node) {
     if (
       !(
         ts.isCallExpression(node) &&
@@ -82,4 +84,4 @@ const plugin: VueLanguagePlugin = ({ modules: { typescript: ts } }) => {
   }
 }
 
-export = plugin
+export default plugin

@@ -1,11 +1,11 @@
 import {
   MagicString,
   addNormalScript,
-  getTransformResult,
+  generateTransform,
   isStaticExpression,
   parseSFC,
 } from '@vue-macros/common'
-import type { Node } from '@babel/types'
+import { type Node } from '@babel/types'
 
 export const MAGIC_COMMENT = 'hoist-static'
 
@@ -80,5 +80,5 @@ export function transformHoistStatic(code: string, id: string) {
 
   if (scriptOffset !== undefined) normalScript.end()
 
-  return getTransformResult(s, id)
+  return generateTransform(s, id)
 }

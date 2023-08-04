@@ -1,0 +1,61 @@
+{
+  "name": "@vue-macros/boolean-prop",
+  "version": "0.1.0",
+  "packageManager": "pnpm@8.6.11",
+  "description": "boolean-prop feature from Vue Macros.",
+  "keywords": [
+    "vue-macros",
+    "macros",
+    "vue",
+    "sfc",
+    "setup",
+    "script-setup",
+    "boolean-prop"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/vue-macros/vue-macros#readme",
+  "bugs": {
+    "url": "https://github.com/vue-macros/vue-macros/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/boolean-prop"
+  },
+  "author": "三咲智子 <sxzz@sxzz.moe>",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "dev": "./src/index.ts",
+      "types": {
+        "require": "./dist/index.d.ts",
+        "import": "./dist/index.d.mts"
+      },
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "DEV=true tsup"
+  },
+  "dependencies": {
+    "@vue-macros/common": "workspace:*",
+    "@vue/compiler-core": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.3.4"
+  },
+  "engines": {
+    "node": ">=16.14.0"
+  }
+}

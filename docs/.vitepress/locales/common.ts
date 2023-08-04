@@ -1,10 +1,10 @@
-import type { DefaultTheme, HeadConfig } from 'vitepress'
+import { type DefaultTheme, type HeadConfig } from 'vitepress'
 import { webLink } from '.vitepress/configs/meta'
 
 export const themeConfig = {
   logo: '/favicon.svg',
   socialLinks: [
-    { icon: 'github', link: 'https://github.com/sxzz/unplugin-vue-macros' },
+    { icon: 'github', link: 'https://github.com/vue-macros/vue-macros' },
   ],
 } satisfies DefaultTheme.Config
 
@@ -30,7 +30,7 @@ gtag('config', 'G-29NKGSL23C');`,
   ],
 ]
 
-export const sidebar = (lang: string): DefaultTheme.Sidebar => {
+export const sidebar = (lang: string): DefaultTheme.SidebarItem[] => {
   const urlPrefix = lang ? `/${lang}` : ''
   return [
     {
@@ -61,45 +61,75 @@ export const sidebar = (lang: string): DefaultTheme.Sidebar => {
           text: 'All Macros',
           link: `${urlPrefix}/macros/`,
         },
+
         {
-          text: 'defineOptions',
-          link: `${urlPrefix}/macros/define-options`,
+          text: 'Official',
+          items: [
+            {
+              text: 'defineOptions',
+              link: `${urlPrefix}/macros/define-options`,
+            },
+            {
+              text: 'defineSlots',
+              link: `${urlPrefix}/macros/define-slots`,
+            },
+            {
+              text: 'shortEmits',
+              link: `${urlPrefix}/macros/short-emits`,
+            },
+          ],
         },
+
         {
-          text: 'defineModel',
-          link: `${urlPrefix}/macros/define-model`,
+          text: 'Stable',
+          items: [
+            {
+              text: 'defineModels',
+              link: `${urlPrefix}/macros/define-models`,
+            },
+            {
+              text: 'defineProps',
+              link: `${urlPrefix}/macros/define-props`,
+            },
+            {
+              text: 'definePropsRefs',
+              link: `${urlPrefix}/macros/define-props-refs`,
+            },
+            {
+              text: 'defineRender',
+              link: `${urlPrefix}/macros/define-render`,
+            },
+            {
+              text: 'shortVmodel',
+              link: `${urlPrefix}/macros/short-vmodel`,
+            },
+          ],
         },
+
         {
-          text: 'defineProps',
-          link: `${urlPrefix}/macros/define-props`,
-        },
-        {
-          text: 'definePropsRefs',
-          link: `${urlPrefix}/macros/define-props-refs`,
-        },
-        {
-          text: 'defineSlots',
-          link: `${urlPrefix}/macros/define-slots`,
-        },
-        {
-          text: 'defineRender',
-          link: `${urlPrefix}/macros/define-render`,
-        },
-        {
-          text: 'shortEmits',
-          link: `${urlPrefix}/macros/short-emits`,
-        },
-        {
-          text: 'shortVmodel',
-          link: `${urlPrefix}/macros/short-vmodel`,
-        },
-        {
-          text: 'setupComponent',
-          link: `${urlPrefix}/macros/setup-component`,
-        },
-        {
-          text: 'setupSFC',
-          link: `${urlPrefix}/macros/setup-sfc`,
+          text: 'Experimental',
+          items: [
+            {
+              text: 'defineProp',
+              link: `${urlPrefix}/macros/define-prop`,
+            },
+            {
+              text: 'defineEmit',
+              link: `${urlPrefix}/macros/define-emit`,
+            },
+            {
+              text: 'setupComponent',
+              link: `${urlPrefix}/macros/setup-component`,
+            },
+            {
+              text: 'setupSFC',
+              link: `${urlPrefix}/macros/setup-sfc`,
+            },
+            {
+              text: 'chainCall',
+              link: `${urlPrefix}/macros/chain-call`,
+            },
+          ],
         },
       ],
     },
@@ -107,24 +137,53 @@ export const sidebar = (lang: string): DefaultTheme.Sidebar => {
       text: 'Features',
       items: [
         {
-          text: 'hoistStatic',
-          link: `${urlPrefix}/features/hoist-static`,
+          text: 'Official',
+          items: [
+            {
+              text: 'hoistStatic',
+              link: `${urlPrefix}/features/hoist-static`,
+            },
+          ],
         },
+
         {
-          text: 'namedTemplate',
-          link: `${urlPrefix}/features/named-template`,
+          text: 'Stable',
+          items: [
+            {
+              text: 'betterDefine',
+              link: `${urlPrefix}/features/better-define`,
+            },
+            {
+              text: 'reactivityTransform',
+              link: `${urlPrefix}/features/reactivity-transform`,
+            },
+          ],
         },
+
         {
-          text: 'betterDefine',
-          link: `${urlPrefix}/features/better-define`,
-        },
-        {
-          text: 'exportProps',
-          link: `${urlPrefix}/features/export-props`,
-        },
-        {
-          text: 'reactivityTransform',
-          link: `${urlPrefix}/features/reactivity-transform`,
+          text: 'Experimental',
+          items: [
+            {
+              text: 'namedTemplate',
+              link: `${urlPrefix}/features/named-template`,
+            },
+            {
+              text: 'exportProps',
+              link: `${urlPrefix}/features/export-props`,
+            },
+            {
+              text: 'exportExpose',
+              link: `${urlPrefix}/features/export-expose`,
+            },
+            {
+              text: 'jsxDirective',
+              link: `${urlPrefix}/features/jsx-directive`,
+            },
+            {
+              text: 'booleanProp',
+              link: `${urlPrefix}/features/boolean-prop`,
+            },
+          ],
         },
       ],
     },

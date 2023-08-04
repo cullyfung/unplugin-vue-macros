@@ -4,20 +4,21 @@ export const DEFINE_PROPS_REFS = 'definePropsRefs'
 export const DEFINE_EMITS = 'defineEmits'
 export const WITH_DEFAULTS = 'withDefaults'
 export const DEFINE_OPTIONS = 'defineOptions'
-export const DEFINE_MODEL = 'defineModel'
-export const DEFINE_MODEL_DOLLAR = '$defineModel'
+export const DEFINE_MODELS = 'defineModels'
+export const DEFINE_MODELS_DOLLAR = '$defineModels'
 export const DEFINE_SETUP_COMPONENT = 'defineSetupComponent'
 export const DEFINE_RENDER = 'defineRender'
 export const DEFINE_SLOTS = 'defineSlots'
+export const DEFINE_PROP = 'defineProp'
+export const DEFINE_EMIT = 'defineEmit'
 
-export const REPO_ISSUE_URL =
-  'https://github.com/sxzz/unplugin-vue-macros/issues'
+export const REPO_ISSUE_URL = 'https://github.com/vue-macros/vue-macros/issues'
 
 export const REGEX_SRC_FILE = /\.[cm]?[jt]sx?$/
 export const REGEX_SETUP_SFC = /\.setup\.[cm]?[jt]sx?$/
 export const REGEX_VUE_SFC = /\.vue$/
-export const REGEX_VUE_SUB = /\.vue\?vue&/
+export const REGEX_VUE_SUB = /\.vue\?vue&type=script/
 export const REGEX_NODE_MODULES = /node_modules/
+export const REGEX_SUPPORTED_EXT = /\.([cm]?[jt]sx?|vue)$/
 
-export const REGEX_LANG_TS = /^[cm]?tsx?$/
-export const REGEX_LANG_JSX = /^[cm]?[jt]sx$/
+export const VIRTUAL_ID_PREFIX = '/vue-macros'

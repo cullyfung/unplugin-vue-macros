@@ -1,17 +1,18 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`fixtures > tests/fixtures/basic.vue > isProduction = false 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"basic\\",
   props: {
-    \\"base\\": { type: String, required: true },
-    \\"str\\": { type: String, required: true },
-    \\"num\\": { type: Number, required: true },
-    \\"map\\": { type: Map, required: true },
-    \\"arr\\": { type: Array, required: true },
-    \\"union\\": { type: [String, Number], required: true }
+    base: { type: String, required: true },
+    str: { type: String, required: true },
+    num: { type: Number, required: true },
+    map: { type: Map, required: true },
+    arr: { type: Array, required: true },
+    union: { type: [String, Number], required: true }
   },
   emits: [\\"click\\", \\"change\\"],
   setup(__props) {
@@ -20,14 +21,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var basic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -37,16 +30,17 @@ export { basic as default };
 
 exports[`fixtures > tests/fixtures/basic.vue > isProduction = true 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"basic\\",
   props: {
-    \\"base\\": null,
-    \\"str\\": null,
-    \\"num\\": null,
-    \\"map\\": null,
-    \\"arr\\": null,
-    \\"union\\": null
+    base: null,
+    str: null,
+    num: null,
+    map: null,
+    arr: null,
+    union: null
   },
   emits: [\\"click\\", \\"change\\"],
   setup(__props) {
@@ -56,27 +50,66 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var basic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { basic as default };
 "
 `;
 
+exports[`fixtures > tests/fixtures/built-in.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"built-in\\",
+  props: {
+    optional: { type: Number, required: false },
+    required: { type: Boolean, required: true },
+    readonly: { type: String, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var builtIn = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { builtIn as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/built-in.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"built-in\\",
+  props: {
+    optional: null,
+    required: { type: Boolean },
+    readonly: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var builtIn = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { builtIn as default };
+"
+`;
+
 exports[`fixtures > tests/fixtures/defaults-dynamic.vue > isProduction = false 1`] = `
 "import { defineComponent, mergeDefaults, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"defaults-dynamic\\",
   props: mergeDefaults({
-    \\"foo\\": { type: String, required: false }
+    foo: { type: String, required: false }
   }, {
     [\\"foo\\"]: \\"foo\\"
   }),
@@ -86,14 +119,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var defaultsDynamic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -103,11 +128,12 @@ export { defaultsDynamic as default };
 
 exports[`fixtures > tests/fixtures/defaults-dynamic.vue > isProduction = true 1`] = `
 "import { defineComponent, mergeDefaults, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"defaults-dynamic\\",
   props: mergeDefaults({
-    \\"foo\\": null
+    foo: null
   }, {
     [\\"foo\\"]: \\"foo\\"
   }),
@@ -118,14 +144,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var defaultsDynamic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { defaultsDynamic as default };
@@ -134,20 +152,21 @@ export { defaultsDynamic as default };
 
 exports[`fixtures > tests/fixtures/defaults-static.vue > isProduction = false 1`] = `
 "import { defineComponent, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"defaults-static\\",
   props: {
-    \\"foo\\": { type: String, required: false, default: \\"foo\\" },
-    \\"bar\\": { type: Number, required: false, get default() {
+    foo: { type: String, required: false, default: \\"foo\\" },
+    bar: { type: Number, required: false, get default() {
       return 10;
     } },
-    \\"baz\\": { type: Promise, required: false, async default() {
+    baz: { type: Promise, required: false, async default() {
       return 10;
     } },
-    \\"qux\\": { type: Function, required: false, default: () => {
+    qux: { type: Function, required: false, default: () => {
     } },
-    \\"quux\\": { type: null, required: false, default: abc }
+    quux: { required: false, default: abc }
   },
   setup(__props) {
     return (_ctx, _cache) => {
@@ -155,14 +174,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var defaultsStatic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -172,20 +183,21 @@ export { defaultsStatic as default };
 
 exports[`fixtures > tests/fixtures/defaults-static.vue > isProduction = true 1`] = `
 "import { defineComponent, openBlock, createElementBlock } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"defaults-static\\",
   props: {
-    \\"foo\\": { default: \\"foo\\" },
-    \\"bar\\": { get default() {
+    foo: { default: \\"foo\\" },
+    bar: { get default() {
       return 10;
     } },
-    \\"baz\\": { async default() {
+    baz: { async default() {
       return 10;
     } },
-    \\"qux\\": { type: Function, default: () => {
+    qux: { type: Function, default: () => {
     } },
-    \\"quux\\": { default: abc }
+    quux: { default: abc }
   },
   setup(__props) {
     return (_ctx, _cache) => {
@@ -193,14 +205,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var defaultsStatic = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -210,11 +214,12 @@ export { defaultsStatic as default };
 
 exports[`fixtures > tests/fixtures/fn-default.vue > isProduction = false 1`] = `
 "import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"fn-default\\",
   props: {
-    \\"fn\\": { type: Function, required: true, default: () => {
+    fn: { type: Function, required: true, default: () => {
     } }
   },
   setup(__props) {
@@ -223,14 +228,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var fnDefault = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -240,11 +237,12 @@ export { fnDefault as default };
 
 exports[`fixtures > tests/fixtures/fn-default.vue > isProduction = true 1`] = `
 "import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"fn-default\\",
   props: {
-    \\"fn\\": { type: Function, default: () => {
+    fn: { type: Function, default: () => {
     } }
   },
   setup(__props) {
@@ -254,14 +252,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var fnDefault = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { fnDefault as default };
@@ -270,19 +260,20 @@ export { fnDefault as default };
 
 exports[`fixtures > tests/fixtures/import-from-vue.vue > isProduction = false 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"import-from-vue\\",
   props: {
-    \\"setupBase\\": { type: String, required: true },
-    \\"num\\": { type: Number, required: true },
-    \\"bool\\": { type: Boolean, required: true },
-    \\"map\\": { type: Map, required: true },
-    \\"arr\\": { type: Array, required: true },
-    \\"union\\": { type: [String, Number], required: true },
-    \\"normalBase\\": { type: String, required: true },
-    \\"str\\": { type: String, required: true },
-    \\"setupBase_2\\": { type: String, required: true }
+    setupBase: { type: String, required: true },
+    num: { type: Number, required: true },
+    bool: { type: Boolean, required: true },
+    map: { type: Map, required: true },
+    arr: { type: Array, required: true },
+    union: { type: [String, Number], required: true },
+    normalBase: { type: String, required: true },
+    str: { type: String, required: true },
+    setupBase_2: { type: String, required: true }
   },
   emits: [\\"click\\", \\"change\\"],
   setup(__props) {
@@ -291,14 +282,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var importFromVue = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -308,19 +291,20 @@ export { importFromVue as default };
 
 exports[`fixtures > tests/fixtures/import-from-vue.vue > isProduction = true 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"import-from-vue\\",
   props: {
-    \\"setupBase\\": null,
-    \\"num\\": null,
-    \\"bool\\": { type: Boolean },
-    \\"map\\": null,
-    \\"arr\\": null,
-    \\"union\\": null,
-    \\"normalBase\\": null,
-    \\"str\\": null,
-    \\"setupBase_2\\": null
+    setupBase: null,
+    num: null,
+    bool: { type: Boolean },
+    map: null,
+    arr: null,
+    union: null,
+    normalBase: null,
+    str: null,
+    setupBase_2: null
   },
   emits: [\\"click\\", \\"change\\"],
   setup(__props) {
@@ -330,14 +314,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var importFromVue = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { importFromVue as default };
@@ -346,16 +322,17 @@ export { importFromVue as default };
 
 exports[`fixtures > tests/fixtures/intersection.vue > isProduction = false 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"intersection\\",
   props: {
-    \\"base\\": { type: String, required: true },
-    \\"str\\": { type: String, required: true },
-    \\"num\\": { type: Number, required: true },
-    \\"map\\": { type: Map, required: true },
-    \\"arr\\": { type: Array, required: true },
-    \\"union\\": { type: [String, Number], required: true }
+    base: { type: String, required: true },
+    str: { type: String, required: true },
+    num: { type: Number, required: true },
+    map: { type: Map, required: true },
+    arr: { type: Array, required: true },
+    union: { type: [String, Number], required: true }
   },
   setup(__props) {
     return (_ctx, _cache) => {
@@ -363,14 +340,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
 
 var intersection = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -380,16 +349,17 @@ export { intersection as default };
 
 exports[`fixtures > tests/fixtures/intersection.vue > isProduction = true 1`] = `
 "import { defineComponent, renderSlot } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"intersection\\",
   props: {
-    \\"base\\": null,
-    \\"str\\": null,
-    \\"num\\": null,
-    \\"map\\": null,
-    \\"arr\\": null,
-    \\"union\\": null
+    base: null,
+    str: null,
+    num: null,
+    map: null,
+    arr: null,
+    union: null
   },
   setup(__props) {
     return (_ctx, _cache) => {
@@ -398,28 +368,104 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var intersection = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { intersection as default };
 "
 `;
 
-exports[`fixtures > tests/fixtures/optional-method.vue > isProduction = false 1`] = `
-"import { defineComponent } from 'vue';
+exports[`fixtures > tests/fixtures/issue-260.vue > isProduction = false 1`] = `
+"import { defineComponent, toDisplayString } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
-  __name: \\"optional-method\\",
+  __name: \\"issue-260\\",
   props: {
-    \\"onClick\\": { type: Function, required: false },
-    \\"onSubmit\\": { type: Function, required: false }
+    menu: { type: [Object, Array], required: false, default: () => ({ txt: \\"1-1\\" }) }
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _cache) => {
+      return toDisplayString(props.menu);
+    };
+  }
+});
+
+var issue260 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue260 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-260.vue > isProduction = true 1`] = `
+"import { defineComponent, toDisplayString } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-260\\",
+  props: {
+    menu: { default: () => ({ txt: \\"1-1\\" }) }
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _cache) => {
+      return toDisplayString(props.menu);
+    };
+  }
+});
+
+var issue260 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue260 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-328.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-328\\",
+  emits: [\\"foo\\"],
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var issue328 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue328 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-328.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-328\\",
+  emits: [\\"foo\\"],
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var issue328 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue328 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-351.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-351\\",
+  props: {
+    modelValue: { type: [String, Boolean], required: true }
   },
   setup(__props) {
     return () => {
@@ -427,13 +473,208 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
+var issue351 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue351 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-351.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-351\\",
+  props: {
+    modelValue: { type: [String, Boolean] }
+  },
+  setup(__props) {
+    return () => {
+    };
   }
-  return target;
-};
+});
+
+var issue351 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue351 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-362.vue > isProduction = false 1`] = `
+"import { defineComponent, openBlock, createElementBlock, toDisplayString } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-362\\",
+  props: {
+    trigger: { required: true }
+  },
+  setup(__props) {
+    const props = __props;
+    const Trigger = {
+      click: \\"click\\",
+      focus: \\"focus\\",
+      hover: \\"hover\\"
+    };
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock(
+        \\"button\\",
+        null,
+        toDisplayString(__props.trigger),
+        1
+        /* TEXT */
+      );
+    };
+  }
+});
+
+var issue362 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue362 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/issue-362.vue > isProduction = true 1`] = `
+"import { defineComponent, openBlock, createElementBlock, toDisplayString } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"issue-362\\",
+  props: {
+    trigger: null
+  },
+  setup(__props) {
+    const props = __props;
+    const Trigger = {
+      click: \\"click\\",
+      focus: \\"focus\\",
+      hover: \\"hover\\"
+    };
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock(
+        \\"button\\",
+        null,
+        toDisplayString(__props.trigger),
+        1
+        /* TEXT */
+      );
+    };
+  }
+});
+
+var issue362 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { issue362 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/json-resolve.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"json-resolve\\",
+  props: {
+    foo: { type: String, required: true },
+    bar: { type: Object, required: false }
+  },
+  setup(__props) {
+    const props = __props;
+    return () => {
+    };
+  }
+});
+
+var jsonResolve = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { jsonResolve as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/json-resolve.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"json-resolve\\",
+  props: {
+    foo: null,
+    bar: null
+  },
+  setup(__props) {
+    const props = __props;
+    return () => {
+    };
+  }
+});
+
+var jsonResolve = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { jsonResolve as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/namespace.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"namespace\\",
+  props: {
+    x: { type: Boolean, required: true },
+    y: { type: Number, required: true },
+    z: { type: String, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var namespace = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { namespace as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/namespace.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"namespace\\",
+  props: {
+    x: { type: Boolean },
+    y: null,
+    z: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var namespace = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { namespace as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/optional-method.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"optional-method\\",
+  props: {
+    onClick: { type: Function, required: false },
+    onSubmit: { type: Function, required: false }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
 
 var optionalMethod = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
@@ -443,12 +684,13 @@ export { optionalMethod as default };
 
 exports[`fixtures > tests/fixtures/optional-method.vue > isProduction = true 1`] = `
 "import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"optional-method\\",
   props: {
-    \\"onClick\\": { type: Function },
-    \\"onSubmit\\": { type: Function }
+    onClick: { type: Function },
+    onSubmit: { type: Function }
   },
   setup(__props) {
     return () => {
@@ -456,22 +698,107 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var optionalMethod = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { optionalMethod as default };
 "
 `;
 
+exports[`fixtures > tests/fixtures/playground.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"playground\\",
+  props: {
+    foo: { required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var playground = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { playground as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/playground.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"playground\\",
+  props: {
+    foo: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var playground = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { playground as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/resolve-failed.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"resolve-failed\\",
+  props: {
+    foo: { required: true },
+    bar: { type: Object, required: true },
+    bool: { type: Boolean, skipCheck: true, required: true },
+    fun: { type: Function, skipCheck: true, required: true },
+    boolAndFun: { type: [Boolean, Function], skipCheck: true, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var resolveFailed = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { resolveFailed as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/resolve-failed.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"resolve-failed\\",
+  props: {
+    foo: null,
+    bar: null,
+    bool: { type: Boolean },
+    fun: { type: Function },
+    boolAndFun: { type: [Boolean, Function] }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var resolveFailed = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { resolveFailed as default };
+"
+`;
+
 exports[`fixtures > tests/fixtures/special-key.vue > isProduction = false 1`] = `
 "import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"special-key\\",
@@ -484,14 +811,6 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var specialKey = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { specialKey as default };
@@ -500,6 +819,7 @@ export { specialKey as default };
 
 exports[`fixtures > tests/fixtures/special-key.vue > isProduction = true 1`] = `
 "import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
 
 var _sfc_main = /* @__PURE__ */ defineComponent({
   __name: \\"special-key\\",
@@ -512,16 +832,436 @@ var _sfc_main = /* @__PURE__ */ defineComponent({
   }
 });
 
-var _export_sfc = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-};
-
 var specialKey = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
 
 export { specialKey as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/template-keys.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"template-keys\\",
+  props: {
+    \\"TfooSxZ0strstatic_value'\\": { type: String, required: true },
+    \\"TfooSxZ1strstatic_value'\\": { type: String, required: true },
+    \\"TfooSyZ0strstatic_value'\\": { type: String, required: true },
+    \\"TfooSyZ1strstatic_value'\\": { type: String, required: true },
+    \\"TbarSxZ0strstatic_value'\\": { type: String, required: true },
+    \\"TbarSxZ1strstatic_value'\\": { type: String, required: true },
+    \\"TbarSyZ0strstatic_value'\\": { type: String, required: true },
+    \\"TbarSyZ1strstatic_value'\\": { type: String, required: true },
+    extra: { type: String, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var templateKeys = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { templateKeys as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/template-keys.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"template-keys\\",
+  props: {
+    \\"TfooSxZ0strstatic_value'\\": null,
+    \\"TfooSxZ1strstatic_value'\\": null,
+    \\"TfooSyZ0strstatic_value'\\": null,
+    \\"TfooSyZ1strstatic_value'\\": null,
+    \\"TbarSxZ0strstatic_value'\\": null,
+    \\"TbarSxZ1strstatic_value'\\": null,
+    \\"TbarSyZ0strstatic_value'\\": null,
+    \\"TbarSyZ1strstatic_value'\\": null,
+    extra: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var templateKeys = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { templateKeys as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/ts-indexed-access-type.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"ts-indexed-access-type\\",
+  props: {
+    foo: { type: String, required: true },
+    bar: { required: true },
+    baz: { required: true },
+    qux: { required: true },
+    all: { required: true },
+    arr: { type: [String, Number], required: true },
+    arr2: { type: [String, Number], required: true },
+    tuple: { type: [String, Boolean], required: true },
+    methodFoo: { type: Function, required: true },
+    methodBar: { type: Function, required: true },
+    methodOpt: { type: Function, skipCheck: true, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var tsIndexedAccessType = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { tsIndexedAccessType as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/ts-indexed-access-type.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"ts-indexed-access-type\\",
+  props: {
+    foo: null,
+    bar: null,
+    baz: null,
+    qux: null,
+    all: null,
+    arr: null,
+    arr2: null,
+    tuple: { type: [String, Boolean] },
+    methodFoo: { type: Function },
+    methodBar: { type: Function },
+    methodOpt: { type: Function }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var tsIndexedAccessType = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { tsIndexedAccessType as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/ts-utility-types.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"ts-utility-types\\",
+  props: {
+    foo: { type: String, required: true },
+    bar: { type: String, required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var tsUtilityTypes = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { tsUtilityTypes as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/ts-utility-types.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"ts-utility-types\\",
+  props: {
+    foo: null,
+    bar: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var tsUtilityTypes = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { tsUtilityTypes as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/undefined.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"undefined\\",
+  props: {
+    foo: { required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var _undefined = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { _undefined as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/undefined.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"undefined\\",
+  props: {
+    foo: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var _undefined = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { _undefined as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union\\",
+  props: {
+    type: { type: String, required: true },
+    foo: { type: String, required: false },
+    optional: { type: Boolean, required: false },
+    bar: { type: Number, required: false }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var union = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { union as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union\\",
+  props: {
+    type: null,
+    foo: null,
+    optional: { type: Boolean },
+    bar: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var union = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { union as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union-emits.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union-emits\\",
+  emits: [\\"some\\", \\"emit\\", \\"another\\"],
+  setup(__props, { emit }) {
+    return () => {
+    };
+  }
+});
+
+var unionEmits = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unionEmits as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union-emits.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union-emits\\",
+  emits: [\\"some\\", \\"emit\\", \\"another\\"],
+  setup(__props, { emit }) {
+    return () => {
+    };
+  }
+});
+
+var unionEmits = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unionEmits as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union-props.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union-props\\",
+  props: {
+    foo: { type: [String, Number], required: true },
+    bar: { type: [String, Number], required: true },
+    optional: { type: Boolean, required: false }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var unionProps = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unionProps as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/union-props.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"union-props\\",
+  props: {
+    foo: null,
+    bar: null,
+    optional: { type: Boolean }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var unionProps = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unionProps as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/unresolved.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"unresolved\\",
+  props: {
+    foo: { required: true }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var unresolved = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unresolved as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/unresolved.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"unresolved\\",
+  props: {
+    foo: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var unresolved = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { unresolved as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/vue-core-7553.vue > isProduction = false 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"vue-core-7553\\",
+  props: {
+    size: { type: String, required: false },
+    color: { type: [String, Number], required: true },
+    appearance: { type: String, required: true },
+    note: { type: String, required: false }
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var vueCore7553 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { vueCore7553 as default };
+"
+`;
+
+exports[`fixtures > tests/fixtures/vue-core-7553.vue > isProduction = true 1`] = `
+"import { defineComponent } from 'vue';
+import _export_sfc from '[NULL]/plugin-vue/export-helper';
+
+var _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: \\"vue-core-7553\\",
+  props: {
+    size: null,
+    color: null,
+    appearance: null,
+    note: null
+  },
+  setup(__props) {
+    return () => {
+    };
+  }
+});
+
+var vueCore7553 = /* @__PURE__ */ _export_sfc(_sfc_main, [__FILE__]);
+
+export { vueCore7553 as default };
 "
 `;
