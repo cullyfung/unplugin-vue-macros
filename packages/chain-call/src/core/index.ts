@@ -9,11 +9,7 @@ import {
   removeMacroImport,
   walkAST,
 } from '@vue-macros/common'
-import {
-  type CallExpression,
-  type MemberExpression,
-  type Node,
-} from '@babel/types'
+import type { CallExpression, MemberExpression, Node } from '@babel/types'
 
 export function transformChainCall(code: string, id: string) {
   if (!code.includes(DEFINE_PROPS)) return
@@ -36,7 +32,7 @@ export function transformChainCall(code: string, id: string) {
       node.arguments[0] && s.sliceNode(node.arguments[0], { offset })
     const definePropsString = s.sliceNode(
       (node.callee as MemberExpression).object as CallExpression,
-      { offset }
+      { offset },
     )
 
     s.overwriteNode(
@@ -44,7 +40,7 @@ export function transformChainCall(code: string, id: string) {
       withDefaultString
         ? `${WITH_DEFAULTS}(${definePropsString}, ${withDefaultString})`
         : definePropsString,
-      { offset }
+      { offset },
     )
   }
 

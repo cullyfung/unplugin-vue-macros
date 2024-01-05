@@ -1,5 +1,67 @@
 # @vue-macros/api
 
+## 0.9.2
+
+### Patch Changes
+
+- [#582](https://github.com/vue-macros/vue-macros/pull/582) [`2b3a405`](https://github.com/vue-macros/vue-macros/commit/2b3a4055bcf7f22c55d5115cd584e4d288393bc1) Thanks [@zhiyuanzmj](https://github.com/zhiyuanzmj)! - support short-emits syntax
+
+## 0.9.1
+
+### Patch Changes
+
+- Updated dependencies [[`a66216b`](https://github.com/vue-macros/vue-macros/commit/a66216be18db59944a32102f449c84be677c374d)]:
+  - @vue-macros/common@1.10.0
+
+## 0.9.0
+
+### Minor Changes
+
+- [`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7) Thanks [@sxzz](https://github.com/sxzz)! - upgrade vite & rollup & esbuild
+
+### Patch Changes
+
+- [`531ec974`](https://github.com/vue-macros/vue-macros/commit/531ec974cc715c00a630f66d83e2cb0f2061f356) Thanks [@sxzz](https://github.com/sxzz)! - simplify runtime props types
+
+- Updated dependencies [[`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7)]:
+  - @vue-macros/common@1.9.0
+
+## 0.8.6
+
+### Patch Changes
+
+- Updated dependencies [[`c848deb9`](https://github.com/vue-macros/vue-macros/commit/c848deb9b4d4e5c015562c34813ac7aa181fee00), [`0463655b`](https://github.com/vue-macros/vue-macros/commit/0463655bd1a8dddaf128b60ea592130cb16d6da7)]:
+  - @vue-macros/common@1.8.0
+
+## 0.8.5
+
+### Patch Changes
+
+- [`d80c48a6`](https://github.com/vue-macros/vue-macros/commit/d80c48a6305efcc68860183acda259ba653a7e84) Thanks [@sxzz](https://github.com/sxzz)! - fix cjs re-exports
+
+- Updated dependencies [[`d80c48a6`](https://github.com/vue-macros/vue-macros/commit/d80c48a6305efcc68860183acda259ba653a7e84)]:
+  - @vue-macros/common@1.7.2
+
+## 0.8.4
+
+### Patch Changes
+
+- [`bac5adb3`](https://github.com/vue-macros/vue-macros/commit/bac5adb3096631fffffd64d62c77845fb16e1e6f) Thanks [@sxzz](https://github.com/sxzz)! - refactor rollup resolve
+
+- [`cdedf624`](https://github.com/vue-macros/vue-macros/commit/cdedf6248c4c54098444c47de73fe4ae5c13a4ad) Thanks [@sxzz](https://github.com/sxzz)! - simplify utils
+
+- [`7128dd50`](https://github.com/vue-macros/vue-macros/commit/7128dd50e301fa371a2ee7ff6fde31544fd0cca5) Thanks [@sxzz](https://github.com/sxzz)! - export all from common
+
+- Updated dependencies [[`7128dd50`](https://github.com/vue-macros/vue-macros/commit/7128dd50e301fa371a2ee7ff6fde31544fd0cca5)]:
+  - @vue-macros/common@1.7.1
+
+## 0.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`4ee6b51a`](https://github.com/vue-macros/vue-macros/commit/4ee6b51aeeeb5087683b704d0cc19c7c8014d27c)]:
+  - @vue-macros/common@1.7.0
+
 ## 0.8.2
 
 ### Patch Changes

@@ -1,55 +1,64 @@
 import {
-  type JSXAttribute,
-  type JSXElement,
-  type Node,
-  type Program,
-} from '@babel/types'
-import { type MagicString, walkAST } from '@vue-macros/common'
+  HELPER_PREFIX,
+  type MagicString,
+  importHelperFn,
+} from '@vue-macros/common'
+import type { JsxDirective } from '.'
 
-export function vForTransform(ast: Program, s: MagicString, offset = 0) {
-  if (!s.sliceNode(ast, { offset }).includes('v-for')) return
+export function transformVFor(
+  nodes: JsxDirective[],
+  s: MagicString,
+  offset: number,
+  version: number,
+) {
+  if (nodes.length === 0) return
+  const renderList =
+    version < 3 ? 'Array.from' : importHelperFn(s, offset, 'renderList', 'vue')
 
-  const nodes: {
-    node: JSXElement
-    attribute: JSXAttribute
-    parent?: Node | null
-  }[] = []
+  nodes.forEach(({ node, attribute, parent, vMemoAttribute }) => {
+    if (!attribute.value) return
 
-  walkAST<Node>(ast, {
-    enter(node, parent) {
-      if (node.type !== 'JSXElement') return
-
-      const attribute = node.openingElement.attributes.find(
-        (i): i is JSXAttribute =>
-          i.type === 'JSXAttribute' && ['v-for'].includes(`${i.name.name}`)
-      )
-      if (attribute) {
-        nodes.push({
-          node,
-          attribute,
-          parent,
-        })
+    let item, index, objectIndex, list
+    if (
+      attribute.value.type === 'JSXExpressionContainer' &&
+      attribute.value.expression.type === 'BinaryExpression'
+    ) {
+      if (attribute.value.expression.left.type === 'SequenceExpression') {
+        const expressions = attribute.value.expression.left.expressions
+        item = expressions[0] ? s.sliceNode(expressions[0], { offset }) : ''
+        index = expressions[1] ? s.sliceNode(expressions[1], { offset }) : ''
+        objectIndex = expressions[2]
+          ? s.sliceNode(expressions[2], { offset })
+          : ''
+      } else {
+        item = s.sliceNode(attribute.value.expression.left, { offset })
       }
-    },
-  })
 
-  nodes.forEach(({ node, attribute, parent }) => {
-    if (`${attribute.name.name}` === 'v-for' && attribute.value) {
-      const [i, list] = s
-        .slice(
-          attribute.value.start! + offset + 1,
-          attribute.value.end! + offset - 1
-        )
-        .split(/\s+in\s+/)
+      if (vMemoAttribute) index ??= `${HELPER_PREFIX}index`
 
-      const hasScope = ['JSXElement', 'JSXFragment'].includes(`${parent?.type}`)
-      s.appendLeft(
-        node.start! + offset,
-        `${hasScope ? '{' : ''}${list}.map(${i} => `
-      )
-
-      s.appendRight(node.end! + offset, `)${hasScope ? '}' : ''}`)
-      s.remove(attribute.start! + offset - 1, attribute.end! + offset)
+      list = s.sliceNode(attribute.value.expression.right, { offset })
     }
+    if (!item || !list) return
+
+    const hasScope = ['JSXElement', 'JSXFragment'].includes(`${parent?.type}`)
+    s.appendLeft(
+      node.start! + offset,
+      `${hasScope ? '{' : ''}${renderList}(${list}, (${item}${
+        index ? `, ${index}` : ''
+      }${objectIndex ? `, ${objectIndex}` : ''}) => `,
+    )
+
+    const isTemplate =
+      node.type === 'JSXElement' &&
+      node.openingElement.name.type === 'JSXIdentifier' &&
+      node.openingElement.name.name === 'template'
+    if (isTemplate && node.closingElement) {
+      const content = version < 3 ? 'span' : ''
+      s.overwriteNode(node.openingElement.name, content, { offset })
+      s.overwriteNode(node.closingElement.name, content, { offset })
+    }
+
+    s.prependRight(node.end! + offset, `)${hasScope ? '}' : ''}`)
+    s.remove(attribute.start! + offset - 1, attribute.end! + offset)
   })
 }

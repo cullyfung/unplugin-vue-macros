@@ -1,15 +1,14 @@
 import { defineConfig } from 'vitepress'
 import { withPwa } from '@vite-pwa/vitepress'
-import { pwa } from './configs'
-import { en } from './locales/en'
-import { zhCN } from './locales/zh-cn'
+import { docsLink } from '../../macros'
+import { getLocaleConfig, pwa } from './configs'
 
 export default withPwa(
   defineConfig({
     lastUpdated: true,
     locales: {
-      root: en,
-      'zh-CN': zhCN,
+      root: getLocaleConfig('en'),
+      'zh-CN': getLocaleConfig('zh-CN'),
     },
     themeConfig: {
       search: {
@@ -37,6 +36,9 @@ export default withPwa(
         },
       },
     },
+    sitemap: {
+      hostname: docsLink,
+    },
     pwa,
-  })
+  }),
 )

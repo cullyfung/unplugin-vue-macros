@@ -1,5 +1,59 @@
 # @vue-macros/define-render
 
+## 1.5.1
+
+### Patch Changes
+
+- [`a66216b`](https://github.com/vue-macros/vue-macros/commit/a66216be18db59944a32102f449c84be677c374d) Thanks [@sxzz](https://github.com/sxzz)! - refactor Vue SFC filter for vue-loader
+
+- Updated dependencies [[`a66216b`](https://github.com/vue-macros/vue-macros/commit/a66216be18db59944a32102f449c84be677c374d)]:
+  - @vue-macros/common@1.10.0
+
+## 1.5.0
+
+### Minor Changes
+
+- [`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7) Thanks [@sxzz](https://github.com/sxzz)! - upgrade vite & rollup & esbuild
+
+### Patch Changes
+
+- Updated dependencies [[`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7)]:
+  - @vue-macros/common@1.9.0
+
+## 1.4.3
+
+### Patch Changes
+
+- Updated dependencies [[`c848deb9`](https://github.com/vue-macros/vue-macros/commit/c848deb9b4d4e5c015562c34813ac7aa181fee00), [`0463655b`](https://github.com/vue-macros/vue-macros/commit/0463655bd1a8dddaf128b60ea592130cb16d6da7)]:
+  - @vue-macros/common@1.8.0
+
+## 1.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`d80c48a6`](https://github.com/vue-macros/vue-macros/commit/d80c48a6305efcc68860183acda259ba653a7e84)]:
+  - @vue-macros/common@1.7.2
+
+## 1.4.1
+
+### Patch Changes
+
+- [`8041edd6`](https://github.com/vue-macros/vue-macros/commit/8041edd67e4deb8291e4e915d984b98a4a459fae) Thanks [@sxzz](https://github.com/sxzz)! - improve defineRender function declaration & update references
+
+- Updated dependencies [[`7128dd50`](https://github.com/vue-macros/vue-macros/commit/7128dd50e301fa371a2ee7ff6fde31544fd0cca5)]:
+  - @vue-macros/common@1.7.1
+
+## 1.4.0
+
+### Minor Changes
+
+- [`e74058c1`](https://github.com/vue-macros/vue-macros/commit/e74058c1a5dd126854481d5046d7461587f2dbff) Thanks [@sxzz](https://github.com/sxzz)! - add JSX element to dts
+
+### Patch Changes
+
+- Updated dependencies [[`4ee6b51a`](https://github.com/vue-macros/vue-macros/commit/4ee6b51aeeeb5087683b704d0cc19c7c8014d27c)]:
+  - @vue-macros/common@1.7.0
+
 ## 1.3.15
 
 ### Patch Changes

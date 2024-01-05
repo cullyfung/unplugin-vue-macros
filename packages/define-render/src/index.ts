@@ -7,12 +7,13 @@ import {
   createFilter,
   detectVueVersion,
 } from '@vue-macros/common'
+import { generatePluginName } from '#macros' assert { type: 'macro' }
 import { transformDefineRender } from './core'
 
 export type Options = BaseOptions
 export type OptionsResolved = MarkRequired<Options, 'include' | 'version'>
 
-function resolveOption(options: Options): OptionsResolved {
+function resolveOptions(options: Options): OptionsResolved {
   const version = options.version || detectVueVersion()
   return {
     include: [
@@ -24,12 +25,11 @@ function resolveOption(options: Options): OptionsResolved {
     ...options,
   }
 }
-
-const name = 'unplugin-vue-define-render'
+const name = generatePluginName()
 
 export default createUnplugin<Options | undefined, false>(
   (userOptions = {}) => {
-    const options = resolveOption(userOptions)
+    const options = resolveOptions(userOptions)
     const filter = createFilter(options)
 
     return {
@@ -44,5 +44,5 @@ export default createUnplugin<Options | undefined, false>(
         return transformDefineRender(code, id)
       },
     }
-  }
+  },
 )

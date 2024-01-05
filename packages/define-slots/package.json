@@ -1,7 +1,7 @@
 {
   "name": "@vue-macros/define-slots",
-  "version": "1.0.11",
-  "packageManager": "pnpm@8.6.11",
+  "version": "1.1.1",
+  "packageManager": "pnpm@8.14.0",
   "description": "define-slots feature from Vue Macros.",
   "keywords": [
     "vue-macros",
@@ -14,7 +14,7 @@
     "unplugin"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/vue-macros/vue-macros#readme",
+  "homepage": "https://vue-macros.dev",
   "bugs": {
     "url": "https://github.com/vue-macros/vue-macros/issues"
   },
@@ -34,55 +34,31 @@
   "exports": {
     ".": {
       "dev": "./src/index.ts",
-      "types": {
-        "require": "./dist/index.d.ts",
-        "import": "./dist/index.d.mts"
-      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./api": {
       "dev": "./src/api.ts",
-      "types": {
-        "require": "./dist/api.d.ts",
-        "import": "./dist/api.d.mts"
-      },
       "require": "./dist/api.js",
       "import": "./dist/api.mjs"
     },
     "./esbuild": {
       "dev": "./src/esbuild.ts",
-      "types": {
-        "require": "./dist/esbuild.d.ts",
-        "import": "./dist/esbuild.d.mts"
-      },
       "require": "./dist/esbuild.js",
       "import": "./dist/esbuild.mjs"
     },
     "./rollup": {
       "dev": "./src/rollup.ts",
-      "types": {
-        "require": "./dist/rollup.d.ts",
-        "import": "./dist/rollup.d.mts"
-      },
       "require": "./dist/rollup.js",
       "import": "./dist/rollup.mjs"
     },
     "./vite": {
       "dev": "./src/vite.ts",
-      "types": {
-        "require": "./dist/vite.d.ts",
-        "import": "./dist/vite.d.mts"
-      },
       "require": "./dist/vite.js",
       "import": "./dist/vite.mjs"
     },
     "./webpack": {
       "dev": "./src/webpack.ts",
-      "types": {
-        "require": "./dist/webpack.d.ts",
-        "import": "./dist/webpack.d.mts"
-      },
       "require": "./dist/webpack.js",
       "import": "./dist/webpack.mjs"
     },
@@ -108,10 +84,10 @@
   },
   "dependencies": {
     "@vue-macros/common": "workspace:*",
-    "unplugin": "^1.4.0"
+    "unplugin": "^1.6.0"
   },
   "devDependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.4.5"
   },
   "engines": {
     "node": ">=16.14.0"

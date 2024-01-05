@@ -1,13 +1,13 @@
-import { FileKind } from '@volar/language-core'
 import {
+  FileKind,
   type Sfc,
-  type VueEmbeddedFile,
   type VueLanguagePlugin,
   replaceSourceRange,
 } from '@vue/language-core'
 import { createFilter } from '@rollup/pluginutils'
-import { type VolarOptions } from '..'
 import { addProps, getVolarOptions, getVueLibraryName } from './common'
+import type { VueEmbeddedFile } from '@vue/language-core/out/virtualFile/embeddedFile'
+import type { VolarOptions } from '..'
 
 function transform({
   file,
@@ -26,20 +26,20 @@ function transform({
 }) {
   const filter = createFilter(
     volarOptions.include || /.*/,
-    volarOptions.exclude
+    volarOptions.exclude,
   )
   if (!filter(fileName)) return
 
   const props: Record<string, boolean> = Object.create(null)
   let changed = false
-  for (const stmt of sfc.scriptSetupAst!.statements) {
+  for (const stmt of sfc.scriptSetup!.ast.statements) {
     if (!ts.isVariableStatement(stmt)) continue
     const exportModifier = stmt.modifiers?.find(
-      (m) => m.kind === ts.SyntaxKind.ExportKeyword
+      (m) => m.kind === ts.SyntaxKind.ExportKeyword,
     )
     if (!exportModifier) continue
 
-    const start = exportModifier.getStart(sfc.scriptSetupAst!)
+    const start = exportModifier.getStart(sfc.scriptSetup?.ast)
     const end = exportModifier.getEnd()
     replaceSourceRange(file.content, 'scriptSetup', start, end)
     changed = true
@@ -60,7 +60,7 @@ ${Object.entries(props)
   .join(',\n')}
   }>`,
       ],
-      vueLibName
+      vueLibName,
     )
   }
 }
@@ -76,7 +76,7 @@ const plugin: VueLanguagePlugin = ({
       if (
         embeddedFile.kind !== FileKind.TypeScriptHostFile ||
         !sfc.scriptSetup ||
-        !sfc.scriptSetupAst
+        !sfc.scriptSetup.ast
       )
         return
 

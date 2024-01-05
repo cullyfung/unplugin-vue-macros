@@ -9,7 +9,7 @@ import {
   createFilter,
   detectVueVersion,
 } from '@vue-macros/common'
-import { type PluginContext } from 'rollup'
+import { generatePluginName } from '#macros' assert { type: 'macro' }
 import {
   SETUP_COMPONENT_ID_REGEX,
   type SetupComponentContext,
@@ -19,6 +19,7 @@ import {
   transformSetupComponent,
 } from './core'
 import { getMainModule, isSubModule } from './core/sub-module'
+import type { PluginContext } from 'rollup'
 
 export type { SetupComponentContext } from './core'
 
@@ -30,7 +31,7 @@ export type OptionsResolved = MarkRequired<
   'include' | 'version' | 'root'
 >
 
-function resolveOption(options: Options): OptionsResolved {
+function resolveOptions(options: Options): OptionsResolved {
   const root = options.root || process.cwd()
   const version = options.version || detectVueVersion(root)
   return {
@@ -42,10 +43,11 @@ function resolveOption(options: Options): OptionsResolved {
   }
 }
 
-const name = 'unplugin-vue-setup-component'
+const name = generatePluginName()
+
 const PrePlugin = createUnplugin<Options | undefined, false>(
   (userOptions = {}, meta) => {
-    const options = resolveOption(userOptions)
+    const options = resolveOptions(userOptions)
     const filter = createFilter(options)
 
     const setupComponentContext: SetupComponentContext = {}
@@ -97,7 +99,7 @@ const PrePlugin = createUnplugin<Options | undefined, false>(
         },
       },
     }
-  }
+  },
 )
 
 const PostPlugin = createUnplugin<Options | undefined, false>(() => {
@@ -127,7 +129,7 @@ const PostPlugin = createUnplugin<Options | undefined, false>(() => {
 const plugin = createUnplugin<Options | undefined, true>(
   (options = {}, meta) => {
     return [PrePlugin.raw(options, meta), PostPlugin.raw(options, meta)]
-  }
+  },
 )
 
 export default plugin

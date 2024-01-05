@@ -1,6 +1,4 @@
-/* eslint-disable no-prototype-builtins */
 /* eslint-disable vue/prefer-import-from-vue */
-/* eslint-disable no-restricted-syntax */
 
 import MagicString, { type SourceMap } from 'magic-string'
 import { walk } from 'estree-walker'
@@ -15,21 +13,21 @@ import {
 import { type ParserPlugin, parse } from '@babel/parser'
 import { genPropsAccessExp, hasOwn, isArray, isString } from '@vue/shared'
 import { TS_NODE_TYPES, unwrapTSNode } from '@vue-macros/common'
-import {
-  type ArrayPattern,
-  type BlockStatement,
-  type CallExpression,
-  type Expression,
-  type Identifier,
-  type ImportDeclaration,
-  type ImportDefaultSpecifier,
-  type ImportNamespaceSpecifier,
-  type ImportSpecifier,
-  type Node,
-  type ObjectPattern,
-  type Program,
-  type VariableDeclaration,
-  type VariableDeclarator,
+import type {
+  ArrayPattern,
+  BlockStatement,
+  CallExpression,
+  Expression,
+  Identifier,
+  ImportDeclaration,
+  ImportDefaultSpecifier,
+  ImportNamespaceSpecifier,
+  ImportSpecifier,
+  Node,
+  ObjectPattern,
+  Program,
+  VariableDeclaration,
+  VariableDeclarator,
 } from '@babel/types'
 
 const CONVERT_SYMBOL = '$'
@@ -81,7 +79,7 @@ export function transform(
     sourceMap,
     parserPlugins,
     importHelpersFrom = 'vue',
-  }: RefTransformOptions = {}
+  }: RefTransformOptions = {},
 ): RefTransformResults {
   const plugins: ParserPlugin[] = parserPlugins || []
   if (filename) {
@@ -105,7 +103,7 @@ export function transform(
     s.prepend(
       `import { ${res.importedHelpers
         .map((h) => `${h} as _${h}`)
-        .join(', ')} } from '${importHelpersFrom}'\n`
+        .join(', ')} } from '${importHelpersFrom}'\n`,
     )
   }
 
@@ -134,7 +132,7 @@ export function transformAST(
       default?: any
       isConst?: boolean
     }
-  >
+  >,
 ): {
   rootRefs: string[]
   importedHelpers: string[]
@@ -149,7 +147,7 @@ export function transformAST(
   let convertSymbol: string | undefined
   let escapeSymbol: string | undefined
   for (const { local, imported, source, specifier } of Object.values(
-    userImports
+    userImports,
   )) {
     if (IMPORT_SOURCES.includes(source)) {
       if (imported === ESCAPE_SYMBOL) {
@@ -159,7 +157,7 @@ export function transformAST(
       } else if (imported !== local) {
         error(
           `macro imports for ref-creating methods do not support aliasing.`,
-          specifier
+          specifier,
         )
       }
     }
@@ -188,7 +186,7 @@ export function transformAST(
     }
   }
   if (knownProps) {
-    for (const key in knownProps) {
+    for (const key of Object.keys(knownProps)) {
       const { local, isConst } = knownProps[key]
       rootScope[local] = {
         isProp: true,
@@ -256,7 +254,7 @@ export function transformAST(
     } else {
       error(
         'registerBinding called without active scope, something is wrong.',
-        id
+        id,
       )
     }
   }
@@ -327,7 +325,7 @@ export function transformAST(
           decl.id,
           decl.init!,
           init,
-          stmt.kind === 'const'
+          stmt.kind === 'const',
         )
       } else {
         const isProps =
@@ -350,7 +348,7 @@ export function transformAST(
     id: VariableDeclarator['id'],
     init: Node,
     call: CallExpression,
-    isConst: boolean
+    isConst: boolean,
   ) {
     excludedIds.add(call.callee as Identifier)
     if (method === convertSymbol) {
@@ -365,6 +363,8 @@ export function transformAST(
       } else if (id.type === 'ArrayPattern') {
         processRefArrayPattern(id, init, isConst)
       }
+
+      removeTrailingComma(s, call, offset)
     } else if (id.type === 'Identifier') {
       // shorthands
       registerRefBinding(id, isConst)
@@ -372,7 +372,7 @@ export function transformAST(
       s.overwrite(
         call.start! + offset,
         call.start! + method.length + offset,
-        helper(method.slice(1))
+        helper(method.slice(1)),
       )
     } else {
       error(`${method}() cannot be used with destructure patterns.`, call)
@@ -384,7 +384,7 @@ export function transformAST(
     value: Node,
     isConst: boolean,
     tempVar?: string,
-    path: PathSegment[] = []
+    path: PathSegment[] = [],
   ) {
     if (!tempVar) {
       tempVar = genTempVar()
@@ -457,14 +457,14 @@ export function transformAST(
         const keyStr = isString(key)
           ? `'${key}'`
           : key
-          ? snip(key)
-          : `'${nameId.name}'`
+            ? snip(key)
+            : `'${nameId.name}'`
         const defaultStr = defaultValue ? `, ${snip(defaultValue)}` : ``
         s.appendLeft(
           value.end! + offset,
           `,\n  ${nameId.name} = ${helper(
-            'toRef'
-          )}(${source}, ${keyStr}${defaultStr})`
+            'toRef',
+          )}(${source}, ${keyStr}${defaultStr})`,
         )
       }
     }
@@ -478,7 +478,7 @@ export function transformAST(
     value: Node,
     isConst: boolean,
     tempVar?: string,
-    path: PathSegment[] = []
+    path: PathSegment[] = [],
   ) {
     if (!tempVar) {
       // const [x] = $(useFoo()) --> const __$temp_1 = useFoo()
@@ -514,8 +514,8 @@ export function transformAST(
         s.appendLeft(
           value.end! + offset,
           `,\n  ${nameId.name} = ${helper(
-            'toRef'
-          )}(${source}, ${i}${defaultStr})`
+            'toRef',
+          )}(${source}, ${i}${defaultStr})`,
         )
       }
     }
@@ -557,7 +557,7 @@ export function transformAST(
     scope: Scope,
     id: Identifier,
     parent: Node,
-    parentStack: Node[]
+    parentStack: Node[],
   ): boolean {
     if (hasOwn(scope, id.name)) {
       const binding = scope[id.name]
@@ -586,13 +586,13 @@ export function transformAST(
                 registerEscapedPropBinding(id)
                 s.appendLeft(
                   id.end! + offset,
-                  `: __props_${propsLocalToPublicMap[id.name]}`
+                  `: __props_${propsLocalToPublicMap[id.name]}`,
                 )
               } else {
                 // { prop } -> { prop: __props.prop }
                 s.appendLeft(
                   id.end! + offset,
-                  `: ${genPropsAccessExp(propsLocalToPublicMap[id.name])}`
+                  `: ${genPropsAccessExp(propsLocalToPublicMap[id.name])}`,
                 )
               }
             } else {
@@ -607,14 +607,14 @@ export function transformAST(
             s.overwrite(
               id.start! + offset,
               id.end! + offset,
-              `__props_${propsLocalToPublicMap[id.name]}`
+              `__props_${propsLocalToPublicMap[id.name]}`,
             )
           } else {
             // x --> __props.x
             s.overwrite(
               id.start! + offset,
               id.end! + offset,
-              genPropsAccessExp(propsLocalToPublicMap[id.name])
+              genPropsAccessExp(propsLocalToPublicMap[id.name]),
             )
           }
         } else {
@@ -629,14 +629,14 @@ export function transformAST(
 
   const propBindingRefs: Record<string, true> = {}
   function registerEscapedPropBinding(id: Identifier) {
-    if (!propBindingRefs.hasOwnProperty(id.name)) {
+    if (!Object.prototype.hasOwnProperty.call(propBindingRefs, id.name)) {
       propBindingRefs[id.name] = true
       const publicKey = propsLocalToPublicMap[id.name]
       s.prependRight(
         offset,
         `const __props_${publicKey} = ${helper(
-          `toRef`
-        )}(__props, '${publicKey}');\n`
+          `toRef`,
+        )}(__props, '${publicKey}');\n`,
       )
     }
   }
@@ -710,7 +710,7 @@ export function transformAST(
           return error(
             `${refCall} can only be used as the initializer of ` +
               `a variable declaration.`,
-            node
+            node,
           )
         }
 
@@ -721,6 +721,7 @@ export function transformAST(
         ) {
           escapeScope = node
           s.remove(node.callee.start! + offset, node.callee.end! + offset)
+          removeTrailingComma(s, node, offset)
 
           if (parent?.type === 'ExpressionStatement') {
             // edge case where the call expression is an expression statement
@@ -733,7 +734,7 @@ export function transformAST(
             while (i--) {
               const char = s.original.charAt(i)
               if (char === '\n') {
-                // only insert semi if it's actually the fisrt thign after
+                // only insert semi if it's actually the first thing after
                 // newline
                 s.prependRight(node.start! + offset, ';')
                 break
@@ -766,5 +767,18 @@ export function transformAST(
       return binding && !binding.isProp
     }),
     importedHelpers: [...importedHelpers],
+  }
+}
+
+function removeTrailingComma(
+  s: MagicString,
+  node: CallExpression,
+  offset: number,
+) {
+  if (typeof node.extra?.trailingComma === 'number') {
+    s.remove(
+      node.extra?.trailingComma + offset,
+      node.extra?.trailingComma + offset + 1,
+    )
   }
 }

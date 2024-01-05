@@ -1,5 +1,43 @@
 # @vue-macros/test-utils
 
+## 1.3.0
+
+### Minor Changes
+
+- [`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7) Thanks [@sxzz](https://github.com/sxzz)! - upgrade vite & rollup & esbuild
+
+## 1.2.1
+
+### Patch Changes
+
+- [`ce69c363`](https://github.com/vue-macros/vue-macros/commit/ce69c363f1d7ebb3175bb5ebf875583625fe5656) Thanks [@sxzz](https://github.com/sxzz)! - fix required vitest version range
+
+- [`970b3d0e`](https://github.com/vue-macros/vue-macros/commit/970b3d0e893090837fc336e7c209d46ee7ac68d8) Thanks [@sxzz](https://github.com/sxzz)! - don't inline @rollup/plugin-json
+
+## 1.2.0
+
+### Minor Changes
+
+- [`2c646c74`](https://github.com/vue-macros/vue-macros/commit/2c646c7435c60899b79efbf33b630a8317911c2b) Thanks [@sxzz](https://github.com/sxzz)! - Upgrade Rollup
+
+## 1.1.3
+
+### Patch Changes
+
+- [`0463655b`](https://github.com/vue-macros/vue-macros/commit/0463655bd1a8dddaf128b60ea592130cb16d6da7) Thanks [@sxzz](https://github.com/sxzz)! - feat: add shortVmodel into macros plugin
+
+## 1.1.2
+
+### Patch Changes
+
+- [`d80c48a6`](https://github.com/vue-macros/vue-macros/commit/d80c48a6305efcc68860183acda259ba653a7e84) Thanks [@sxzz](https://github.com/sxzz)! - fix cjs re-exports
+
+## 1.1.1
+
+### Patch Changes
+
+- [`53cba0ed`](https://github.com/vue-macros/vue-macros/commit/53cba0ed582c260a6a7927953158e8ac0f1f3515) Thanks [@sxzz](https://github.com/sxzz)! - output asset source
+
 ## 1.1.0
 
 ### Minor Changes

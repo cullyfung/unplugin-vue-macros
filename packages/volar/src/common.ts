@@ -1,12 +1,12 @@
 import {
+  type FileRangeCapabilities,
   type Segment,
   type Sfc,
   type VueCompilerOptions,
-  type VueEmbeddedFile,
-  replace,
+  getSlotsPropertyName,
+  replaceAll,
 } from '@vue/language-core'
-import { type FileRangeCapabilities } from '@volar/language-core'
-import { type VolarOptions } from '..'
+import type { VolarOptions } from '..'
 
 export function getVueLibraryName(vueVersion: number) {
   return vueVersion < 2.7 ? '@vue/runtime-dom' : 'vue'
@@ -15,53 +15,50 @@ export function getVueLibraryName(vueVersion: number) {
 export function addProps(
   content: Segment<FileRangeCapabilities>[],
   decl: Segment<FileRangeCapabilities>[],
-  vueLibName: string
+  vueLibName: string,
 ) {
-  replace(
+  replaceAll(
     content,
-    /setup\(\) {/,
+    /setup\(\) {/g,
     'props: ({} as ',
     ...decl,
     '),\n',
-    'setup() {'
+    'setup() {',
   )
   content.push(
     `type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;\n`,
-    `type __VLS_TypePropsToRuntimeProps<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? { type: import('${vueLibName}').PropType<__VLS_NonUndefinedable<T[K]>> } : { type: import('${vueLibName}').PropType<T[K]>, required: true } };\n`
+    `type __VLS_TypePropsToRuntimeProps<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? { type: import('${vueLibName}').PropType<__VLS_NonUndefinedable<T[K]>> } : { type: import('${vueLibName}').PropType<T[K]>, required: true } };\n`,
   )
   return true
 }
 
 export function addEmits(
   content: Segment<FileRangeCapabilities>[],
-  decl: Segment<FileRangeCapabilities>[]
+  decl: Segment<FileRangeCapabilities>[],
 ) {
-  const idx = content.indexOf('setup() {\n')
-  if (idx === -1) return false
-
-  replace(
+  replaceAll(
     content,
-    /setup\(\) {/,
+    /setup\(\) {/g,
     'emits: ({} as ',
     ...decl,
     '),\n',
-    'setup() {'
+    'setup() {',
   )
   return true
 }
 
 export function getVolarOptions(
-  vueCompilerOptions: VueCompilerOptions
+  vueCompilerOptions: VueCompilerOptions,
 ): VolarOptions | undefined {
   return vueCompilerOptions.vueMacros
 }
 
 export function getImportNames(
   ts: typeof import('typescript/lib/tsserverlibrary'),
-  sfc: Sfc
+  sfc: Sfc,
 ) {
   const names: string[] = []
-  const sourceFile = sfc.scriptSetupAst!
+  const sourceFile = sfc.scriptSetup!.ast
   sourceFile.forEachChild((node) => {
     if (
       ts.isImportDeclaration(node) &&
@@ -69,7 +66,7 @@ export function getImportNames(
         (el) =>
           el.name.text === 'type' &&
           ts.isStringLiteral(el.value) &&
-          el.value.text === 'macro'
+          el.value.text === 'macro',
       )
     ) {
       const name = node.importClause?.name?.text
@@ -89,16 +86,62 @@ export function getImportNames(
   return names
 }
 
-const REGEX_IMPORT_MACROS = /const\s+{\s*(.+?)\s*}\s*=.*?\(["']vue["']\)/
-export function rewriteImports(file: VueEmbeddedFile, names: string[]) {
-  const idx = file.content.findIndex(
-    (s) => typeof s === 'string' && REGEX_IMPORT_MACROS.test(s)
-  )
-  if (idx === -1) return
+export function getPropsType(codes: Segment<FileRangeCapabilities>[]) {
+  if (codes.toString().includes('type __VLS_getProps')) return
 
-  let text = file.content[idx] as string
-  for (const name of names) {
-    text = text.replace(`${name},`, '').replace(name, '')
-  }
-  file.content[idx] = text
+  codes.push(`
+type __VLS_getProps<T> = T extends new () => { $props: infer P }
+  ? NonNullable<P>
+  : T extends (props: infer P, ctx: any) => any
+    ? NonNullable<P>
+    : {};`)
+}
+
+export function getEmitsType(codes: Segment<FileRangeCapabilities>[]) {
+  if (codes.toString().includes('type __VLS_getEmits')) return
+
+  codes.push(`
+type __VLS_getEmits<T> = T extends new () => { $emit: infer E }
+  ? NonNullable<__VLS_NormalizeEmits<E>>
+  : T extends (
+        props: any,
+        ctx: { slots: any; attrs: any; emit: infer E },
+      ) => any
+    ? NonNullable<__VLS_NormalizeEmits<E>>
+    : {};`)
+}
+
+export function getModelsType(codes: Segment<FileRangeCapabilities>[]) {
+  if (codes.toString().includes('type __VLS_getModels')) return
+  getEmitsType(codes)
+  getPropsType(codes)
+
+  codes.push(`
+type __VLS_CamelCase<S extends string> = S extends \`\${infer F}-\${infer RF}\${infer R}\`
+  ? \`\${F}\${Uppercase<RF>}\${__VLS_CamelCase<R>}\`
+  : S;
+type __VLS_RemoveUpdatePrefix<T> = T extends \`update:modelValue\`
+  ? never
+  : T extends \`update:\${infer R}\`
+    ? __VLS_CamelCase<R>
+    : T;
+type __VLS_getModels<T> = T extends object
+  ? {
+      [K in keyof __VLS_getEmits<T> as __VLS_RemoveUpdatePrefix<K>]: __VLS_getProps<T>[__VLS_RemoveUpdatePrefix<K>]
+    }
+  : {};`)
+}
+
+export function getSlotsType(
+  codes: Segment<FileRangeCapabilities>[],
+  vueVersion?: number,
+) {
+  if (codes.toString().includes('type __VLS_getSlots')) return
+  codes.push(`
+type __VLS_getSlots<T> = T extends new () => { '${getSlotsPropertyName(
+    vueVersion || 3,
+  )}': infer S } ? NonNullable<S>
+  : T extends (props: any, ctx: { slots: infer S; attrs: any; emit: any }) => any
+  ? NonNullable<S>
+  : {};`)
 }

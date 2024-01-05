@@ -1,14 +1,14 @@
-import { createUnplugin } from 'unplugin'
+import { type UnpluginContextMeta, createUnplugin } from 'unplugin'
 import {
   type BaseOptions,
+  FilterFileType,
   type MarkRequired,
-  REGEX_SETUP_SFC,
-  REGEX_VUE_SFC,
-  REGEX_VUE_SUB,
   createFilter,
   detectVueVersion,
+  getFilterPattern,
   normalizePath,
 } from '@vue-macros/common'
+import { generatePluginName } from '#macros' assert { type: 'macro' }
 import { transformDefineModels } from './core'
 import {
   emitHelperCode,
@@ -32,21 +32,28 @@ export type OptionsResolved = MarkRequired<
   'include' | 'version' | 'unified'
 >
 
-function resolveOption(options: Options): OptionsResolved {
+function resolveOptions(
+  options: Options,
+  framework: UnpluginContextMeta['framework'],
+): OptionsResolved {
   const version = options.version || detectVueVersion()
+  const include = getFilterPattern(
+    [FilterFileType.VUE_SFC_WITH_SETUP, FilterFileType.SETUP_SFC],
+    framework,
+  )
   return {
-    include: [REGEX_VUE_SFC, REGEX_SETUP_SFC, REGEX_VUE_SUB],
+    include,
     unified: true,
     ...options,
     version,
   }
 }
 
-const name = 'unplugin-vue-define-models'
+const name = generatePluginName()
 
 export default createUnplugin<Options | undefined, false>(
-  (userOptions = {}) => {
-    const options = resolveOption(userOptions)
+  (userOptions = {}, { framework }) => {
+    const options = resolveOptions(userOptions, framework)
     const filter = createFilter(options)
 
     return {
@@ -67,13 +74,10 @@ export default createUnplugin<Options | undefined, false>(
         else if (id === useVmodelHelperId) return useVmodelHelperCode
       },
 
-      transformInclude(id) {
-        return filter(id)
-      },
-
+      transformInclude: filter,
       transform(code, id) {
         return transformDefineModels(code, id, options.version, options.unified)
       },
     }
-  }
+  },
 )

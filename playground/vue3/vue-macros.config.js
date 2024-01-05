@@ -1,8 +1,6 @@
 // @ts-check
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
-import { transformShortVmodel } from '@vue-macros/short-vmodel'
-import { transformBooleanProp } from '@vue-macros/boolean-prop'
 
 /** @type {import('unplugin-vue-macros').Options} */
 export default {
@@ -12,9 +10,11 @@ export default {
   defineSlots: true,
   hoistStatic: true,
   shortEmits: true,
+  shortBind: true,
 
   namedTemplate: false,
   setupSFC: true,
+  booleanProp: true,
 
   exportProps: {
     include: [/export-props.*\.vue$/],
@@ -22,24 +22,16 @@ export default {
   exportExpose: {
     include: [/export-expose.*\.vue$/],
   },
+  exportRender: {
+    include: [/export-render.*\.vue$/],
+  },
+  reactivityTransform: true,
 
   plugins: {
     vue: Vue({
       include: [/\.vue$/, /\.setup\.[cm]?[jt]sx?$/],
-      reactivityTransform: true,
       script: {
-        // @ts-ignore
         hoistStatic: false,
-      },
-      template: {
-        compilerOptions: {
-          nodeTransforms: [
-            transformShortVmodel({
-              prefix: '$',
-            }),
-            transformBooleanProp(),
-          ],
-        },
       },
     }),
     vueJsx: VueJsx(),

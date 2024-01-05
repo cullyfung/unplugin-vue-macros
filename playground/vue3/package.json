@@ -4,36 +4,35 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node vite.js",
     "build": "run-p \"build:*\"",
-    "build:vite": "vite build",
+    "build:vite": "node vite.js build",
     "build:rollup": "rollup -c rollup.config.js",
-    "preview": "vite preview",
+    "preview": "node vite.js preview",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@vueuse/core": "^10.3.0",
-    "quasar": "^2.12.3",
-    "vue": "^3.3.4"
+    "@vueuse/core": "^10.7.1",
+    "quasar": "^2.14.2",
+    "vue": "^3.4.5"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.3",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "@vue-macros/boolean-prop": "workspace:*",
-    "@vue-macros/short-vmodel": "workspace:*",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@vitejs/plugin-vue": "^5.0.2",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue-macros/volar": "workspace:*",
-    "esbuild": "^0.18.17",
+    "esbuild": "^0.19.11",
     "npm-run-all": "^4.1.5",
-    "rollup": "^3.27.0",
-    "rollup-plugin-esbuild": "^5.0.0",
-    "type-fest": "^4.1.0",
-    "typescript": "~5.1.6",
-    "unocss": "^0.54.1",
+    "rollup": "^4.9.2",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "type-fest": "^4.9.0",
+    "typescript": "~5.3.3",
+    "unocss": "^0.58.3",
     "unplugin-vue-macros": "workspace:*",
-    "vite": "^4.4.7",
-    "vite-plugin-inspect": "^0.7.33",
-    "vue-tsc": "1.8.8"
+    "vite": "^5.0.10",
+    "vite-hyper-config": "^0.2.1",
+    "vite-plugin-inspect": "^0.8.1",
+    "vue-tsc": "1.8.27"
   }
 }

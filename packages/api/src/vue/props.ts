@@ -5,27 +5,8 @@ import {
   isStaticObjectKey,
   resolveIdentifier,
   resolveObjectExpression,
+  resolveString,
 } from '@vue-macros/common'
-import {
-  type CallExpression,
-  type Expression,
-  type ExpressionStatement,
-  type LVal,
-  type Node,
-  type ObjectMethod,
-  type ObjectProperty,
-  type StringLiteral,
-  type TSInterfaceDeclaration,
-  type TSIntersectionType,
-  type TSMappedType,
-  type TSMethodSignature,
-  type TSPropertySignature,
-  type TSType,
-  type TSTypeLiteral,
-  type TSTypeReference,
-  type TSUnionType,
-  type VariableDeclaration,
-} from '@babel/types'
 import {
   type TSFile,
   type TSNamespace,
@@ -37,9 +18,28 @@ import {
   resolveTSReferencedType,
   resolveTSScope,
 } from '../ts'
-import { keyToString } from '../utils'
 import { type ASTDefinition, DefinitionKind } from './types'
 import { attachNodeLoc, inferRuntimeType } from './utils'
+import type {
+  CallExpression,
+  Expression,
+  ExpressionStatement,
+  LVal,
+  Node,
+  ObjectMethod,
+  ObjectProperty,
+  StringLiteral,
+  TSInterfaceDeclaration,
+  TSIntersectionType,
+  TSMappedType,
+  TSMethodSignature,
+  TSPropertySignature,
+  TSType,
+  TSTypeLiteral,
+  TSTypeReference,
+  TSUnionType,
+  VariableDeclaration,
+} from '@babel/types'
 
 type BuiltInTypesHandler = Record<
   string,
@@ -117,7 +117,7 @@ export async function handleTSPropsDefinition({
     const { key, signature, valueAst, signatureAst } = buildNewProp(
       name,
       value,
-      optional
+      optional,
     )
     if (definitions[key]) return false
 
@@ -151,7 +151,7 @@ export async function handleTSPropsDefinition({
     const { key, signature, signatureAst, valueAst } = buildNewProp(
       name,
       value,
-      optional
+      optional,
     )
 
     const def = definitions[key]
@@ -200,7 +200,7 @@ export async function handleTSPropsDefinition({
   }
 
   const removeProp: TSProps['removeProp'] = (name) => {
-    const key = keyToString(name)
+    const key = resolveString(name)
     if (!definitions[key]) return false
 
     const def = definitions[key]
@@ -258,7 +258,7 @@ export async function handleTSPropsDefinition({
                 defaultValue.kind !== 'method' ? `${defaultValue.kind} ` : ''
               }${defaultValue.async ? `async ` : ''}${key}(${s.sliceNode(
                 defaultValue.params,
-                { offset }
+                { offset },
               )}) ${s.sliceNode(defaultValue.body, { offset })}`
             case 'ObjectProperty':
               return `${key}: ${s.sliceNode(defaultValue.value, { offset })}`
@@ -293,7 +293,7 @@ export async function handleTSPropsDefinition({
     const keys = new Set<string>()
     for (const type of definitionsAst.types) {
       const defs = await resolveDefinitions({ type, scope }).then(
-        ({ definitions }) => definitions
+        ({ definitions }) => definitions,
       )
       Object.keys(defs).map((key) => keys.add(key))
       unionDefs.push(defs)
@@ -363,7 +363,7 @@ export async function handleTSPropsDefinition({
           }
         } else {
           throw new SyntaxError(
-            `Cannot resolve TS definition. Union type contains different types of results.`
+            `Cannot resolve TS definition. Union type contains different types of results.`,
           )
         }
       }
@@ -381,12 +381,12 @@ export async function handleTSPropsDefinition({
 
   async function resolveIntersection(
     definitionsAst: TSIntersectionType,
-    scope: TSScope
+    scope: TSScope,
   ) {
     const results: TSProps['definitions'] = Object.create(null)
     for (const type of definitionsAst.types) {
       const defMap = await resolveDefinitions({ type, scope }).then(
-        ({ definitions }) => definitions
+        ({ definitions }) => definitions,
       )
       for (const [key, def] of Object.entries(defMap)) {
         const result = results[key]
@@ -440,7 +440,7 @@ export async function handleTSPropsDefinition({
   }
 
   async function resolveDefinitions(
-    typeDeclRaw: TSResolvedType<TSType>
+    typeDeclRaw: TSResolvedType<TSType>,
   ): Promise<{
     definitions: TSProps['definitions']
     definitionsAst: TSProps['definitionsAst']
@@ -491,12 +491,12 @@ export async function handleTSPropsDefinition({
       if (definitionsAst.type === 'TSTypeReference') {
         throw new SyntaxError(
           `Cannot resolve TS type: ${resolveIdentifier(
-            definitionsAst.typeName
-          ).join('.')}`
+            definitionsAst.typeName,
+          ).join('.')}`,
         )
       } else {
         throw new SyntaxError(
-          `Cannot resolve TS definition: ${definitionsAst.type}`
+          `Cannot resolve TS definition: ${definitionsAst.type}`,
         )
       }
     }
@@ -534,9 +534,9 @@ export async function handleTSPropsDefinition({
   function buildNewProp(
     name: string | StringLiteral,
     value: string,
-    optional: boolean | undefined
+    optional: boolean | undefined,
   ) {
-    const key = keyToString(name)
+    const key = resolveString(name)
     const signature = `${name}${optional ? '?' : ''}: ${value}`
 
     const valueAst = (babelParse(`type T = (${value})`, 'ts').body[0] as any)
@@ -659,7 +659,7 @@ export interface TSProps extends PropsBase {
   addProp(
     name: string | StringLiteral,
     type: string,
-    optional?: boolean
+    optional?: boolean,
   ): boolean
 
   /**
@@ -674,7 +674,7 @@ export interface TSProps extends PropsBase {
   setProp(
     name: string | StringLiteral,
     type: string,
-    optional?: boolean
+    optional?: boolean,
   ): boolean
 
   /**

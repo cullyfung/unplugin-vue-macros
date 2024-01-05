@@ -1,5 +1,5 @@
 import { describe } from 'vitest'
-import { testFixtures } from 'packages/test-utils/src'
+import { testFixtures } from '@vue-macros/test-utils'
 import { transformJsxDirective } from '../src/api'
 
 describe('jsx-vue-directive', () => {
@@ -9,9 +9,7 @@ describe('jsx-vue-directive', () => {
         eager: true,
         as: 'raw',
       }),
-      (args, id, code) => {
-        return transformJsxDirective(code, id)?.code
-      }
+      (_, id, code) => transformJsxDirective(code, id, 2.7)?.code,
     )
   })
 })

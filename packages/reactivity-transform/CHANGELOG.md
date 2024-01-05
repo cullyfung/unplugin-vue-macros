@@ -1,5 +1,61 @@
 # @vue-macros/reactivity-transform
 
+## 0.4.1
+
+### Patch Changes
+
+- [`a66216b`](https://github.com/vue-macros/vue-macros/commit/a66216be18db59944a32102f449c84be677c374d) Thanks [@sxzz](https://github.com/sxzz)! - refactor Vue SFC filter for vue-loader
+
+- Updated dependencies [[`a66216b`](https://github.com/vue-macros/vue-macros/commit/a66216be18db59944a32102f449c84be677c374d)]:
+  - @vue-macros/common@1.10.0
+
+## 0.4.0
+
+### Minor Changes
+
+- [`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7) Thanks [@sxzz](https://github.com/sxzz)! - upgrade vite & rollup & esbuild
+
+### Patch Changes
+
+- Updated dependencies [[`cb9b967c`](https://github.com/vue-macros/vue-macros/commit/cb9b967ca141ca10693a1933e2a68f51525460e7)]:
+  - @vue-macros/common@1.9.0
+
+## 0.3.23
+
+### Patch Changes
+
+- Updated dependencies [[`c848deb9`](https://github.com/vue-macros/vue-macros/commit/c848deb9b4d4e5c015562c34813ac7aa181fee00), [`0463655b`](https://github.com/vue-macros/vue-macros/commit/0463655bd1a8dddaf128b60ea592130cb16d6da7)]:
+  - @vue-macros/common@1.8.0
+
+## 0.3.22
+
+### Patch Changes
+
+- [`1e7fedd1`](https://github.com/vue-macros/vue-macros/commit/1e7fedd1230f08f755a5154c2293f173dda39311) Thanks [@sxzz](https://github.com/sxzz)! - fix(reactivity-transform): remove trailing comma
+
+- [`e65f38c9`](https://github.com/vue-macros/vue-macros/commit/e65f38c92476a67ac6097a7242503164d1ace5cd) Thanks [@sxzz](https://github.com/sxzz)! - move eslint disable
+
+## 0.3.21
+
+### Patch Changes
+
+- Updated dependencies [[`d80c48a6`](https://github.com/vue-macros/vue-macros/commit/d80c48a6305efcc68860183acda259ba653a7e84)]:
+  - @vue-macros/common@1.7.2
+
+## 0.3.20
+
+### Patch Changes
+
+- Updated dependencies [[`7128dd50`](https://github.com/vue-macros/vue-macros/commit/7128dd50e301fa371a2ee7ff6fde31544fd0cca5)]:
+  - @vue-macros/common@1.7.1
+
+## 0.3.19
+
+### Patch Changes
+
+- Updated dependencies [[`4ee6b51a`](https://github.com/vue-macros/vue-macros/commit/4ee6b51aeeeb5087683b704d0cc19c7c8014d27c)]:
+  - @vue-macros/common@1.7.0
+
 ## 0.3.18
 
 ### Patch Changes

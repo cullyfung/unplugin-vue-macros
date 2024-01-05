@@ -1,8 +1,8 @@
 # booleanProp
 
-<StabilityLevel level="stable" />
+<StabilityLevel level="experimental" />
 
-Convert `<Comp checked />` to `<Comp :checked="true" />`.
+把 `<Comp checked />` 转换为 `<Comp :checked="true" />`。
 
 |   Features   |     Supported      |
 | :----------: | :----------------: |
@@ -11,36 +11,7 @@ Convert `<Comp checked />` to `<Comp :checked="true" />`.
 |    Vue 2     |        :x:         |
 | Volar Plugin | :white_check_mark: |
 
-## Setup
-
-### Installation
-
-```bash
-npm i @vue-macros/boolean-prop
-```
-
-### Vite Integration
-
-```ts {9-13}
-// vite.config.ts
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
-import { transformBooleanProp } from '@vue-macros/boolean-prop'
-
-export default defineConfig({
-  plugins: [
-    Vue({
-      template: {
-        compilerOptions: {
-          nodeTransforms: [transformBooleanProp()],
-        },
-      },
-    }),
-  ],
-})
-```
-
-## Usage
+## 基本用法
 
 ```vue
 <template>

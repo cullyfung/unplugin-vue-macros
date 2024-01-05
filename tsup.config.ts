@@ -1,30 +1,7 @@
-import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { defineConfig } from 'tsup'
-import { type Plugin } from 'esbuild'
-
-const rawRE = /[&?]raw(?:&|$)/
-const EsbuildRawPlugin: Plugin = {
-  name: 'raw-plugin',
-  setup(build) {
-    build.onLoad({ filter: /.*/ }, async ({ path, suffix }) => {
-      if (!rawRE.test(suffix)) return
-
-      let contents = await readFile(path, 'utf-8')
-      const isTS = path.endsWith('.ts')
-      if (isTS)
-        contents = (
-          await build.esbuild.transform(contents, {
-            loader: isTS ? 'ts' : 'js',
-            minifyWhitespace: true,
-          })
-        ).code
-
-      return {
-        contents: `export default ${JSON.stringify(contents)}`,
-      }
-    })
-  },
-}
+import Macros from 'unplugin-macros/esbuild'
+import Raw from 'unplugin-raw/esbuild'
 
 export default defineConfig({
   entry: ['./src/*.ts'],
@@ -46,5 +23,22 @@ export default defineConfig({
   define: {
     'import.meta.DEV': JSON.stringify(!!process.env.DEV),
   },
-  esbuildPlugins: [EsbuildRawPlugin],
+  esbuildPlugins: [
+    Raw({
+      transform: {
+        options: {
+          minifyWhitespace: true,
+        },
+      },
+    }),
+    Macros({
+      viteConfig: {
+        resolve: {
+          alias: {
+            '#macros': path.resolve(__dirname, 'macros/index.ts'),
+          },
+        },
+      },
+    }),
+  ],
 })

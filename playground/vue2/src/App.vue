@@ -9,10 +9,12 @@ import DefineModelRuntime from './examples/define-models/runtime/parent.vue'
 import DefineSlots from './examples/define-slots/parent.vue'
 import ExportProps from './examples/export-props/index.vue'
 import ExportExpose from './examples/export-expose/index.vue'
+import ExportRender from './examples/export-render/index.vue'
 import BetterDefine from './examples/better-define/index.vue'
 import SetupBlock from './examples/setup-block/index.vue'
 import ChainCall from './examples/chain-call/index.vue'
 import ReactivityTransform from './examples/reactivity-transform/index.vue'
+import JsxDirective from './examples/jsx-directive/index.vue'
 
 import DefineProp from './examples/define-prop/index.vue'
 import DefineEmit from './examples/define-emit/index.vue'
@@ -94,6 +96,16 @@ import DefineEmit from './examples/define-emit/index.vue'
     <fieldset>
       <legend>reactivityTransform</legend>
       <ReactivityTransform />
+    </fieldset>
+
+    <fieldset>
+      <legend>jsxDirective</legend>
+      <JsxDirective />
+    </fieldset>
+
+    <fieldset>
+      <legend>exportRender</legend>
+      <ExportRender />
     </fieldset>
   </div>
 </template>

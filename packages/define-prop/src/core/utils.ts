@@ -1,4 +1,4 @@
-import { type MagicString } from '@vue-macros/common'
+import type { MagicString } from '@vue-macros/common'
 import type * as t from '@babel/types'
 
 export type Impl = (ctx: {
@@ -8,7 +8,7 @@ export type Impl = (ctx: {
 }) => {
   walkCall(
     node: t.CallExpression,
-    parent: t.ParentMaps['CallExpression']
+    parent: t.ParentMaps['CallExpression'],
   ): string
   genRuntimeProps(isProduction: boolean): Promise<string | undefined>
 }

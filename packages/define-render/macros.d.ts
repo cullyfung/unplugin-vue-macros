@@ -1,3 +1,5 @@
-import { type RenderFunction } from 'vue'
+import type { VNodeChild } from 'vue'
 
-export declare const defineRender: (render: RenderFunction) => void
+export declare function defineRender(
+  render: JSX.Element | (() => JSX.Element | VNodeChild),
+): void

@@ -1,4 +1,4 @@
-import { type FilterPattern } from '@rollup/pluginutils'
+import type { FilterPattern } from '@rollup/pluginutils'
 
 export interface VolarOptions {
   defineModels?: {
@@ -12,6 +12,10 @@ export interface VolarOptions {
     exclude?: FilterPattern
   }
   exportProps?: {
+    include?: FilterPattern
+    exclude?: FilterPattern
+  }
+  exportRender?: {
     include?: FilterPattern
     exclude?: FilterPattern
   }

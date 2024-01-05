@@ -1,6 +1,5 @@
 import { type InputPluginOption, type Plugin, rollup } from 'rollup'
-import {
-  default as ViteVueJsx,
+import ViteVueJsx, {
   type Options as VueJsxOptions,
 } from '@vitejs/plugin-vue-jsx'
 
@@ -73,6 +72,12 @@ export async function rollupBuild(file: string, plugins: InputPluginOption) {
     sourcemap: false,
   })
   return output.output
-    .map((file) => (file.type === 'chunk' ? file.code : file.fileName))
+    .map((file) =>
+      file.type === 'chunk'
+        ? file.code
+        : typeof file.source === 'string'
+          ? file.source
+          : file.fileName,
+    )
     .join('\n')
 }

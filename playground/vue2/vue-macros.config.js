@@ -8,6 +8,8 @@ export default {
 
   namedTemplate: false,
   setupSFC: true,
+  booleanProp: true,
+
   defineProp: {
     edition: 'johnsonEdition',
   },
@@ -17,6 +19,9 @@ export default {
   },
   exportExpose: {
     include: [/export-expose.*\.vue$/],
+  },
+  exportRender: {
+    include: [/export-render.*\.vue$/],
   },
 
   plugins: {

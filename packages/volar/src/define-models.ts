@@ -1,6 +1,7 @@
 import { DEFINE_MODELS, DEFINE_MODELS_DOLLAR } from '@vue-macros/common'
-import { FileKind, FileRangeCapabilities } from '@volar/language-core'
 import {
+  FileKind,
+  FileRangeCapabilities,
   type Segment,
   type Sfc,
   type VueLanguagePlugin,
@@ -36,7 +37,7 @@ function transformDefineModels({
     addProps(
       codes,
       ['__VLS_TypePropsToRuntimeProps<__VLS_ModelToProps<', seg, '>>'],
-      vueLibName
+      vueLibName,
     )
   mergeEmits() || addEmits(codes, ['__VLS_ModelToEmits<', seg, '>'])
 
@@ -50,31 +51,38 @@ function transformDefineModels({
     type __VLS_GetEventKey<K extends string | number> = K extends 'modelValue'${
       unified ? '' : ' & never'
     } ? 'input' : \`update:\${K}\`
-    type __VLS_ModelToEmits<T> = T extends Record<string | number, any> ? { [K in keyof T & (string | number) as __VLS_GetEventKey<K>]: (value: T[K]) => void } : T`
+    type __VLS_ModelToEmits<T> = T extends Record<string | number, any> ? { [K in keyof T & (string | number) as __VLS_GetEventKey<K>]: (value: T[K]) => void } : T;`,
   )
 
   function mergeProps() {
-    const idx = codes.indexOf('__VLS_TypePropsToRuntimeProps<')
-    if (idx === -1) return false
+    const indexes = codes.reduce((res: number[], code, index) => {
+      if (code === '__VLS_TypePropsToRuntimeProps<') res.unshift(index)
+      return res
+    }, [])
+    if (indexes.length === 0) return false
 
-    codes.splice(idx + 2, 0, ' & __VLS_ModelToProps<', seg, '>')
+    for (const idx of indexes)
+      codes.splice(idx + 2, 0, ' & __VLS_ModelToProps<', seg, '>')
     return true
   }
 
   function mergeEmits() {
-    const idx = codes.indexOf(
-      'emits: ({} as __VLS_UnionToIntersection<__VLS_ConstructorOverloads<'
-    )
-    if (idx === -1) return false
+    const indexes = codes.reduce((res: number[], code, index) => {
+      if (code === 'emits: ({} as __VLS_NormalizeEmits<typeof ')
+        res.unshift(index)
+      return res
+    }, [])
+    if (indexes.length === 0) return false
 
-    codes.splice(idx + 2, 1, '>> & __VLS_ModelToEmits<', seg, '>),\n')
+    for (const idx of indexes)
+      codes.splice(idx + 2, 1, ' & __VLS_ModelToEmits<', seg, '>>),\n')
     return true
   }
 }
 
 function getTypeArg(
   ts: typeof import('typescript/lib/tsserverlibrary'),
-  sfc: Sfc
+  sfc: Sfc,
 ) {
   function getCallArg(node: import('typescript/lib/tsserverlibrary').Node) {
     if (
@@ -89,7 +97,7 @@ function getTypeArg(
     return node.typeArguments[0]
   }
 
-  const sourceFile = sfc.scriptSetupAst!
+  const sourceFile = sfc.scriptSetup!.ast
   return sourceFile.forEachChild((node) => {
     if (ts.isExpressionStatement(node)) {
       return getCallArg(node.expression)
@@ -113,7 +121,7 @@ const plugin: VueLanguagePlugin = ({
       if (
         embeddedFile.kind !== FileKind.TypeScriptHostFile ||
         !sfc.scriptSetup ||
-        !sfc.scriptSetupAst
+        !sfc.scriptSetup.ast
       )
         return
 

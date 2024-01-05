@@ -4,7 +4,7 @@ import {
   generateTransform,
   getLang,
 } from '@vue-macros/common'
-import { type HmrContext } from 'vite'
+import type { HmrContext } from 'vite'
 
 export function transformSetupSFC(code: string, id: string) {
   const lang = getLang(id)
@@ -26,7 +26,7 @@ export function transformSetupSFC(code: string, id: string) {
 
 export function hotUpdateSetupSFC(
   { modules }: HmrContext,
-  filter: (id: unknown) => boolean
+  filter: (id: unknown) => boolean,
 ) {
   function isSubModule(id: string) {
     const [filename, query] = id.split('?')

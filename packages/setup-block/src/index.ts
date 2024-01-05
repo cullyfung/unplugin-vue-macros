@@ -7,6 +7,7 @@ import {
   createFilter,
   detectVueVersion,
 } from '@vue-macros/common'
+import { generatePluginName } from '#macros' assert { type: 'macro' }
 import { transformSetupBlock } from './core'
 
 export interface Options extends BaseOptions {
@@ -15,7 +16,7 @@ export interface Options extends BaseOptions {
 
 export type OptionsResolved = MarkRequired<Options, 'include' | 'version'>
 
-function resolveOption(options: Options): OptionsResolved {
+function resolveOptions(options: Options): OptionsResolved {
   const version = options.version || detectVueVersion()
   return {
     include: [REGEX_VUE_SFC, REGEX_SETUP_SFC],
@@ -25,11 +26,11 @@ function resolveOption(options: Options): OptionsResolved {
   }
 }
 
-const name = 'unplugin-vue-setup-block'
+const name = generatePluginName()
 
 export default createUnplugin<Options | undefined, false>(
   (userOptions = {}) => {
-    const options = resolveOption(userOptions)
+    const options = resolveOptions(userOptions)
     const filter = createFilter(options)
 
     return {
@@ -44,5 +45,5 @@ export default createUnplugin<Options | undefined, false>(
         return transformSetupBlock(code, id, options.defaultLang)
       },
     }
-  }
+  },
 )

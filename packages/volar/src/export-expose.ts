@@ -1,16 +1,16 @@
-import { FileKind } from '@volar/language-core'
 import {
+  FileKind,
   FileRangeCapabilities,
   type Segment,
   type Sfc,
-  type VueEmbeddedFile,
   type VueLanguagePlugin,
-  replace,
+  replaceAll,
   replaceSourceRange,
 } from '@vue/language-core'
 import { createFilter } from '@rollup/pluginutils'
-import { type VolarOptions } from '..'
 import { getVolarOptions } from './common'
+import type { VueEmbeddedFile } from '@vue/language-core/out/virtualFile/embeddedFile'
+import type { VolarOptions } from '..'
 
 function transform({
   fileName,
@@ -27,28 +27,28 @@ function transform({
 }) {
   const filter = createFilter(
     volarOptions.include || /.*/,
-    volarOptions.exclude
+    volarOptions.exclude,
   )
   if (!filter(fileName)) return
 
   const exposed: Record<string, Segment<FileRangeCapabilities>> = Object.create(
-    null
+    null,
   )
-  for (const stmt of sfc.scriptSetupAst!.statements) {
+  for (const stmt of sfc.scriptSetup!.ast.statements) {
     if (!ts.isVariableStatement(stmt)) continue
     const exportModifier = stmt.modifiers?.find(
-      (m) => m.kind === ts.SyntaxKind.ExportKeyword
+      (m) => m.kind === ts.SyntaxKind.ExportKeyword,
     )
     if (!exportModifier) continue
 
-    const start = exportModifier.getStart(sfc.scriptSetupAst!)
+    const start = exportModifier.getStart(sfc.scriptSetup?.ast)
     const end = exportModifier.getEnd()
     replaceSourceRange(file.content, 'scriptSetup', start, end)
 
     for (const decl of stmt.declarationList.declarations) {
       if (!ts.isIdentifier(decl.name)) continue
       const name = decl.name.text
-      const start = decl.name.getStart(sfc.scriptSetupAst!)
+      const start = decl.name.getStart(sfc.scriptSetup?.ast)
 
       exposed[name] = [name, 'scriptSetup', start, FileRangeCapabilities.full]
     }
@@ -62,12 +62,12 @@ function transform({
     ',\n',
   ])
 
-  replace(
+  replaceAll(
     file.content,
-    'return {\n',
+    /return {\n/g,
     'return {\n...{ ',
     ...exposedStrings,
-    ' },\n'
+    ' },\n',
   )
 }
 
@@ -82,7 +82,7 @@ const plugin: VueLanguagePlugin = ({
       if (
         embeddedFile.kind !== FileKind.TypeScriptHostFile ||
         !sfc.scriptSetup ||
-        !sfc.scriptSetupAst
+        !sfc.scriptSetup.ast
       )
         return
 

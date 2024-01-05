@@ -7,7 +7,7 @@ import {
   parseSFC,
   walkAST,
 } from '@vue-macros/common'
-import { type Node } from '@babel/types'
+import type { Node } from '@babel/types'
 
 export function transformDefineProps(code: string, id: string) {
   if (!code.includes(DEFINE_PROPS_DOLLAR)) return
@@ -26,7 +26,7 @@ export function transformDefineProps(code: string, id: string) {
           node.callee,
           // add space for fixing mapping
           ` ${DEFINE_PROPS}`,
-          { offset }
+          { offset },
         )
       }
     },

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - vue-ecosystem-ci
 
   pull_request:
     branches:
@@ -15,12 +16,12 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: pnpm
@@ -31,31 +32,31 @@ jobs:
       - name: Install
         run: nci
 
-      - name: Build
-        run: nr build
-
       - name: Lint
         run: nr lint
 
-      - name: Type Check
-        run: nr typecheck
+      - name: Format Check
+        run: nr format:check
+
+      - name: Monorepo Check
+        run: nr mono:check
 
   test:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [16, 18]
+        node-version: [18, 20]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v2
 
       - name: Set node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
@@ -68,6 +69,9 @@ jobs:
 
       - name: Build
         run: nr build
+
+      - name: Type Check
+        run: nr typecheck
 
       - name: Unit Test
         run: nr test

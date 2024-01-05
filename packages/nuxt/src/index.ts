@@ -1,19 +1,13 @@
 import { defineNuxtModule, useNuxt } from '@nuxt/kit'
 import VueMacros from 'unplugin-vue-macros/vite'
-import {
-  type Options as OptionsShortVmodel,
-  transformShortVmodel,
-} from '@vue-macros/short-vmodel'
-import { transformBooleanProp } from '@vue-macros/boolean-prop'
 import { type Options, resolveOptions } from 'unplugin-vue-macros'
-import { type Plugin } from 'vite'
+import { REGEX_SETUP_SFC } from '@vue-macros/common'
+import { githubRepo } from '../../../macros' assert { type: 'macro' }
+import type { Plugin } from 'vite'
 import type {} from '@nuxt/devtools'
-import { type VolarOptions } from '@vue-macros/volar'
+import type { VolarOptions } from '@vue-macros/volar'
 
-export type VueMacrosOptions = Options & {
-  booleanProp?: {} | false
-  shortVmodel?: OptionsShortVmodel | false
-}
+export type VueMacrosOptions = Options
 
 export default defineNuxtModule<VueMacrosOptions>({
   meta: {
@@ -28,7 +22,7 @@ export default defineNuxtModule<VueMacrosOptions>({
     nuxt.hook('vite:extendConfig', (config, { isClient }) => {
       function findPluginAndRemove(name: string): Plugin | undefined {
         const idx = config.plugins!.findIndex(
-          (plugin) => plugin && 'name' in plugin && plugin.name === name
+          (plugin) => plugin && 'name' in plugin && plugin.name === name,
         )
         if (idx === -1) return
         const plugin = config.plugins![idx]
@@ -44,7 +38,7 @@ export default defineNuxtModule<VueMacrosOptions>({
           ...resolvedOptions,
           plugins: { vue, vueJsx },
           nuxtContext: { isClient },
-        })
+        }),
       )
     })
 
@@ -56,7 +50,7 @@ export default defineNuxtModule<VueMacrosOptions>({
       tabs.push({
         name: 'vue-macros',
         title: 'Vue Macros',
-        icon: 'https://raw.githubusercontent.com/vue-macros/vue-macros/main/docs/public/favicon.svg',
+        icon: `https://raw.githubusercontent.com/${githubRepo}/main/docs/public/favicon.svg`,
         view: {
           type: 'iframe',
           src: '/__vue-macros',
@@ -103,39 +97,62 @@ export default defineNuxtModule<VueMacrosOptions>({
       vueCompilerOptions.experimentalDefinePropProposal =
         resolvedOptions.defineProp.edition || 'kevinEdition'
 
-    nuxt.options.vite.vue ||= {}
-    nuxt.options.vite.vue.include ||= [/\.vue$/]
-    if (!Array.isArray(nuxt.options.vite.vue.include))
-      nuxt.options.vite.vue.include = [nuxt.options.vite.vue.include]
-    nuxt.options.vite.vue.include.push(/\.setup\.[cm]?[jt]sx?$/)
+    if (resolvedOptions.shortBind)
+      volarPlugins.push('@vue-macros/volar/short-bind')
 
-    if (options.shortVmodel !== false || options.booleanProp !== false) {
-      nuxt.options.vite.vue.template ||= {}
-      nuxt.options.vite.vue.template.compilerOptions ||= {}
-      nuxt.options.vite.vue.template.compilerOptions.nodeTransforms ||= []
-      const { nodeTransforms } = nuxt.options.vite.vue.template.compilerOptions
-
-      if (options.shortVmodel !== false) {
-        volarPlugins.push('@vue-macros/volar/short-vmodel')
-        nodeTransforms.push(transformShortVmodel(options.shortVmodel))
-        if (options.shortVmodel) {
-          volarOptions.shortVmodel = {
-            prefix: options.shortVmodel.prefix,
-          }
-        }
+    if (resolvedOptions.shortVmodel) {
+      volarPlugins.push('@vue-macros/volar/short-vmodel')
+      volarOptions.shortVmodel = {
+        prefix: resolvedOptions.shortVmodel.prefix,
       }
-
-      if (options.booleanProp !== false)
-        nodeTransforms.push(transformBooleanProp())
     }
+
+    const viteVue = (nuxt.options.vite.vue ||= {})
+
+    if (resolvedOptions.setupSFC) {
+      viteVue.include ||= [/\.vue$/]
+      if (!Array.isArray(viteVue.include)) viteVue.include = [viteVue.include]
+      viteVue.include.push(REGEX_SETUP_SFC)
+
+      nuxt.hook('components:extend', (components) => {
+        for (const component of components) {
+          component.pascalName = component.pascalName.replace(/Setup$/, '')
+          component.kebabName = component.kebabName.replace(/-setup$/, '')
+        }
+      })
+
+      nuxt.hook('pages:extend', (pages) => {
+        for (const page of pages) {
+          if (!page.file || !REGEX_SETUP_SFC.test(page.file)) continue
+
+          if (page.name) page.name = page.name.replace(/\.setup$/, '')
+          if (page.path)
+            page.path = page.path
+              .replace(/\/index\.setup$/, '/')
+              .replace(/\.setup$/, '')
+        }
+      })
+    }
+
+    nuxt.hook('app:resolve', (app) => {
+      app.layouts = Object.fromEntries(
+        Object.entries(app.layouts).map(([key, value]) => {
+          if (key.endsWith('-setup')) {
+            key = key.replace(/-setup$/, '')
+            value.name = value.name.replace(/-setup$/, '')
+          }
+          return [key, value]
+        }),
+      )
+    })
   },
 })
 
 declare module '@nuxt/schema' {
   interface NuxtConfig {
-    macros?: Options
+    macros?: VueMacrosOptions
   }
   interface NuxtOptions {
-    macros?: Options
+    macros?: VueMacrosOptions
   }
 }

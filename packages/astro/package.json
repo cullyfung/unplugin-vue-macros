@@ -1,0 +1,63 @@
+{
+  "name": "@vue-macros/astro",
+  "version": "0.3.6",
+  "packageManager": "pnpm@8.14.0",
+  "description": "Astro integration of Vue Macros.",
+  "keywords": [
+    "vue-macros",
+    "macros",
+    "vue",
+    "sfc",
+    "setup",
+    "script-setup",
+    "astro"
+  ],
+  "license": "MIT",
+  "homepage": "https://vue-macros.dev",
+  "bugs": {
+    "url": "https://github.com/vue-macros/vue-macros/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vue-macros/vue-macros.git",
+    "directory": "packages/astro"
+  },
+  "author": "三咲智子 <sxzz@sxzz.moe>",
+  "contributors": [
+    "alexzhang1030 <alexzhang1030@foxmail.com>"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "dev": "./src/index.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": [
+      "./*",
+      "./*.d.ts"
+    ]
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "DEV=true tsup"
+  },
+  "peerDependencies": {
+    "astro": "^2.0.0 || ^3.0.0 || ^4.0.0"
+  },
+  "dependencies": {
+    "unplugin-vue-macros": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.2",
+    "astro": "^4.0.9"
+  },
+  "engines": {
+    "node": ">=16.14.0"
+  }
+}

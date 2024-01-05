@@ -1,38 +1,46 @@
-import {
-  type ConstantTypes,
-  type NodeTransform,
-  type NodeTypes,
-} from '@vue/compiler-core'
+import { type VuePluginApi, getVuePluginApi } from '@vue-macros/common'
+import { generatePluginName } from '#macros' assert { type: 'macro' }
+import { type Options, transformBooleanProp } from './core/index'
+import type { Plugin } from 'vite'
 
-export function transformBooleanProp(): NodeTransform {
-  return (node) => {
-    if (node.type !== (1 satisfies NodeTypes.ELEMENT)) return
-    for (const [i, prop] of node.props.entries()) {
-      if (
-        prop.type !== (6 satisfies NodeTypes.ATTRIBUTE) ||
-        prop.value !== undefined
+// legacy export
+export * from './api'
+
+const name = generatePluginName()
+
+function rollup(options: Options = {}): Plugin {
+  let api: VuePluginApi | null | undefined
+
+  return {
+    name,
+    configResolved(config) {
+      try {
+        api = getVuePluginApi(config.plugins)
+      } catch {}
+    },
+    buildStart(rollupOpts) {
+      if (api === undefined)
+        try {
+          api = getVuePluginApi(rollupOpts.plugins)
+        } catch (error: any) {
+          this.warn(error)
+          return
+        }
+
+      if (!api) return
+
+      api.options.template ||= {}
+      api.options.template.compilerOptions ||= {}
+      api.options.template.compilerOptions.nodeTransforms ||= []
+
+      api.options.template.compilerOptions.nodeTransforms.push(
+        transformBooleanProp(options),
       )
-        continue
-      node.props[i] = {
-        type: 7 satisfies NodeTypes.DIRECTIVE,
-        name: 'bind',
-        arg: {
-          type: 4 satisfies NodeTypes.SIMPLE_EXPRESSION,
-          constType: 3 satisfies ConstantTypes.CAN_STRINGIFY,
-          content: 'checked',
-          isStatic: true,
-          loc: prop.loc,
-        },
-        exp: {
-          type: 4 satisfies NodeTypes.SIMPLE_EXPRESSION,
-          constType: 3 satisfies ConstantTypes.CAN_STRINGIFY,
-          content: 'true',
-          isStatic: false,
-          loc: prop.loc,
-        },
-        loc: prop.loc,
-        modifiers: [],
-      }
-    }
+    },
   }
+}
+
+export default {
+  rollup,
+  vite: rollup,
 }

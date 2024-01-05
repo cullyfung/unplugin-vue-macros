@@ -4,10 +4,10 @@ import {
   type SFCScriptBlock as SFCScriptBlockMixed,
   parse,
 } from '@vue/compiler-sfc'
-import { type Node, type Program } from '@babel/types'
-import { type MagicString, type MagicStringBase } from 'magic-string-ast'
 import { babelParse, getLang, resolveString } from 'ast-kit'
 import { REGEX_VUE_SFC } from './constants'
+import type { Node, Program } from '@babel/types'
+import type { MagicString, MagicStringBase } from 'magic-string-ast'
 
 export type SFCScriptBlock = Omit<
   SFCScriptBlockMixed,
@@ -39,7 +39,7 @@ export function parseSFC(code: string, id: string): SFC {
     (scriptLang || 'js') !== (scriptSetupLang || 'js')
   ) {
     throw new Error(
-      `[unplugin-vue-macros] <script> and <script setup> must have the same language type.`
+      `[unplugin-vue-macros] <script> and <script setup> must have the same language type.`,
     )
   }
 
@@ -68,7 +68,7 @@ export function parseSFC(code: string, id: string): SFC {
 
 export function getFileCodeAndLang(
   code: string,
-  id: string
+  id: string,
 ): { code: string; lang: string } {
   if (!REGEX_VUE_SFC.test(id)) {
     return {
@@ -108,7 +108,7 @@ export function removeMacroImport(node: Node, s: MagicString, offset: number) {
     node.type === 'ImportDeclaration' &&
     node.attributes?.some(
       (attr) =>
-        resolveString(attr.key) === 'type' && attr.value.value === 'macro'
+        resolveString(attr.key) === 'type' && attr.value.value === 'macro',
     )
   ) {
     s.removeNode(node, { offset })

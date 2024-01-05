@@ -1,7 +1,7 @@
 {
   "name": "@vue-macros/devtools",
-  "version": "0.1.3",
-  "packageManager": "pnpm@8.6.11",
+  "version": "0.2.0",
+  "packageManager": "pnpm@8.14.0",
   "description": "Devtools plugin for Vue Macros.",
   "keywords": [
     "vue-macros",
@@ -13,7 +13,7 @@
     "devtools"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/vue-macros/vue-macros#readme",
+  "homepage": "https://vue-macros.dev",
   "bugs": {
     "url": "https://github.com/vue-macros/vue-macros/issues"
   },
@@ -32,10 +32,6 @@
   "exports": {
     ".": {
       "dev": "./src/index.ts",
-      "types": {
-        "require": "./dist/index.d.ts",
-        "import": "./dist/index.d.mts"
-      },
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
@@ -50,7 +46,7 @@
     "client:dev": "vite ./src/client"
   },
   "peerDependencies": {
-    "vite": "^4.0.0"
+    "vite": "^4.0.0 || ^5.0.0-0"
   },
   "peerDependenciesMeta": {
     "vite": {
@@ -58,15 +54,15 @@
     }
   },
   "dependencies": {
-    "sirv": "^2.0.3",
-    "vue": "^3.3.4"
+    "sirv": "^2.0.4",
+    "vue": "^3.4.5"
   },
   "devDependencies": {
-    "@unocss/reset": "^0.54.1",
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@unocss/reset": "^0.58.3",
+    "@vitejs/plugin-vue": "^5.0.2",
     "get-port": "^7.0.0",
-    "unocss": "^0.54.1",
-    "vite": "^4.4.7"
+    "unocss": "^0.58.3",
+    "vite": "^5.0.10"
   },
   "engines": {
     "node": ">=16.14.0"
